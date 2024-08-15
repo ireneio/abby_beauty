@@ -1,32 +1,20 @@
 import {
-	DummyDriver,
-	PostgresAdapter,
-	PostgresIntrospector,
-	PostgresQueryCompiler,
+	PostgresDialect,
 } from 'kysely'
 import { defineConfig } from 'kysely-ctl'
+import { Pool } from 'pg'
 
 export default defineConfig({
-	// replace me with a real dialect instance OR a dialect name + `dialectConfig` prop.
-	dialect: {
-		createAdapter() {
-			return new PostgresAdapter()
-		},
-		createDriver() {
-			return new DummyDriver()
-		},
-		createIntrospector(db) {
-			return new PostgresIntrospector(db)
-		},
-		createQueryCompiler() {
-			return new PostgresQueryCompiler()
-		},
+	dialect: new PostgresDialect({
+		pool: new Pool({
+			connectionString: "postgres://default:qI3WkjC9uxTZ@ep-blue-unit-a1pbnu7c-pooler.ap-southeast-1.aws.neon.tech/verceldb?sslmode=require",
+		}),
+	}),
+	migrations: {
+		migrationFolder: "src/lib/kysely/migrations",
 	},
-	  migrations: {
-	    migrationFolder: "src/lib/kysely/migrations",
-	  },
-	  plugins: [],
-	  seeds: {
-	    seedFolder: "src/lib/kysely/seeds",
-	  }
+	plugins: [],
+	seeds: {
+		seedFolder: "src/lib/kysely/seeds",
+	}
 })
