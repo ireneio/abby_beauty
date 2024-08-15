@@ -6,7 +6,7 @@ export default interface Classes {
   image_cover: string,
   minutes: number,
   available_for_reservation: boolean,
-
+  hidden: boolean,
   // You can specify a different type for each operation (select, insert and
   // update) using the `ColumnType<SelectType, InsertType, UpdateType>`
   // wrapper. Here we define a column `created_at` that is selected as
