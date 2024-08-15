@@ -59,7 +59,7 @@ export default function Paginator({ currentPage = 1, total = 0, perPage = 10 }: 
             pagesMap.map((page) => {
                 if (page === '...') {
                     return (
-                        <PaginationGap />
+                        <PaginationGap key={'...'} />
                     )
                 }
                 const _page = Number(page) + 1
