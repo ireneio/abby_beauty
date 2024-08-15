@@ -10,7 +10,7 @@ class ClassesController {
         return rows
     }
 
-    async getById(id: string) {
+    async getById(id: number) {
         const rows = await db.selectFrom('classes')
             .where('classes.hidden', '!=', true)
             .where('classes.id', '=', id)
@@ -20,7 +20,7 @@ class ClassesController {
         return rows
     }
 
-    async update(id: string, params: any) {
+    async update(id: number, params: any) {
         const { name, minutes, image_cover, available_for_reservation } = params
         const rows = await db.updateTable('classes')
             .set({
