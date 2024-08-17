@@ -11,10 +11,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse>,
 ) {
-  try {
-    console.log(req.method);
-    
-    const id = req.query.id as string
+  try {    
+    const id = Number(req.query.id)
     if (req.method === 'GET') {
       const rows = await controller.getById(id)
   

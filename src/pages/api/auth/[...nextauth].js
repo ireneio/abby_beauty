@@ -4,6 +4,36 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from 'bcrypt'
 
 export const authOptions = {
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {      
+      const isAllowedToSignIn = true
+      if (isAllowedToSignIn) {
+        return true
+      } else {
+        // Return false to display a default error message
+        return false
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      }
+    },
+    async session({ session, token, user }) {      
+      // Send properties to the client, like an access_token and user id from a provider.
+      session.accessToken = token.accessToken
+      // userId is token.sub when using CredentialsProvider
+      session.user.id = token.sub
+            
+      const userFromDb = await db.selectFrom('admin')
+        .select('username')
+        .executeTakeFirst()
+
+      if (userFromDb) {
+        session.user.name = userFromDb.username
+      } else {
+        session.user.name = ''
+      }
+      return session
+    }
+  },
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
@@ -25,7 +55,7 @@ export const authOptions = {
           try {
             const rows = await db.selectFrom('admin')
               .where('admin.username', '=', username)
-              .select(['admin.username', 'admin.password'])
+              .select(['admin.username', 'admin.password', 'admin.id'])
               .execute()
   
             if (rows.length > 0) {

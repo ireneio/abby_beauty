@@ -18,6 +18,7 @@ import Classes from '@/lib/kysely/models/Classes'
 import { useAppDispatch } from '@/lib/store'
 import { openAlert } from '@/lib/store/features/global/globalSlice'
 import fileToBase64 from '@/lib/utils/fileToBase64'
+import { MinusIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -99,7 +100,7 @@ export default function Page() {
             const updateRes = await updateClass({ ...data, image_cover: uploadRes.data.url })
             if (updateRes.success && updateRes.code === 0) {
                 await getClass()
-                dispatch(openAlert({ title: '更新成功' }))
+                // dispatch(openAlert({ title: '更新成功' }))
                 router.replace(`/admin/classes/${router.query.id}/view`)
             } else {
                 dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))
@@ -111,7 +112,7 @@ export default function Page() {
         const updateRes = await updateClass({ ...data })
         if (updateRes.success && updateRes.code === 0) {
             await getClass()
-            dispatch(openAlert({ title: '更新成功' }))
+            // dispatch(openAlert({ title: '更新成功' }))
             router.replace(`/admin/classes/${router.query.id}/view`)
         } else {
             dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))
@@ -173,6 +174,15 @@ export default function Page() {
     setClass((prev: any) => ({ ...prev, image_preview: `data:image/png;base64,${base64}` }))
   }
 
+  const handleRemoveImagePreview = () => {
+    setValue('image_cover_selected', [])
+    setClass((prev: any) => ({
+      ...prev,
+      image_preview: '',
+      image_cover: '',
+    }))
+  }
+
   return (
     <LayoutAdmin>
         <NotificationPopup />
@@ -191,11 +201,20 @@ export default function Page() {
             <Subheading>封面圖</Subheading>
             </div>
             <div className='space-y-4'>
-                <img
-                  className="aspect-[3/2] rounded-lg shadow w-full object-contain"
-                  src={classs.image_preview || classs.image_cover}
-                  alt=""
-                />
+              {classs.image_preview || classs.image_cover ?
+                <div className='relative'>
+                  <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview()}>
+                      <Button className='w-[2rem] h-[2rem]'>
+                          <MinusIcon />
+                      </Button>
+                  </div>
+                  <img
+                    className="aspect-[3/2] rounded-lg shadow w-full object-contain"
+                    src={classs.image_preview || classs.image_cover}
+                    alt=""
+                  />
+                </div> :
+                null}
                 <Input type="file" accept='image/*' aria-label="封面圖" onChange={(e) => {
                         setValue('image_cover_selected', e.target.files)
                         handleSetImagePreview(e.target.files)
@@ -219,10 +238,10 @@ export default function Page() {
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
             <Subheading>時長</Subheading>
-            <Text>單位: 分鐘</Text>
+              <Text>單位: 分鐘</Text>
             </div>
             <div>
-            <Input {...register('minutes')} type="number" aria-label="時長" />
+              <Input {...register('minutes')} type="number" aria-label="時長" />
             </div>
         </section>
 

@@ -3,13 +3,7 @@ import { ColumnType, Generated } from "kysely";
 export default interface ProductType {
   id: Generated<number>,
   name: string,
-  image_cover: string,
-
-  // You can specify a different type for each operation (select, insert and
-  // update) using the `ColumnType<SelectType, InsertType, UpdateType>`
-  // wrapper. Here we define a column `created_at` that is selected as
-  // a `Date`, can optionally be provided as a `string` in inserts and
-  // can never be updated:
+  image_cover: ColumnType<string, string | undefined, string | undefined>,
   created_at: ColumnType<Date, string | undefined, never>,
-  updated_at: Date,
+  updated_at: ColumnType<Date, string | undefined, string | undefined>,
 }

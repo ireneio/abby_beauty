@@ -55,7 +55,10 @@ export default function Page() {
             <Subheading>封面圖</Subheading>
             </div>
             <div className='space-y-4'>
-                <img className="aspect-[3/2] rounded-lg shadow w-full object-contain" src={classs.image_cover} alt="" />
+                {classs.image_cover ?
+                  <img className="aspect-[3/2] rounded-lg shadow w-full object-contain" src={classs.image_cover} alt="" /> :
+                  null
+                }
             </div>
         </section>
 
@@ -100,7 +103,7 @@ export default function Page() {
             <Subheading>開放預約</Subheading>
           </div>
           <div>
-            <Badge className="max-sm:hidden" color={classs.available_for_reservation ? 'lime' : 'zinc'}>
+            <Badge color={classs.available_for_reservation ? 'lime' : 'zinc'}>
               {classs.available_for_reservation ? '可預約' : '不可預約'}
             </Badge>
           </div>

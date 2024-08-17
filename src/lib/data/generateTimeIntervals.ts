@@ -10,7 +10,7 @@ function generateTimeIntervals() {
         const labelMinutes = minutes.toString().padStart(2, '0');
   
         const label = `${labelHour}:${labelMinutes}`;
-        const value = `${labelHour}${labelMinutes}`;
+        const value = `${labelHour}:${labelMinutes}`;
   
         intervals.push({ label, value });
       }

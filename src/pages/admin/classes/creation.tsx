@@ -14,10 +14,11 @@ import useApi from '@/lib/hooks/useApi'
 import { useAppDispatch } from '@/lib/store'
 import { openAlert } from '@/lib/store/features/global/globalSlice'
 import fileToBase64 from '@/lib/utils/fileToBase64'
+import { MinusIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 export const metadata: Metadata = {
@@ -36,81 +37,91 @@ type Inputs = {
 export default function Page() {
     const dispatch = useAppDispatch()
     const router = useRouter()
-  const { api } = useApi()
+    const { api } = useApi()
+    const imageRef = useRef(null)
 
-  const [classs, setClass] = useState<any>({
-    id: '',
-    name: '',
-    minutes: '',
-    image_cover: '',
-    image_preview: '',
-  })
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<Inputs>({
-    defaultValues: {
+    const [classs, setClass] = useState<any>({
+        id: '',
         name: '',
         minutes: '',
         image_cover: '',
-        available_for_reservation: true,
-        image_cover_selected: null,
-    }
-  })
-
-  const createClass = async (data: any) => {    
-    const res = await api({
-      method: 'POST',
-      url: `/admin/classes`,
-      data,
+        image_preview: '',
     })
-    return res
-  }
 
-  const uploadFile = async (file: any) => {
-    const formData = new FormData();
-    formData.append('file', file)
-    const res = await api({
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors, isSubmitting },
+    } = useForm<Inputs>({
+        defaultValues: {
+            name: '',
+            minutes: '',
+            image_cover: '',
+            available_for_reservation: true,
+            image_cover_selected: null,
+        }
+    })
+
+    const createClass = async (data: any) => {    
+        const res = await api({
         method: 'POST',
-        url: `/admin/files`,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-        data: formData,
-    })
-    return res
-  }
+        url: `/admin/classes`,
+        data,
+        })
+        return res
+    }
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const file = data.image_cover_selected && data.image_cover_selected.length > 0 ?
-        data.image_cover_selected[0] :
-        null
-    if (file) {
-        const uploadRes = await uploadFile(file)
-        if (uploadRes.success && uploadRes.code === 0) {
-            const updateRes = await createClass({ ...data, image_cover: uploadRes.data.url })
+    const uploadFile = async (file: any) => {
+        const formData = new FormData();
+        formData.append('file', file)
+        const res = await api({
+            method: 'POST',
+            url: `/admin/files`,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            data: formData,
+        })
+        return res
+    }
+
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        const file = data.image_cover_selected && data.image_cover_selected.length > 0 ?
+            data.image_cover_selected[0] :
+            null
+        if (file) {
+            const uploadRes = await uploadFile(file)
+            if (uploadRes.success && uploadRes.code === 0) {
+                const updateRes = await createClass({ ...data, image_cover: uploadRes.data.url })
+                if (updateRes.success && updateRes.code === 0 && updateRes.data.length > 0) {
+                    router.replace(`/admin/classes/${updateRes.data[0].id}/view`)
+                } else {
+                    dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))
+                }
+            } else {
+                dispatch(openAlert({ title: `錯誤(${uploadRes.code})` }))
+            }
+        } else {
+            const updateRes = await createClass({ ...data, image_cover: data.image_cover })
             if (updateRes.success && updateRes.code === 0 && updateRes.data.length > 0) {
-                // dispatch(openAlert({ title: '新增成功' }))
                 router.replace(`/admin/classes/${updateRes.data[0].id}/view`)
             } else {
                 dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))
             }
-        } else {
-            dispatch(openAlert({ title: `錯誤(${uploadRes.code})` }))
         }
-    } else {
-        
     }
-  }
 
-  const handleSetImagePreview = async (files: any) => {
-    const base64 = await fileToBase64(files[0])
-    setClass((prev: any) => ({ ...prev, image_preview: `data:image/png;base64,${base64}` }))
-  }
+    const handleRemoveImagePreview = () => {
+        setValue('image_cover_selected', [])
+        setClass((prev: any) => ({ ...prev, image_preview: '' }))
+    }
+
+    const handleSetImagePreview = async (files: any) => {
+        const base64 = await fileToBase64(files[0])
+        setClass((prev: any) => ({ ...prev, image_preview: `data:image/png;base64,${base64}` }))
+    }
 
   return (
     <LayoutAdmin>
@@ -125,13 +136,32 @@ export default function Page() {
                 </div>
                 <div className='space-y-4'>
                     {classs.image_preview ?
-                        <img className="aspect-[3/2] rounded-lg shadow w-full object-contain" src={classs.image_preview} alt="" /> :
+                        <div className='relative'>
+                            <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview()}>
+                                <Button className='w-[2rem] h-[2rem]'>
+                                    <MinusIcon />
+                                </Button>
+                            </div>
+                            <img className="aspect-[3/2] rounded-lg shadow w-full object-contain" src={classs.image_preview} alt="" />
+                        </div> :
                         null
                     }
-                    <Input type="file" accept='image/*' aria-label="封面圖" onChange={(e) => {
-                        setValue('image_cover_selected', e.target.files)
-                        handleSetImagePreview(e.target.files)
-                    }} />
+                    <Input
+                        ref={imageRef}
+                        type="file"
+                        accept='image/*'
+                        aria-label="封面圖"
+                        onChange={(e) => {
+                            setValue('image_cover_selected', e.target.files)
+                            handleSetImagePreview(e.target.files)
+                        }}
+                        onClick={() => {
+                            if (imageRef.current) {
+                                // @ts-ignore
+                                imageRef.current.value = ''
+                            }
+                        }}
+                    />
                 </div>
             </section>
 

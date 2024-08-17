@@ -50,7 +50,7 @@ class ClassesController {
         return rows
     }
 
-    async hide(id: string) {
+    async hide(id: number) {
         const rows = await db.updateTable('classes')
             .set({ hidden: true })
             .where('classes.id', '=', id)

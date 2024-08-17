@@ -27,10 +27,10 @@ export default function Page() {
     const res = await signIn('credentials', { redirect: false }, {
         username: data.username,
         password: data.password
-    })
+    })    
     if (res && res.ok && res.status === 200) {
       dispatch(openAlert({ title: '登入成功', showConfirmButton: false }))
-      router.replace('/admin')
+      router.push('/admin')
     } else {
       dispatch(openAlert({ title: `錯誤`, content: '帳號或密碼錯誤' }))
     }
