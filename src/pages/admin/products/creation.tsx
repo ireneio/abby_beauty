@@ -10,6 +10,7 @@ import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
 import { Textarea } from '@/components/common/textarea'
 import Tiptap from '@/components/common/Tiptap'
+import WysiwygEditor from '@/components/common/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
@@ -273,7 +274,10 @@ export default function Page() {
                 <Subheading>產品特點</Subheading>
                 </div>
                 <div>
-                    <Tiptap setValue={setValue} name="features" />
+                    <WysiwygEditor
+                        value={watch('features')}
+                        onChange={(value) => setValue('features', value)}
+                    />
                 </div>
             </section>
 
@@ -284,7 +288,10 @@ export default function Page() {
                 <Subheading>成份內容</Subheading>
                 </div>
                 <div>
-                    <Tiptap setValue={setValue} name="ingredients" />
+                    <WysiwygEditor
+                        value={watch('ingredients')}
+                        onChange={(value) => setValue('ingredients', value)}
+                    />
                 </div>
             </section>
 
@@ -295,7 +302,10 @@ export default function Page() {
                 <Subheading>適用對象</Subheading>
                 </div>
                 <div>
-                    <Tiptap setValue={setValue} name="target_users" />
+                    <WysiwygEditor
+                        value={watch('target_users')}
+                        onChange={(value) => setValue('target_users', value)}
+                    />
                 </div>
             </section>
 
@@ -306,27 +316,30 @@ export default function Page() {
                 <Subheading>使用方法</Subheading>
                 </div>
                 <div>
-                    <Tiptap setValue={setValue} name="usage" />
+                    <WysiwygEditor
+                        value={watch('usage')}
+                        onChange={(value) => setValue('usage', value)}
+                    />
                 </div>
             </section>
 
             <Divider className="my-10" soft />
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            <div className="space-y-1">
-                <Subheading>上架狀態</Subheading>
-                <Text>設定是否上架於前台</Text>
-            </div>
-            <div>
-                <SwitchField>
-                    <Switch
-                        onChange={(checked) => {
-                            setValue('hidden', !checked)
-                        }}
-                        checked={watch('hidden') === false}
-                    />
-                </SwitchField>
-            </div>
+                <div className="space-y-1">
+                    <Subheading>上架狀態</Subheading>
+                    <Text>設定是否上架於前台</Text>
+                </div>
+                <div>
+                    <SwitchField>
+                        <Switch
+                            onChange={(checked) => {
+                                setValue('hidden', !checked)
+                            }}
+                            checked={watch('hidden') === false}
+                        />
+                    </SwitchField>
+                </div>
             </section>
 
             <Divider className="my-10" soft />

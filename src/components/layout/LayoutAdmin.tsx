@@ -29,18 +29,11 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
   const router = useRouter()
   const { data: session, status } = useSession()
 
-  useEffect(() => {
-    console.log('status', status);
-    
+  useEffect(() => {    
     if (status === 'unauthenticated') {
       router.replace('/admin/login')
     }
   }, [status])
-
-  useEffect(() => {
-    console.log(session);
-    
-  }, [session])
 
   const handleSignOut = () => {
     signOut()
