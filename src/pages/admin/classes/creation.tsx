@@ -184,7 +184,7 @@ export default function Page() {
                 <Text>單位: 分鐘</Text>
                 </div>
                 <div>
-                <Input {...register('minutes')} type="number" aria-label="時長" />
+                <Input {...register('minutes')} type="tel" aria-label="時長" />
                 </div>
             </section>
 
