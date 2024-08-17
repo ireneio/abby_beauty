@@ -98,7 +98,7 @@ export default function Page() {
 
         {/* <Divider className="my-10" soft /> */}
 
-        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           <div className="space-y-1">
             <Subheading>開放預約</Subheading>
           </div>
@@ -109,7 +109,7 @@ export default function Page() {
           </div>
         </section>
 
-        <Divider className="my-10" soft />
+        <Divider className="my-10" soft /> */}
 
         <div className="flex justify-end gap-4">
           <Button type="reset" plain onClick={() => router.push('/admin/classes')}>

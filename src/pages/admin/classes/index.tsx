@@ -163,9 +163,9 @@ export default function Page() {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Badge className="max-sm:hidden" color={v.available_for_reservation ? 'lime' : 'zinc'}>
+                  {/* <Badge color={v.available_for_reservation ? 'lime' : 'zinc'}>
                     {v.available_for_reservation ? '可預約' : '不可預約'}
-                  </Badge>
+                  </Badge> */}
                   <Dropdown>
                     <DropdownButton plain aria-label="More options">
                       <EllipsisVerticalIcon />
