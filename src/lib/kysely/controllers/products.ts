@@ -19,6 +19,7 @@ class ProductsController {
                 'product_types.name as product_type_name',
                 'products.hidden'
             ])
+            .orderBy('created_at', 'desc')
             
         const products = await productsQuery.execute()
 
@@ -30,6 +31,8 @@ class ProductsController {
                 'product_images.url',
                 'product_images.order',
             ])
+            .orderBy('id', 'desc')
+            .orderBy('order', 'asc')
 
         const productImages = await productImagesQuery.execute()
 
@@ -59,6 +62,7 @@ class ProductsController {
                 'product_types.name as product_type_name',
                 'products.hidden'
             ])
+            .orderBy('created_at', 'desc')
 
         const products = await productsQuery.execute()
             
@@ -70,6 +74,8 @@ class ProductsController {
                 'product_images.url',
                 'product_images.order',
             ])
+            .orderBy('id', 'desc')
+            .orderBy('order', 'asc')
 
         const productImages = await productImagesQuery.execute()
 
