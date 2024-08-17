@@ -258,7 +258,7 @@ export default function Page() {
 
         {/* <Divider className="my-10" soft /> */}
 
-        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           <div className="space-y-1">
             <Subheading>開放預約</Subheading>
           </div>
@@ -274,21 +274,17 @@ export default function Page() {
           </div>
         </section>
 
-        <Divider className="my-10" soft />
+        <Divider className="my-10" soft /> */}
 
         <div className="flex justify-end gap-4">
           <Button className='mr-auto cursor-pointer' type="button" onClick={handleDelete}>
             刪除
           </Button>
-          <Button type="reset" plain>
-            <Link href="/admin/classes">
-                返回列表
-            </Link>
+          <Button type="reset" plain onClick={() => router.push('/admin/classes')}>
+            返回列表
           </Button>
-          <Button type="reset" plain>
-            <Link href={`/admin/classes/${router.query.id}/view`}>
-                查看
-            </Link>
+          <Button type="reset" plain onClick={() => router.push(`/admin/classes/${router.query.id}/view`)}>
+            查看
           </Button>
           <Button loading={isSubmitting} disabled={!watch('name') || !watch('minutes')} type="submit">儲存</Button>
         </div>

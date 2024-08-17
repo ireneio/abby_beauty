@@ -161,10 +161,8 @@ export default function Page() {
       </div>
       <div className='flex flex-wrap gap-y-4 mt-4'>
         <div>
-            <Button>
-                <Link href="/admin/reservation/history/creation">
-                    建立
-                </Link>
+            <Button onClick={() => router.push('/admin/reservation/history/creation')}>
+                建立
             </Button>
         </div>
         <div className='w-full sm:w-auto sm:ml-auto'>

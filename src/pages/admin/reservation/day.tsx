@@ -294,9 +294,6 @@ export default function Page() {
         <Divider className="my-10" soft />
 
         <div className="flex justify-end gap-4">
-          {/* <Button type="reset" plain>
-            Reset
-          </Button> */}
             <Button
                 loading={isSubmitting}
                 disabled={!watch('date') || !availableList.length}

@@ -177,15 +177,11 @@ export default function Page() {
             <Divider className="my-10" soft />
 
             <div className="flex justify-end gap-4">
-              <Button type="reset" plain>
-                  <Link href="/admin/pages">
-                      返回列表
-                  </Link>
+              <Button type="reset" plain onClick={() => router.push(`/admin/pages`)}>
+                返回列表
               </Button>
-              <Button type="reset" plain>
-                  <Link href={`/admin/pages/${router.query.id}/view`}>
-                      查看
-                  </Link>
+              <Button type="reset" plain onClick={() => router.push(`/admin/pages/${router.query.id}/view`)}>
+                查看
               </Button>
               <Button
                   loading={isSubmitting}

@@ -220,16 +220,16 @@ export default function Page() {
             <Divider className="my-10" soft />
 
             <div className="flex justify-end gap-4">
-            <Button type="reset" plain>
-                <Link href="/admin/classes">
+                <Button type="reset" plain onClick={() => router.push('/admin/classes')}>
                     返回列表
-                </Link>
-            </Button>
-            <Button
-                loading={isSubmitting}
-                disabled={!watch('name') || !watch('minutes') || !watch('image_cover_selected')}
-                type="submit"
-            >儲存</Button>
+                </Button>
+                <Button
+                    loading={isSubmitting}
+                    disabled={!watch('name') || !watch('minutes') || !watch('image_cover_selected')}
+                    type="submit"
+                >
+                    儲存
+                </Button>
             </div>
         </form>
     </LayoutAdmin>

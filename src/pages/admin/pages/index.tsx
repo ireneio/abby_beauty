@@ -53,7 +53,7 @@ export default function Page() {
         }
 
         if (search !== '') {
-            arr = arr.filter((v) => v.name_zh.toLowerCase().includes(search.toLowerCase()))
+            arr = arr.filter((v) => v.title.toLowerCase().includes(search.toLowerCase()))
         }
 
         switch (sortBy) {
@@ -92,7 +92,7 @@ export default function Page() {
                 <MagnifyingGlassIcon />
                 <Input
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="搜尋名稱..."
+                    placeholder="搜尋標題..."
                 />
               </InputGroup>
             </div>
@@ -107,10 +107,8 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <Button>
-            <Link href="/admin/pages/creation">
-                建立
-            </Link>
+        <Button onClick={() => router.push('/admin/pages/creation')}>
+          建立
         </Button>
       </div>
       <ul className="mt-4">

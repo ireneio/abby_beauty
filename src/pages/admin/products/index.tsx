@@ -154,10 +154,8 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <Button>
-            <Link href="/admin/products/creation">
-                建立
-            </Link>
+        <Button onClick={() => router.push('/admin/products/creation')}>
+          建立
         </Button>
       </div>
       <ul className="mt-4">
