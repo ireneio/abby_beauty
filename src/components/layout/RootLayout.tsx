@@ -21,6 +21,7 @@ import { Logo, Logomark } from '@/components/client/Logo'
 import { Offices } from '@/components/client/Offices'
 import { SocialMedia } from '@/components/client/SocialMedia'
 import openLineAtAccount from '@/lib/utils/openLineAtAccount'
+import LineFloatButton from '../client/LineFloatButton'
 
 const RootLayoutContext = createContext<{
   logoHovered: boolean
@@ -257,6 +258,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
           </main>
 
           <Footer />
+          <LineFloatButton />
         </motion.div>
       </motion.div>
     </MotionConfig>
