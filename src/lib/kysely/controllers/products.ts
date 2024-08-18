@@ -8,9 +8,7 @@ class ProductsController {
     ) {
         let productsQuery = db.selectFrom('products')
             .leftJoin('product_types', 'products.product_type_id', 'product_types.id')
-        
-        console.log(params);
-        
+                
         if (params) {
             if (params.product_type_id) {
                 productsQuery = productsQuery.where('products.product_type_id', '=', Number(params.product_type_id))

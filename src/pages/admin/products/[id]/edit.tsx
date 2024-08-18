@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 
 type Inputs = {
     name_zh: string,
+    name_en: string,
     size: string,
     sku: string,
     usage: string,
@@ -61,6 +62,7 @@ export default function Page() {
     } = useForm<Inputs>({
         defaultValues: {
             name_zh: '',
+            name_en: '',
             size: '',
             sku: '',
             usage: '',
@@ -182,6 +184,7 @@ export default function Page() {
           if (res.code === 0 && res.data.length > 0) {
             const data = res.data[0]
             setValue('name_zh', data.name_zh)
+            setValue('name_en', data.name_en)
             setValue('size', data.size)
             setValue('usage', data.usage)
             setValue('ingredients', data.ingredients)
@@ -252,12 +255,25 @@ export default function Page() {
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
                     <Subheading>
-                        名稱
+                        中文名稱
                         <RequiredMark />
                     </Subheading>
                 </div>
                 <div>
-                    <Input {...register('name_zh')} aria-label="名稱" />
+                    <Input {...register('name_zh')} aria-label="中文名稱" />
+                </div>
+            </section>
+
+            <Divider className="my-10" soft />
+
+            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div className="space-y-1">
+                    <Subheading>
+                        英文名稱
+                    </Subheading>
+                </div>
+                <div>
+                    <Input {...register('name_en')} aria-label="英文名稱" />
                 </div>
             </section>
 

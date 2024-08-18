@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 }
 
 type Inputs = {
+    name_en: string,
     name_zh: string,
     size: string,
     sku: string,
@@ -59,6 +60,7 @@ export default function Page() {
         formState: { errors, isSubmitting },
     } = useForm<Inputs>({
         defaultValues: {
+            name_en: '',
             name_zh: '',
             size: '',
             sku: '',
@@ -223,12 +225,25 @@ export default function Page() {
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
                     <Subheading>
-                        名稱
+                        中文名稱
                         <RequiredMark />
                     </Subheading>
                 </div>
                 <div>
-                    <Input {...register('name_zh')} aria-label="名稱" />
+                    <Input {...register('name_zh')} aria-label="中文名稱" />
+                </div>
+            </section>
+
+            <Divider className="my-10" soft />
+
+            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div className="space-y-1">
+                    <Subheading>
+                        英文名稱
+                    </Subheading>
+                </div>
+                <div>
+                    <Input {...register('name_en')} aria-label="英文名稱" />
                 </div>
             </section>
 

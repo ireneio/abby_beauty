@@ -71,7 +71,7 @@ export default function Page() {
                 <div className="px-4 mt-4">
                     {productTypes.map((productType) => {
                         return (
-                            <div key={productType.id}>
+                            <div key={productType.id} className="mb-4">
                                 <div className="space-y-4 cursor-pointer" onClick={() => router.push(`/product/series/${productType.id}`)}>
                                     <div className="text-sm md:text-md bg-primary text-secondary px-4 py-4">
                                         {productType.name}

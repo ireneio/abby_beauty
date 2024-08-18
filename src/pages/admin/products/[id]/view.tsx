@@ -21,6 +21,7 @@ export default function Page() {
 
     const [data, setData] = useState<any>({
       name_zh: '',
+      name_en: '',
       size: '',
       sku: '',
       usage: '',
@@ -76,10 +77,21 @@ export default function Page() {
 
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
-              <Subheading>名稱</Subheading>
+              <Subheading>中文名稱</Subheading>
             </div>
             <div>
               <Text>{data.name_zh}</Text>
+            </div>
+        </section>
+
+        <Divider className="my-10" soft />
+
+        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div className="space-y-1">
+              <Subheading>英文名稱</Subheading>
+            </div>
+            <div>
+              <Text>{data.name_en}</Text>
             </div>
         </section>
 

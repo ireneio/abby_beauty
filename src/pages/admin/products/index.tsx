@@ -40,7 +40,7 @@ export default function Page() {
     const tableHeaders = [
         { label: '縮圖', value: 'image' },
         { label: '系列', value: 'product_type_name' },
-        { label: '名稱', value: 'name_zh' },
+        { label: '中文名稱', value: 'name_zh' },
         { label: '上架狀態', value: 'hidden' },
         { label: '操作', value: 'action' },
     ]
@@ -190,7 +190,9 @@ export default function Page() {
                             }
                           </TableCell>
                           <TableCell>{row.product_type_name}</TableCell>
-                          <TableCell>{row.name_zh}</TableCell>
+                          <TableCell className='max-w-[140px] overflow-hidden'>
+                            {row.name_zh}
+                          </TableCell>
                           <TableCell>
                             <Badge color={row.hidden ? 'zinc' : 'lime'}>
                               {row.hidden ? '已下架' : '已上架'}
