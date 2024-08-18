@@ -69,7 +69,7 @@ class ClassesController {
                 minutes: minutes ? parseInt(minutes) : 0,
                 image_cover: image_cover ?? '',
                 available_for_reservation: available_for_reservation ?? false,
-                class_type_id: class_type_id ?? null,
+                class_type_id: class_type_id ? Number(class_type_id) : undefined,
             })
             .where('classes.id', '=', id)
             .execute()
@@ -85,7 +85,7 @@ class ClassesController {
                     minutes: minutes ? parseInt(minutes) : 0,
                     image_cover: image_cover ?? '',
                     available_for_reservation: available_for_reservation ?? false,
-                    class_type_id: class_type_id ?? null,
+                    class_type_id: class_type_id ? Number(class_type_id) : undefined,
                 }
             ])
             .returningAll()

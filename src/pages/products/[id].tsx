@@ -5,8 +5,58 @@ import { RootLayout } from "@/components/layout/RootLayout";
 import useApi from "@/lib/hooks/useApi";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import clsx from "clsx";
+import { Metadata, ResolvingMetadata } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+
+type Props = {
+    params: { id: string }
+    searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata
+  ): Promise<Metadata> {
+
+    console.log('params.id', params.id);
+    
+    
+    // read route params
+    const id = params.id
+
+    console.log('id', id);
+    
+   
+    const { api } = useApi()
+
+    // fetch data
+    const product = await api({
+        method: 'GET',
+        url: `/client/products/${id}`
+    }).then((res) => {
+        if (res.code && res.data.length) {
+            return {
+                ...res.data[0],
+                images: res.data[0].images.map((image: any) => image.url)
+            }
+        }
+        return {
+            title: '',
+            images: [],
+        }
+    })
+   
+    // optionally access and extend (rather than replace) parent metadata
+    const previousImages = (await parent).openGraph?.images || []
+   
+    return {
+      title: product.title,
+      openGraph: {
+        images: [...product.images, ...previousImages],
+      },
+    }
+  }
 
 export default function Page() {
     const { api } = useApi() 
