@@ -1,3 +1,4 @@
+import DialogDeleteConfirm from '@/components/admin/DialogDeleteConfirm'
 import RequiredMark from '@/components/admin/RequiredMark'
 import { Button } from '@/components/common/button'
 import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/common/checkbox'
@@ -25,8 +26,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { ReactSortable } from "react-sortablejs";
 
 export const metadata: Metadata = {
-  title: '產品系列',
-  description: '新增產品系列',
+  title: '課程系列',
+  description: '編輯課程系列',
 }
 
 type Inputs = {
@@ -57,10 +58,10 @@ export default function Page() {
 
     const submitDisabled = !watch('name')
 
-    const create = async (data: any) => {    
+    const update = async (data: any) => {    
         const res = await api({
             method: 'POST',
-            url: `/admin/product_types`,
+            url: `/admin/class_types/${router.query.id}`,
             data,
         })
         return res
@@ -80,27 +81,27 @@ export default function Page() {
         return res
     }
 
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {                 
         const imageUrlArr = []
         
         if (data.image_list) {
             for (let i = 0; i < data.image_list.length; i++) {
-              if (!data.image_list[i].id) {
+                if (!data.image_list[i].id) {
                 const uploadRes = await uploadFile(data.image_list[i])
                 imageUrlArr.push({ order: i, url: uploadRes.data.url })
-              } else {
+                } else {
                 imageUrlArr.push({ ...data.image_list[i], order: i })
-              }
+                }
             }
         }
-
-        const res = await create({
+      
+        const res = await update({
             ...data,
             image_cover: imageUrlArr.length > 0 ? imageUrlArr[0].url : '',
         })
 
         if (res.code === 0) {
-            router.replace(`/admin/product_types/${res.data.id}/view`)
+            router.replace(`/admin/class_types/${router.query.id}/view`)
         } else {
             dispatch(openAlert({ title: `錯誤(${res.code})` }))
         }
@@ -109,13 +110,14 @@ export default function Page() {
     const imageRef = useRef(null)
 
     const handleRemoveImagePreview = (index: number) => {
-        setImagePreviewList((prev) => {
-            return prev.filter((v, i) => i !== index)
-        })
-        const formItem: any = getValues('image_list')
-        if (formItem) {
-            setValue('image_list', [...formItem].filter((v, i) => i !== index) as any)
-        }
+      setImagePreviewList((prev) => {
+          return prev.filter((v, i) => i !== index)
+      })
+      const formItem: any = getValues('image_list')
+      
+      if (formItem) {
+          setValue('image_list', [...formItem].filter((v, i) => i !== index) as any)
+      }
     }
 
     const handleSetImagePreview = async (files: FileList | null) => {
@@ -131,50 +133,35 @@ export default function Page() {
         }
     }
 
+    const getData = async () => {
+      const res = await api({
+        method: 'GET',
+        url: `/admin/class_types/${router.query.id}`,
+      })
+      return res
+    }
+
+    useEffect(() => {
+      if (router.query.id) {
+        getData().then((res) => {
+          if (res.code === 0 && res.data.length > 0) {
+            const data = res.data[0]
+            setValue('name', data.name)
+            if (data.image_cover) {
+                setImagePreviewList([data.image_cover])
+                setValue('image_list', [{ id: '1', url: data.image_cover }])
+            }
+          }
+        })
+      }
+    }, [router.query.id])
+
   return (
     <LayoutAdmin>
         <NotificationPopup />
         <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
-            <Heading>新增產品系列</Heading>
+            <Heading>編輯課程系列</Heading>
             <Divider className="my-10 mt-6" />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>封面圖</Subheading>
-                </div>
-                <div className='space-y-4'>
-                    <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
-                        {imagePreviewList.map((item, i) => (
-                            <div key={i} className='relative w-[148px]'>
-                                <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
-                                    <Button className='w-[2rem] h-[2rem]'>
-                                        <MinusIcon />
-                                    </Button>
-                                </div>
-                                <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
-                            </div>
-                        ))}
-                    </ReactSortable>
-                    <Input
-                        ref={imageRef}
-                        type="file"
-                        accept='image/*'
-                        aria-label="圖片"
-                        onClick={() => {
-                            if (imageRef.current) {
-                                // @ts-ignore
-                                imageRef.current.value = ''
-                            }
-                        }}
-                        onChange={(e) => {                     
-                            setValue('image_list', [...e.target.files as any] as any)
-                            handleSetImagePreview(e.target.files)
-                        }}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
@@ -191,15 +178,18 @@ export default function Page() {
             <Divider className="my-10" soft />
 
             <div className="flex justify-end gap-4">
-            <Button type="reset" plain onClick={() => router.push('/admin/products')}>
+              <Button type="reset" plain onClick={() => router.push('/admin/class_types')}>
                 返回列表
-            </Button>
-            <Button
-                loading={isSubmitting}
-                disabled={submitDisabled}
-                type="submit"
-            >
-                儲存
+              </Button>
+              <Button type="reset" plain onClick={() => router.push(`/admin/class_types/${router.query.id}/view`)}>
+                查看
+              </Button>
+              <Button
+                  loading={isSubmitting}
+                  disabled={submitDisabled}
+                  type="submit"
+              >
+                  儲存
             </Button>
             </div>
         </form>

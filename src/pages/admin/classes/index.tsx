@@ -157,6 +157,9 @@ export default function Page() {
                     <div className="text-xs/6 text-zinc-500">
                       時長: {v.minutes} 分鐘
                     </div>
+                    <div className="text-xs/6 text-zinc-500">
+                      系列: {v.class_type_name}
+                    </div>
                     {/* <div className="text-xs/6 text-zinc-600">
                       {v.ticketsSold}/{v.ticketsAvailable} tickets sold
                     </div> */}

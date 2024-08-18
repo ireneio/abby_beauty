@@ -81,6 +81,10 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
                 <BookOpenIcon />
                 <SidebarLabel>課程列表管理</SidebarLabel>
               </SidebarItem>
+              <SidebarItem href="/admin/class_types">
+                <TagIcon />
+                <SidebarLabel>課程系列管理</SidebarLabel>
+              </SidebarItem>
             </SidebarSection>
             <SidebarSection>
               <SidebarHeading>產品管理</SidebarHeading>

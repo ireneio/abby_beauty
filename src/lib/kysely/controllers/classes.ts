@@ -3,31 +3,54 @@ import { db } from "@/lib/kysely"
 class ClassesController {
     async getAll() {
         const rows = await db.selectFrom('classes')
+            .leftJoin('class_types', 'classes.class_type_id', 'class_types.id')
             .where('classes.hidden', '!=', true)
-            .orderBy('created_at', 'desc')
-            .selectAll()
+            .orderBy('classes.created_at', 'desc')
+            .select([
+                'classes.id as id',
+                'classes.name as name',
+                'classes.minutes as minutes',
+                'classes.image_cover as image_cover',
+                'classes.available_for_reservation as available_for_reservation',
+                'class_types.id as class_type_id',
+                'class_types.name as class_type_name',
+                'classes.created_at as created_at',
+                'classes.updated_at as updated_at',
+            ])
             .execute()
         return rows
     }
 
     async getById(id: number) {
         const rows = await db.selectFrom('classes')
+            .leftJoin('class_types', 'classes.class_type_id', 'class_types.id')
             .where('classes.hidden', '!=', true)
             .where('classes.id', '=', id)
-            .selectAll()
+            .select([
+                'classes.id as id',
+                'classes.name as name',
+                'classes.minutes as minutes',
+                'classes.image_cover as image_cover',
+                'classes.available_for_reservation as available_for_reservation',
+                'class_types.id as class_type_id',
+                'class_types.name as class_type_name',
+                'classes.created_at as created_at',
+                'classes.updated_at as updated_at',
+            ])
             .execute()
 
         return rows
     }
 
     async update(id: number, params: any) {
-        const { name, minutes, image_cover, available_for_reservation } = params
+        const { name, minutes, image_cover, available_for_reservation, class_type_id } = params
         const rows = await db.updateTable('classes')
             .set({
                 name: name ?? '',
                 minutes: minutes ? parseInt(minutes) : 0,
                 image_cover: image_cover ?? '',
                 available_for_reservation: available_for_reservation ?? false,
+                class_type_id: class_type_id ?? null,
             })
             .where('classes.id', '=', id)
             .execute()
@@ -35,7 +58,7 @@ class ClassesController {
     }
 
     async create(params: any) {
-        const { name, minutes, image_cover, available_for_reservation } = params
+        const { name, minutes, image_cover, available_for_reservation, class_type_id } = params
         const rows = await db.insertInto('classes')
             .values([
                 {
@@ -43,6 +66,7 @@ class ClassesController {
                     minutes: minutes ? parseInt(minutes) : 0,
                     image_cover: image_cover ?? '',
                     available_for_reservation: available_for_reservation ?? false,
+                    class_type_id: class_type_id ?? null,
                 }
             ])
             .returningAll()

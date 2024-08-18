@@ -25,8 +25,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { ReactSortable } from "react-sortablejs";
 
 export const metadata: Metadata = {
-  title: '產品系列',
-  description: '新增產品系列',
+  title: '課程系列',
+  description: '新增課程系列',
 }
 
 type Inputs = {
@@ -60,7 +60,7 @@ export default function Page() {
     const create = async (data: any) => {    
         const res = await api({
             method: 'POST',
-            url: `/admin/product_types`,
+            url: `/admin/class_types`,
             data,
         })
         return res
@@ -100,7 +100,7 @@ export default function Page() {
         })
 
         if (res.code === 0) {
-            router.replace(`/admin/product_types/${res.data.id}/view`)
+            router.replace(`/admin/class_types/${res.data.id}/view`)
         } else {
             dispatch(openAlert({ title: `錯誤(${res.code})` }))
         }
@@ -135,46 +135,8 @@ export default function Page() {
     <LayoutAdmin>
         <NotificationPopup />
         <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
-            <Heading>新增產品系列</Heading>
+            <Heading>新增課程系列</Heading>
             <Divider className="my-10 mt-6" />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>封面圖</Subheading>
-                </div>
-                <div className='space-y-4'>
-                    <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
-                        {imagePreviewList.map((item, i) => (
-                            <div key={i} className='relative w-[148px]'>
-                                <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
-                                    <Button className='w-[2rem] h-[2rem]'>
-                                        <MinusIcon />
-                                    </Button>
-                                </div>
-                                <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
-                            </div>
-                        ))}
-                    </ReactSortable>
-                    <Input
-                        ref={imageRef}
-                        type="file"
-                        accept='image/*'
-                        aria-label="圖片"
-                        onClick={() => {
-                            if (imageRef.current) {
-                                // @ts-ignore
-                                imageRef.current.value = ''
-                            }
-                        }}
-                        onChange={(e) => {                     
-                            setValue('image_list', [...e.target.files as any] as any)
-                            handleSetImagePreview(e.target.files)
-                        }}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">

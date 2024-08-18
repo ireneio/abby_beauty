@@ -32,6 +32,7 @@ type Inputs = {
     image_cover: string,
     image_cover_selected: any,
     available_for_reservation: boolean,
+    class_type_id: number | null,
 }
 
 export default function Page() {
@@ -61,6 +62,7 @@ export default function Page() {
             image_cover: '',
             available_for_reservation: true,
             image_cover_selected: null,
+            class_type_id: null,
         }
     })
 
@@ -123,6 +125,24 @@ export default function Page() {
         setClass((prev: any) => ({ ...prev, image_preview: `data:image/png;base64,${base64}` }))
     }
 
+    const [classTypes, setClassTypes] = useState<any[]>([])
+
+    const getClassTypes = async () => {
+        const res = await api({
+            method: 'GET',
+            url: '/admin/class_types'
+        })
+        if (res.code === 0) {
+            setClassTypes(res.data)
+        } else {
+            setClassTypes([])
+        }
+    }
+
+    useEffect(() => {
+        getClassTypes()
+    }, [])
+
   return (
     <LayoutAdmin>
         <NotificationPopup />
@@ -180,6 +200,30 @@ export default function Page() {
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
+                    <Subheading>
+                        系列
+                    </Subheading>
+                    <Text>選擇課程系列</Text>
+                </div>
+                <div>
+                    <Select
+                        {...register('class_type_id')}
+                        aria-label="選擇系列"
+                    >
+                        <option value="">選擇系列</option>
+                        {classTypes.map((v) => {
+                            return (
+                                <option key={v.id} value={v.id}>{v.name}</option>
+                            )
+                        })}
+                    </Select>
+                </div>
+            </section>
+
+            <Divider className="my-10" soft />
+
+            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div className="space-y-1">
                 <Subheading>時長</Subheading>
                 <Text>單位: 分鐘</Text>
                 </div>
@@ -189,17 +233,6 @@ export default function Page() {
             </section>
 
             <Divider className="my-10" soft />
-
-            {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            <div className="space-y-1">
-            <Subheading>描述</Subheading>
-            </div>
-            <div>
-            <Textarea {...register('description')} aria-label="描述" />
-            </div>
-        </section> */}
-
-            {/* <Divider className="my-10" soft /> */}
 
             {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">

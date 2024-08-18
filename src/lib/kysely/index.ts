@@ -9,6 +9,7 @@ import ReservationRecord from './models/ReservationRecord'
 import ProductImage from './models/ProductImage'
 import Product from './models/Product'
 import Page from './models/Page'
+import ClassType from './models/ClassType'
 
 // Keys of this interface are table names.
 export interface Database {
@@ -22,6 +23,7 @@ export interface Database {
   product_images: ProductImage,
   products: Product,
   pages: Page,
+  class_types: ClassType,
 }
 
 export const db = createKysely<Database>({

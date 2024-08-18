@@ -24,6 +24,7 @@ export default function Page() {
       name: '',
       minutes: '',
       image_cover: '',
+      class_type_name: '',
     })
 
     const getClass = async () => {
@@ -74,6 +75,19 @@ export default function Page() {
         </section>
 
         <Divider className="my-10" soft />
+
+        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div className="space-y-1">
+                    <Subheading>
+                        系列
+                    </Subheading>
+                </div>
+                <div>
+                    <Text>{classs.class_type_name}</Text>
+                </div>
+            </section>
+
+            <Divider className="my-10" soft />
 
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
