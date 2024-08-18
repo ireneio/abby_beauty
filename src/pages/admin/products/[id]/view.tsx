@@ -100,7 +100,7 @@ export default function Page() {
 
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
-                <Subheading>容量</Subheading>
+                <Subheading>規格</Subheading>
             </div>
             <div>
               <Text>{data.size}</Text>

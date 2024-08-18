@@ -11,6 +11,7 @@ import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
 import { Textarea } from '@/components/common/textarea'
 import Tiptap from '@/components/common/Tiptap'
+import WysiwygEditor from '@/components/common/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
@@ -32,6 +33,7 @@ export const metadata: Metadata = {
 
 type Inputs = {
     name: string,
+    description: string,
     image_list: any,
 }
 
@@ -52,6 +54,7 @@ export default function Page() {
     } = useForm<Inputs>({
         defaultValues: {
             name: '',
+            description: '',
             image_list: null,
         }
     })
@@ -211,6 +214,20 @@ export default function Page() {
                 </div>
                 <div>
                     <Input {...register('name')} aria-label="名稱" />
+                </div>
+            </section>
+
+            <Divider className="my-10" soft />
+
+            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div className="space-y-1">
+                <Subheading>產品特點</Subheading>
+                </div>
+                <div>
+                    <WysiwygEditor
+                        value={watch('description')}
+                        onChange={(value) => setValue('description', value)}
+                    />
                 </div>
             </section>
 

@@ -1,9 +1,24 @@
 import { db } from ".."
 
 class ProductsController {
-    async getAll() {
-        const productsQuery = db.selectFrom('products')
+    async getAllClient(
+        params?: {
+            product_type_id?: number
+        }
+    ) {
+        let productsQuery = db.selectFrom('products')
             .leftJoin('product_types', 'products.product_type_id', 'product_types.id')
+        
+        console.log(params);
+        
+        if (params) {
+            if (params.product_type_id) {
+                productsQuery = productsQuery.where('products.product_type_id', '=', Number(params.product_type_id))
+            }
+        }
+            
+        const products = await productsQuery
+            .where('hidden', '!=', true)
             .select([
                 'products.id',
                 'products.name_en',
@@ -20,9 +35,98 @@ class ProductsController {
                 'products.hidden'
             ])
             .orderBy('created_at', 'desc')
-            
-        const products = await productsQuery.execute()
+            .execute()        
 
+        const productImagesQuery = db.selectFrom('product_images')
+            .leftJoin('products', 'products.id', 'product_images.product_id')
+            .select([
+                'products.id as product_id',
+                'product_images.id as id',
+                'product_images.url',
+                'product_images.order',
+            ])
+            .orderBy('id', 'desc')
+            .orderBy('order', 'asc')
+
+        const productImages = await productImagesQuery.execute()
+
+        return products.map((product) => {
+            return {
+                ...product,
+                images: productImages.filter((image) => image.product_id === product.id)
+            }
+        })
+    }
+    async getAll() {
+        const productsQuery = db.selectFrom('products')
+            .leftJoin('product_types', 'products.product_type_id', 'product_types.id')
+            
+        const products = await productsQuery
+            .select([
+                'products.id',
+                'products.name_en',
+                'products.name_zh',
+                'products.created_at',
+                'products.features',
+                'products.ingredients',
+                'products.size',
+                'products.sku',
+                'products.target_users',
+                'products.usage',
+                'product_types.id as product_type_id',
+                'product_types.name as product_type_name',
+                'products.hidden'
+            ])
+            .orderBy('created_at', 'desc')
+            .execute()
+
+        console.log('products', products);
+        
+
+        const productImagesQuery = db.selectFrom('product_images')
+            .leftJoin('products', 'products.id', 'product_images.product_id')
+            .select([
+                'products.id as product_id',
+                'product_images.id as id',
+                'product_images.url',
+                'product_images.order',
+            ])
+            .orderBy('id', 'desc')
+            .orderBy('order', 'asc')
+
+        const productImages = await productImagesQuery.execute()
+
+        return products.map((product) => {
+            return {
+                ...product,
+                images: productImages.filter((image) => image.product_id === product.id)
+            }
+        })
+    }
+    async getByIdClient({ id }: { id: number }) {
+        const productsQuery = db.selectFrom('products')
+            .leftJoin('product_types', 'products.product_type_id', 'product_types.id')
+            .where('products.id', '=', id)
+            .where('products.hidden', '!=', true)
+            .select([
+                'products.id',
+                'products.name_en',
+                'products.name_zh',
+                'products.created_at',
+                'products.features',
+                'products.ingredients',
+                'products.size',
+                'products.sku',
+                'products.target_users',
+                'products.usage',
+                'product_types.id as product_type_id',
+                'product_types.name as product_type_name',
+                'products.hidden'
+            ])
+            .orderBy('created_at', 'desc')
+
+        const products = await productsQuery.execute()
+            
         const productImagesQuery = db.selectFrom('product_images')
             .leftJoin('products', 'products.id', 'product_images.product_id')
             .select([

@@ -20,6 +20,7 @@ import { GridPattern } from '@/components/client/GridPattern'
 import { Logo, Logomark } from '@/components/client/Logo'
 import { Offices } from '@/components/client/Offices'
 import { SocialMedia } from '@/components/client/SocialMedia'
+import openLineAtAccount from '@/lib/utils/openLineAtAccount'
 
 const RootLayoutContext = createContext<{
   logoHovered: boolean
@@ -61,8 +62,8 @@ function Header({
   let { logoHovered, setLogoHovered } = useContext(RootLayoutContext)!
 
   return (
-    <Container>
-      <div className="flex items-center justify-between">
+    // <Container>
+      <div className="flex items-center justify-between max-w-7xl mx-auto px-4">
         <Link
           href="/"
           aria-label="Home"
@@ -81,7 +82,7 @@ function Header({
           />
         </Link>
         <div className="flex items-center gap-x-8">
-          <Button href="/contact">
+          <Button onClick={() => openLineAtAccount()}>
             預約諮詢
           </Button>
           <button
@@ -107,13 +108,13 @@ function Header({
           </button>
         </div>
       </div>
-    </Container>
+    // </Container>
   )
 }
 
 function NavigationRow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="even:mt-px sm:bg-[#f2f5f3]">
+    <div className="even:mt-px sm:bg-[#f5f1eb]">
       <Container>
         <div className="grid grid-cols-1 sm:grid-cols-2">{children}</div>
       </Container>
@@ -131,7 +132,7 @@ function NavigationItem({
   return (
     <Link
       href={href}
-      className="text-[#484a49] group relative isolate -mx-6 bg-[#f2f5f3] px-6 py-4 even:mt-px sm:mx-0 sm:even:mt-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
+      className="text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 even:mt-px sm:mx-0 sm:even:mt-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
     >
       {children}
       <span className="absolute inset-y-0 -z-10 w-screen bg-white opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
@@ -180,7 +181,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
     <MotionConfig transition={shouldReduceMotion ? { duration: 0 } : undefined}>
       <header>
         <div
-          className="absolute left-0 right-0 top-2 z-40 pt-14"
+          className="absolute left-0 right-0 top-2 z-40 pt-4"
           aria-hidden={expanded ? 'true' : undefined}
           // @ts-ignore (https://github.com/facebook/react/issues/17157)
           inert={expanded ? '' : undefined}
@@ -203,13 +204,13 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
           layout
           id={panelId}
           style={{ height: expanded ? 'auto' : '0.5rem' }}
-          className="relative z-50 overflow-hidden bg-[#f2f5f3] pt-2"
+          className="relative z-50 overflow-hidden bg-[#f5f1eb] pt-2"
           aria-hidden={expanded ? undefined : 'true'}
           // @ts-ignore (https://github.com/facebook/react/issues/17157)
           inert={expanded ? undefined : ''}
         >
           <motion.div layout className="bg-[#ccc]">
-            <div ref={navRef} className="bg-[#f2f5f3] pb-16 pt-14">
+            <div ref={navRef} className="bg-[#f5f1eb] pb-4 pt-4">
               <Header
                 invert
                 panelId={panelId}
@@ -225,7 +226,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
               />
             </div>
             <Navigation />
-            {/* <div className="relative bg-[#f2f5f3] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[#ccc]">
+            {/* <div className="relative bg-[#f5f1eb] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[#ccc]">
               <Container className='px-6 py-4'>
                 <Button>
                   預約諮詢
@@ -239,19 +240,21 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
       <motion.div
         layout
         style={{ borderTopLeftRadius: 40, borderTopRightRadius: 40 }}
-        className="relative flex flex-auto overflow-hidden bg-white pt-14"
+        className="relative flex flex-auto overflow-hidden bg-white pt-[calc(88px+12px)]"
       >
         <motion.div
           layout
-          className="relative isolate flex w-full flex-col pt-9"
+          className="relative isolate flex w-full flex-col pt-0"
         >
-          <GridPattern
+          {/* <GridPattern
             className="absolute inset-x-0 -top-14 -z-10 h-[1000px] w-full fill-neutral-50 stroke-neutral-950/5 [mask-image:linear-gradient(to_bottom_left,white_40%,transparent_50%)]"
             yOffset={-96}
             interactive
-          />
+          /> */}
 
-          <main className="w-full flex-auto">{children}</main>
+          <main className="w-full flex-auto max-w-7xl mx-auto">
+            {children}
+          </main>
 
           <Footer />
         </motion.div>

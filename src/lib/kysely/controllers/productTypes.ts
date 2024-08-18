@@ -16,16 +16,21 @@ class ProductTypesController {
     }
     async create({
         name,
-        image_cover
+        image_cover,
+        description,
     }: {
         name: string,
         image_cover?: string,
+        description?: string,
     }) {
         const values: any = {
             name
         }
         if (image_cover !== undefined) {
             values.image_cover = image_cover
+        }
+        if (description !== undefined) {
+            values.description = description
         }
         const row = await db.insertInto('product_types')
             .values(values)
@@ -37,11 +42,13 @@ class ProductTypesController {
     async update({
         id,
         name,
-        image_cover
+        image_cover,
+        description,
     }: {
         id: number,
         name?: string,
         image_cover?: string,
+        description?: string
     }) {
         let query = db.updateTable('product_types')
             .where('id', '=', id)
@@ -52,6 +59,10 @@ class ProductTypesController {
 
         if (image_cover !== undefined) {
             query = query.set('image_cover', image_cover)
+        }
+
+        if (description !== undefined) {
+            query = query.set('description', description)
         }
 
         const rows = await query.execute()
