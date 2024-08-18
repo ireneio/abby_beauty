@@ -5,7 +5,7 @@ import { api } from "../api/connector"
 const envApiUrl = '/api'
 console.log("[env] API_URL", envApiUrl)
 
-const defaultInstance = axios.create({
+export const defaultInstance = axios.create({
     baseURL: envApiUrl,
 })
 

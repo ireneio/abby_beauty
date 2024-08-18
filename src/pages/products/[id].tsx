@@ -2,7 +2,8 @@ import Breadcrumb from "@/components/client/Breadcrumb";
 import { Button } from "@/components/client/Button";
 import CarouselProductImage from "@/components/client/product/CarouselProductImage";
 import { RootLayout } from "@/components/layout/RootLayout";
-import useApi from "@/lib/hooks/useApi";
+import { api } from "@/lib/api/connector";
+import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import clsx from "clsx";
 import { Metadata, ResolvingMetadata } from "next";
@@ -20,18 +21,15 @@ export async function generateMetadata(
   ): Promise<Metadata> {
 
     console.log('params.id', params.id);
-    
+
     
     // read route params
     const id = params.id
 
     console.log('id', id);
     
-   
-    const { api } = useApi()
-
     // fetch data
-    const product = await api({
+    const product = await api(defaultInstance, {
         method: 'GET',
         url: `/client/products/${id}`
     }).then((res) => {
