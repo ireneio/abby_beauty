@@ -82,7 +82,7 @@ export default function Page() {
                                     <ul className="space-y-4 flex-1 list-square">
                                         {value.list.map((vvalue: any) => {
                                             return (
-                                                <li key={vvalue.id} className="text-left border-b border-b-[#ccc]">
+                                                <li key={vvalue.id} className="text-left border-b border-b-[#ccc] pb-2">
                                                     <span className="text-secondary">{vvalue.name}</span>
                                                 </li>
                                             )
