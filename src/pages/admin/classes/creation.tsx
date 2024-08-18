@@ -258,7 +258,7 @@ export default function Page() {
                 </Button>
                 <Button
                     loading={isSubmitting}
-                    disabled={!watch('name') || !watch('minutes') || !watch('image_cover_selected')}
+                    disabled={!watch('name') || !watch('minutes')}
                     type="submit"
                 >
                     儲存
