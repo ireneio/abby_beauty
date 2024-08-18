@@ -28,6 +28,7 @@ export default async function handler(
             minutes: req.body.minutes,
             image_cover: req.body.image_cover,
             available_for_reservation: req.body.available_for_reservation,
+            class_type_id: req.body.class_type_id,
           }
         )
   
