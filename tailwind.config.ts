@@ -16,6 +16,13 @@ const config: Config = {
       colors: {
         primary: '#fadcee',
         secondary: '#7a787a',
+      },
+      listStyleType: {
+        none: 'none',
+        disc: 'disc',
+        decimal: 'decimal',
+        square: 'square',
+        roman: 'upper-roman',
       }
     },
   },
