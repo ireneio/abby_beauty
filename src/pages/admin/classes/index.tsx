@@ -165,7 +165,7 @@ export default function Page() {
                     </div> */}
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-shrink-0">
                   {/* <Badge color={v.available_for_reservation ? 'lime' : 'zinc'}>
                     {v.available_for_reservation ? '可預約' : '不可預約'}
                   </Badge> */}
