@@ -125,7 +125,7 @@ export default function Page() {
                                 data.images.map((image: any) => {
                                     return (
                                         <div key={image.id}>
-                                            <img src={image.url} alt="" className="object-contain w-full aspect-[1/1]" />
+                                            <img src={image.url} alt="" className="object-contain aspect-[1/1]" />
                                         </div>
                                     )
                                 }) :
@@ -140,7 +140,7 @@ export default function Page() {
                             dangerouslySetInnerHTML={{ __html: data.features }}
                         ></div>
                         <div className="text-sm text-secondary mt-4">產品規格:
-                            <span>{data.size}</span>
+                            <span className="ml-1">{data.size}</span>
                         </div>
                         <div className="mt-8">
                             <Button onClick={() => handleLearnMore()}>
@@ -154,19 +154,19 @@ export default function Page() {
                         <div className="text-sm text-secondary bg-primary px-4 py-4">
                             主成份
                         </div>
-                        <div className="mt-8">
+                        <div className="mt-8 px-4">
                             <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
                         </div>
                         <div className="text-sm text-secondary bg-primary px-4 py-4">
                             使用方式
                         </div>
-                        <div className="mt-8">
+                        <div className="mt-8 px-4">
                             <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
                         </div>
                     </div>
                 </div>
                 <div className="hidden md:block">
-                    <div className="mt-8 flex gap-4">
+                    <div className="mt-8 flex gap-4 border-b border-b-[#ccc] pb-2 px-4">
                         <div
                             onClick={() => setCurrentTab(0)}
                             className={clsx("text-md text-secondary cursor-pointer", currentTab === 0 ? 'font-semibold' : '')}
@@ -180,12 +180,14 @@ export default function Page() {
                             使用方式
                         </div>
                     </div>
-                    {currentTab === 0 ? <div>
-                        <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
-                    </div> : null}
-                    {currentTab === 1 ? <div>
-                        <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
-                    </div> : null}
+                    <div className="mt-4 px-4">
+                        {currentTab === 0 ? <div>
+                            <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
+                        </div> : null}
+                        {currentTab === 1 ? <div>
+                            <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
+                        </div> : null}
+                    </div>
                 </div>
             </div>
        </RootLayout>
