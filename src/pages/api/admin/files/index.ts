@@ -12,7 +12,12 @@ const controller = new FilesController()
 // Configure Multer storage
 const storage = multer.memoryStorage(); // Use memoryStorage if you want to handle file in memory
 
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 100 * 1024 * 1024, // 100 MB (you can adjust this value)
+    },
+});
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
