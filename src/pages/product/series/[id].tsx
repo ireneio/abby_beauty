@@ -15,6 +15,7 @@ export default function Page() {
       })
     const [data, setData] = useState<any>({
         name: '',
+        description: '',
         image_cover: '',
     })
     const [products, setProducts] = useState<any[]>([])
@@ -94,6 +95,9 @@ export default function Page() {
                 />
                 <div className="text-lg mt-4 font-semibold">
                     {data.name}
+                </div>
+                <div className="mt-4">
+                    <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
                 </div>
                 <div className="mt-4">
                     <div className="grid grid-cols-2 md:grid-cols-4">

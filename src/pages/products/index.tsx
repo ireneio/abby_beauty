@@ -10,8 +10,8 @@ import { useEffect, useState } from "react"
 
 export async function generateMetadata() {
     return {
-        title: '產品介紹',
-        description: '所有產品介紹',
+        title: '艾比美容工作室',
+        description: '產品介紹',
     }
 }
 
