@@ -370,21 +370,22 @@ export default function Home() {
               <div className="mt-2 text-xs tracking-[3px] font-light uppercase">join us</div>
             </div>
             <div className="mt-12 md:hidden w-full h-[1px] bg-[#ccc]"></div>
+            <div className="mt-12 md:grid md:grid-cols-3 md:max-w-lg mx-auto">
+              <div className="flex justify-center bg-white py-4 rounded-md">
+                <div className="md:text-md text-3xl font-semibold tracking-[1.5px] font-['BakudaiMedium']">
+                  艾比美容工作室
+                </div>
+              </div>
+              <div className="mt-4 md:mt-0 flex justify-center items-center">
+                <XMarkIcon className="text-black w-[32px] h-[32px]" />
+              </div>
+              <div className="rounded-md px-4 py-4 bg-white mt-4 md:mt-0 flex items-center">
+                <img src="/images/logo_chlitina.jpg" alt="Chlitina Logo" />
+              </div>
+            </div>
             <div className="mt-12 md:mt-8">
               <div className="bg-primary px-8 py-8 shadow-md rounded-md">
-                <div className="flex justify-center bg-white py-4 rounded-md">
-                  <div className="text-lg font-semibold tracking-[1.5px] font-['BakudaiMedium']">
-                    克麗緹娜
-                    <br/>
-                    艾比美容工作室
-                  </div>
-                </div>
-                <div className="mt-4 flex justify-center">
-                  <XMarkIcon className="text-black w-[32px] h-[32px]" />
-                </div>
-                <div className="rounded-md px-8 py-8 bg-white mt-4">
-                  <img src="/images/logo_chlitina.jpg" alt="Chlitina Logo" />
-                </div>
+                
                 <div className="grid grid-cols-2 gap-x-8 mt-8">
                   <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
                     <div>
