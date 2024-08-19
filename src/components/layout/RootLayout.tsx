@@ -22,6 +22,9 @@ import { Offices } from '@/components/client/Offices'
 import { SocialMedia } from '@/components/client/SocialMedia'
 import openLineAtAccount from '@/lib/utils/openLineAtAccount'
 import LineFloatButton from '../client/LineFloatButton'
+import useApi from '@/lib/hooks/useApi'
+import { useRouter } from 'next/router'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid'
 
 const RootLayoutContext = createContext<{
   logoHovered: boolean
@@ -113,9 +116,9 @@ function Header({
   )
 }
 
-function NavigationRow({ children }: { children: React.ReactNode }) {
+function NavigationRow({ className, children }: { className?: string, children: React.ReactNode }) {
   return (
-    <div className="even:mt-px sm:bg-[#f5f1eb]">
+    <div className={clsx("even:mt-px sm:bg-[#f5f1eb] border-b border-b-[#ccc]", className)}>
       <Container>
         <div className="grid grid-cols-1 sm:grid-cols-2">{children}</div>
       </Container>
@@ -126,29 +129,93 @@ function NavigationRow({ children }: { children: React.ReactNode }) {
 function NavigationItem({
   href,
   children,
+  onClick,
 }: {
-  href: string
+  href?: string
   children: React.ReactNode
+  onClick?: () => any
 }) {
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 even:mt-px sm:mx-0 sm:even:mt-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
+      >
+        {children}
+        <span className="absolute inset-y-0 -z-10 w-screen bg-white opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
+      </Link>
+    )
+  }
   return (
-    <Link
-      href={href}
-      className="text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 even:mt-px sm:mx-0 sm:even:mt-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
-    >
+    <div onClick={() => onClick && onClick()} className='text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 even:mt-px sm:mx-0 sm:even:mt-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16'>
       {children}
       <span className="absolute inset-y-0 -z-10 w-screen bg-white opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
-    </Link>
+    </div>
   )
 }
 
 function Navigation() {
+  const router = useRouter()
+  const { api } = useApi()
+  const [productTypes, setProductTypes] = useState<any[]>([])
+  const [expandedIndexList, setExpandedIndexList] = useState<number[]>([])
+
+  const getProductTypes = async () => {
+    const res = await api({
+      method: 'GET',
+      url: '/client/product_types'
+    })
+    if (res.code === 0) {
+      setProductTypes(res.data)
+    } else {
+      setProductTypes([])
+    }
+  }
+
+  useEffect(() => {    
+    getProductTypes()
+  }, [])
+
+  const handleSetExpand = (index: number) => {
+    if (expandedIndexList.includes(index)) {
+      setExpandedIndexList((prev) => prev.filter((v) => v !== index))
+    } else {
+      setExpandedIndexList((prev) => {
+        return [...prev, index]
+      })
+    }
+  }
+
   return (
     <nav className="mt-px font-display text-md font-medium tracking-tight text-white">
       <NavigationRow>
         <NavigationItem href="/classes">課程介紹</NavigationItem>
-        <NavigationItem href="/products">產品介紹</NavigationItem>
+        <NavigationItem onClick={() => handleSetExpand(0)}>
+          <div className='flex justify-between'>
+            產品介紹
+            <ChevronDownIcon className={clsx('w-[24px]', !expandedIndexList.includes(0) ? 'block' : 'hidden')} />
+            <ChevronUpIcon className={clsx('w-[24px]', expandedIndexList.includes(0) ? 'block' : 'hidden')} />
+          </div>
+        </NavigationItem>
       </NavigationRow>
-      <div className='border-b-[1px] border-b-[#ccc]'></div>
+      <div className={clsx('bg-primary text-secondary', expandedIndexList.includes(0) ? 'block' : 'hidden')}>
+        <div
+          className='border-b border-b-[#ccc] cursor-pointer px-8 py-2 hover:opacity-[0.75]'
+          onClick={() => router.push(`/products`)}
+        >
+          全系列產品
+        </div>
+        {productTypes.map((productType) => {
+          return (
+            <div
+              key={productType.id}
+              className='border-b border-b-[#ccc] cursor-pointer px-8 py-2 hover:opacity-[0.75]'
+              onClick={() => router.push(`/product/series/${productType.id}`)}
+            >{productType.name}</div>
+          )
+        })}
+      </div>
+      {/* <div className='border-b-[1px] border-b-[#ccc]'></div> */}
     </nav>
   )
 }

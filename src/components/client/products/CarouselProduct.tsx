@@ -35,13 +35,13 @@ export default function CarouselProduct({ children }: Props) {
             keyBoardControl={true}
             customTransition="all .5"
             transitionDuration={500}
-            containerClass="h-full"
+            containerClass="h-full relative"
             removeArrowOnDeviceType={["tablet", "mobile"]}
             // deviceType={"mobile"}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
             renderButtonGroupOutside
-            renderDotsOutside
+            // renderDotsOutside
             partialVisible={true}
         >
             {children}
