@@ -230,7 +230,7 @@ export default function Page() {
         <div className='w-full sm:w-auto ml-auto'>
             <Paginator
               currentPage={router.query.page || 1}
-              total={tableData.length}
+              total={tableDataMapped.length}
               perPage={pagination.perPage}
             />
         </div>

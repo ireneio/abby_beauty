@@ -139,17 +139,21 @@ export default function Page() {
                     </div>
                     <div className="md:col-span-3">
                         <div className="text-xl font-semibold">{data.name_zh}</div>
-                        <div
-                            className="text-sm text-secondary mt-4"
-                            dangerouslySetInnerHTML={{ __html: data.features }}
-                        ></div>
+                        <div className="mt-4">
+                            <div
+                                className="text-sm text-secondary"
+                                dangerouslySetInnerHTML={{ __html: data.features }}
+                            ></div>
+                        </div>
                         <div className="text-sm text-secondary bg-primary px-4 py-4 mt-4">
                             產品規格
                         </div>
-                        <div
-                            className="text-sm text-secondary mt-4"
-                            dangerouslySetInnerHTML={{ __html: data.size }}
-                        ></div>
+                        <div className="mt-4 px-4">
+                            <div
+                                className="mt-4"
+                                dangerouslySetInnerHTML={{ __html: data.size }}
+                            ></div>
+                        </div>
                         <div className="mt-8">
                             <Button onClick={() => handleLearnMore()}>
                                 瞭解更多
