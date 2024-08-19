@@ -93,7 +93,7 @@ export default function Page() {
                                             })
                                             .map((product) => {
                                                 return (
-                                                    <div key={product.id} className="relative" onClick={() => router.push(`/products/${product.id}`)}>
+                                                    <div key={product.id} className="relative pb-4" onClick={() => router.push(`/products/${product.id}`)}>
                                                         <div className="px-4">
                                                             <div className="min-h-[140px] flex items-center justify-center">
                                                                 {product.image.url ?
@@ -106,7 +106,7 @@ export default function Page() {
                                                                     /> :
                                                                     <div className="w-[140px] h-[140px]"></div>}
                                                             </div>
-                                                            <div className="text-sm md:text-md pb-4 pt-2">
+                                                            <div className="text-sm md:text-md pt-2">
                                                                 <div className="text-secondary">{product.name_zh}</div>
                                                             </div>
                                                         </div>
