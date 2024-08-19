@@ -38,7 +38,7 @@ export default function CarouselProduct({ children }: Props) {
             customTransition="all .5"
             transitionDuration={500}
             containerClass="h-full relative"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
+            removeArrowOnDeviceType={["mobile"]}
             // deviceType={"mobile"}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"

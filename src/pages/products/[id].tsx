@@ -1,6 +1,7 @@
 import Breadcrumb from "@/components/client/Breadcrumb";
 import { Button } from "@/components/client/Button";
 import CarouselProductImage from "@/components/client/product/CarouselProductImage";
+import CarouselSimilarProducts from "@/components/client/product/CarouselSimilarProducts";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
@@ -88,7 +89,7 @@ export default function Page() {
         }
     }
 
-    const [similarProducts, setSimilarProducts] = useState<any[]>()
+    const [similarProducts, setSimilarProducts] = useState<any[]>([])
 
     const getSimilarProducts = async (product_type_id: number) => {
         const res = await api({
@@ -99,7 +100,14 @@ export default function Page() {
             }
         })
         if (res.code === 0) {
-            setSimilarProducts(res.data)
+            setSimilarProducts(res.data.filter((product: any) => {
+                return product.id !== Number(router.query.id)
+            }).map((data: any) => {
+                return {
+                    ...data,
+                    image: data.images.length > 0 ? data.images.find((image: any) => image.order === 0) : { url: '' }
+                }
+            }))
         } else {
             setSimilarProducts([])
         }
@@ -221,6 +229,43 @@ export default function Page() {
                         {currentTab === 1 ? <div>
                             <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
                         </div> : null}
+                    </div>
+                </div>
+                <div className="mt-8 w-full bg-[#ccc] h-[1px]"></div>
+                <div className="mt-8">
+                    <div className="text-sm text-secondary bg-primary px-4 py-4">
+                        同系列產品
+                    </div>
+                    <div className="mt-4">
+                        <CarouselSimilarProducts>
+                            {similarProducts
+                                .map((product) => {
+                                    return (
+                                        <div
+                                            key={product.id}
+                                            className="relative pb-4"
+                                            onClick={() => router.push(`/products/${product.id}`)}
+                                        >
+                                            <div className="px-4">
+                                                <div className="min-h-[140px] flex items-center justify-center">
+                                                    {product.image.url ?
+                                                        <img
+                                                            src={product.image.url}
+                                                            alt={product.name_zh}
+                                                            className="object-contain"
+                                                            width={140}
+                                                            height={140}
+                                                        /> :
+                                                        <div className="w-[140px] h-[140px]"></div>}
+                                                </div>
+                                                <div className="text-sm md:text-md pt-2">
+                                                    <div className="text-secondary">{product.name_zh}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                        </CarouselSimilarProducts>
                     </div>
                 </div>
             </div>
