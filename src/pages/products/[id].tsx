@@ -125,7 +125,7 @@ export default function Page() {
                                 data.images.map((image: any) => {
                                     return (
                                         <div key={image.id}>
-                                            <img src={image.url} alt="" className="object-contain aspect-[1/1]" />
+                                            <img src={image.url} alt="" className="object-contain aspect-[1/1] max-w-[100%]" />
                                         </div>
                                     )
                                 }) :
@@ -139,9 +139,13 @@ export default function Page() {
                             className="text-sm text-secondary mt-4"
                             dangerouslySetInnerHTML={{ __html: data.features }}
                         ></div>
-                        <div className="text-sm text-secondary mt-4">產品規格:
-                            <span className="ml-1">{data.size}</span>
+                        <div className="text-sm text-secondary bg-primary px-4 py-4 mt-4">
+                            產品規格
                         </div>
+                        <div
+                            className="text-sm text-secondary mt-4"
+                            dangerouslySetInnerHTML={{ __html: data.size }}
+                        ></div>
                         <div className="mt-8">
                             <Button onClick={() => handleLearnMore()}>
                                 瞭解更多
@@ -157,7 +161,7 @@ export default function Page() {
                         <div className="mt-8 px-4">
                             <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
                         </div>
-                        <div className="text-sm text-secondary bg-primary px-4 py-4">
+                        <div className="mt-8 text-sm text-secondary bg-primary px-4 py-4">
                             使用方式
                         </div>
                         <div className="mt-8 px-4">

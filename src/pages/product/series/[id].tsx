@@ -103,7 +103,7 @@ export default function Page() {
                     <div className="grid grid-cols-2 md:grid-cols-4">
                         {productsMemo.map((product) => {
                             return (
-                                <div key={product.id} onClick={() => router.push(`/products/${product.id}`)}>
+                                <div key={product.id} className="cursor-pointer" onClick={() => router.push(`/products/${product.id}`)}>
                                     <div>
                                         <div className="min-h-[140px] flex items-center justify-center">
                                             {product.image.url ?
