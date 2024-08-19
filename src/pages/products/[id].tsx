@@ -118,8 +118,8 @@ export default function Page() {
                 />
             </div>
             <div className="px-4 mt-4">
-                <div className="md:grid-cols-4 md:gap-x-8">
-                    <div className="md:col-span-1">
+                <div className="md:grid md:grid-cols-4 md:gap-x-8">
+                    <div className="md:col-span-2">
                         <CarouselProductImage>
                             {data.images.length ?
                                 data.images.map((image: any) => {
@@ -137,7 +137,7 @@ export default function Page() {
                             }
                         </CarouselProductImage>
                     </div>
-                    <div className="mt-4 md:mt-0 md:col-span-3">
+                    <div className="mt-4 md:mt-0 md:col-span-2">
                         <div className="text-xl font-semibold">{data.name_zh}</div>
                         <div className="mt-4">
                             <div
