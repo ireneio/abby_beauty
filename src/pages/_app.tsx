@@ -1,9 +1,11 @@
 import { SessionProvider } from "next-auth/react"
 import { AppProps } from "next/app";
 import { Inter } from "next/font/google";
+import StoreProvider from "@/lib/store/provider";
 
 import "@/styles/globals.css";
-import StoreProvider from "@/lib/store/provider";
+
+import 'react-quill/dist/quill.snow.css';
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -3,8 +3,6 @@ import dynamic from 'next/dynamic';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-import 'react-quill/dist/quill.snow.css';
-
 type Props = {
   value: string
   onChange: (value: string) => any
