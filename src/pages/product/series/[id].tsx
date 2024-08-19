@@ -118,7 +118,7 @@ export default function Page() {
                                                 <div className="w-[140px] h-[140px]"></div>}
                                         </div>
                                         <div className="text-sm md:text-md pb-4 pt-2">
-                                            <div>{product.name_zh}</div>
+                                            <div className="text-secondary">{product.name_zh}</div>
                                         </div>
                                     </div>
                                 </div>
