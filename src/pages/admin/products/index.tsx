@@ -33,6 +33,7 @@ export default function Page() {
     ]
     const [search, setSearch] = useState('')
     const [pagination, setPagination] = useState({
+        currentPage: 1,
         perPage: 10,
     })
     const [tableData, setTableData] = useState<any[]>([])
@@ -56,7 +57,12 @@ export default function Page() {
         }
 
         if (search !== '') {
-            arr = arr.filter((v) => v.name_zh.toLowerCase().includes(search.toLowerCase()))
+            arr = arr.filter((v) => {
+              return (
+                v.name_zh.toLowerCase().includes(search.toLowerCase()) ||
+                v.product_type_name.toLowerCase().includes(search.toLowerCase())
+              )
+            })
         }
 
         switch (sortBy) {
@@ -120,6 +126,22 @@ export default function Page() {
         getTableData()
     }, [])
 
+    useEffect(() => {
+      if (router.query.page) {
+        setPagination((prev) => ({
+          ...prev,
+          currentPage: Number(router.query.page)
+        }))
+      }
+    }, [router.query.page])
+
+    useEffect(() => {
+      setPagination((prev) => ({
+        ...prev,
+        currentPage:1
+      }))
+    }, [tableDataMapped.length])
+
   return (
     <LayoutAdmin>
         <DialogDeleteConfirm
@@ -139,7 +161,7 @@ export default function Page() {
                 <MagnifyingGlassIcon />
                 <Input
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="搜尋名稱..."
+                    placeholder="搜尋名稱或系列..."
                 />
               </InputGroup>
             </div>
@@ -229,7 +251,7 @@ export default function Page() {
         </div>
         <div className='w-full sm:w-auto ml-auto'>
             <Paginator
-              currentPage={router.query.page || 1}
+              currentPage={pagination.currentPage}
               total={tableDataMapped.length}
               perPage={pagination.perPage}
             />

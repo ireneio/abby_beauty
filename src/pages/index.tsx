@@ -35,7 +35,7 @@ export default function Home() {
       id: '1',
       image: '/images/service_1.jpg',
       name: '臉部護理',
-      description: '專注於提供高品質的臉部護理服務，採用頂級產品與專業技術，為您的肌膚進行深層清潔與營養補充。無論是要對抗歲月痕跡，還是改善膚質，我們都能幫助您的臉龐恢復青春光彩，展現自然亮麗的膚色。',
+      description: '我們專注於提供高品質的臉部護理服務，採用頂級產品與專業技術，為您的肌膚進行深層清潔與營養補充。無論是要對抗歲月痕跡，還是改善膚質，我們都能幫助您的臉龐恢復青春光彩，展現自然亮麗的膚色。',
     },
     {
       id: '2',
@@ -46,9 +46,27 @@ export default function Home() {
     {
       id: '3',
       image: '/images/service_3.jpg',
-      name: '彩妝服務',
-      description: '我們的妝前保養服務專為準備化妝的您量身打造，幫助您在上妝前達到最佳的膚質狀態。透過細緻的清潔、深層保濕與修護，讓您的肌膚更為平滑、透亮，為後續的彩妝打下完美基礎。無論是日常妝容還是重要場合的妝前準備，我們都能確保您的肌膚在最佳狀態下呈現，讓妝容更加服貼、持久。',
-    }
+      name: '臉部撥筋服務',
+      description: '我們使用水晶刮痧板來提供專業的臉部撥筋服務，臉部撥筋是一種專業的手法，通過深層按摩和經絡刺激來激活肌膚的自我修復機制，幫助緩解面部緊張、改善肌膚鬆弛、並有效提升面部輪廓、散發自然光澤。無論您希望達到抗衰老效果，還是單純享受深層放鬆，我們的臉部撥筋服務都能滿足您的需求。',
+    },
+    // {
+    //   id: '4',
+    //   image: '/images/service_4.jpg',
+    //   name: '修眉服務',
+    //   description: '提供專業的修眉服務在臉部課程內皆有包含，另外也可以選購此項服務，將根據您的臉型和眉毛的自然生長方向，量身定制修眉服務不僅能提升您的整體面貌，還能讓您感受到舒適與放鬆。無論您喜歡自然的弧形還是更具線條感的造型，都能提供滿意的結果。',
+    // },
+    // {
+    //   id: '5',
+    //   image: '/images/service_5.jpg',
+    //   name: '刮痧服務',
+    //   description: '我們提供專業的刮痧服務，致力於促進您的身體健康和放鬆。刮痧是一種傳統的中醫療法，通過刮拭皮膚來促進血液循環和舒緩肌肉緊張。我們的專業技術人員將根據您的需求和身體狀況，選擇合適的刮痧工具和手法，確保每一次療程都能帶來最佳的效果。無論您是希望緩解疲勞、改善睡眠還是促進新陳代謝，我們的刮痧服務都能幫助您達到身心的最佳狀態。',
+    // },
+    // {
+    //   id: '6',
+    //   image: '/images/service_5.jpg',
+    //   name: '美甲服務',
+    //   description: '',
+    // }
   ])
 
   const [features] = useState<any[]>([
@@ -112,7 +130,7 @@ export default function Home() {
         },
         {
           id: 'h',
-          name: '冰晶肌底導入(依膚況油專業美容師挑選)',
+          name: '冰晶肌底導入 (依膚況由專業美容師挑選)',
         },
         {
           id: 'i',
@@ -210,7 +228,7 @@ export default function Home() {
             <div className="mt-2 text-xs tracking-[3px] font-light uppercase">about ab</div>
           </div>
           <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-8">
               {services.map((service) => {
                 return (
                   <div key={service.id} onClick={() => router.push('/classes')}>
@@ -321,6 +339,9 @@ export default function Home() {
           </div>
           <div className="mt-8">
             <img src="/images/chlitina_1.jpg" className="aspect-[16/9] object-cover w-full" />
+          </div>
+          <div className="mt-8">
+            <img src="/images/chlitina_2.jpg" className="aspect-[16/9] object-cover w-full" />
           </div>
         </div>
       </div>
