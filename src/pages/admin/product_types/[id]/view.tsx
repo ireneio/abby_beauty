@@ -80,8 +80,8 @@ export default function Page() {
             <div className="space-y-1">
               <Subheading>系列介紹</Subheading>
             </div>
-            <div>
-              <Text dangerouslySetInnerHTML={{ __html: data.description }}></Text>
+            <div className='ql-editor'>
+              <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
             </div>
         </section>
 

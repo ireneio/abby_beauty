@@ -66,7 +66,7 @@ export default function Page() {
                   內容
                 </Subheading>
               </div>
-              <div>
+              <div className='ql-editor'>
                   <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
               </div>
           </section>

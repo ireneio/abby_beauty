@@ -125,8 +125,8 @@ export default function Page() {
             <div className="space-y-1">
             <Subheading>產品特點</Subheading>
             </div>
-            <div>
-              <Text dangerouslySetInnerHTML={{ __html: data.features }}></Text>
+            <div className='ql-editor'>
+              <div dangerouslySetInnerHTML={{ __html: data.features }}></div>
             </div>
         </section>
 
@@ -136,8 +136,8 @@ export default function Page() {
             <div className="space-y-1">
               <Subheading>成份內容</Subheading>
             </div>
-            <div>
-              <Text dangerouslySetInnerHTML={{ __html: data.ingredients }}></Text>
+            <div className='ql-editor'>
+              <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
             </div>
         </section>
 
@@ -147,8 +147,8 @@ export default function Page() {
             <div className="space-y-1">
               <Subheading>適用對象</Subheading>
             </div>
-            <div>
-              <Text dangerouslySetInnerHTML={{ __html: data.target_users }}></Text>
+            <div className='ql-editor'>
+              <div dangerouslySetInnerHTML={{ __html: data.target_users }}></div>
             </div>
         </section>
 
@@ -158,8 +158,8 @@ export default function Page() {
             <div className="space-y-1">
               <Subheading>使用方法</Subheading>
             </div>
-            <div>
-              <Text dangerouslySetInnerHTML={{ __html: data.usage }}></Text>
+            <div className='ql-editor'>
+              <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
             </div>
         </section>
 
