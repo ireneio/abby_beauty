@@ -399,7 +399,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="mt-8">
-                  <div className="font-light text-md text-secondary tracking-[1.5px] leading-[24px]">
+                  <div className="font-light text-sm text-secondary leading-[36px] tracking-[1.5px]">
                     我們專為有志於在美容行業發展的學員設計了一系列培訓課程，涵蓋最新的技術與趨勢，幫助您快速提升技能，打下堅實的職業基礎。
                     <br/> <br/>同時，您還將獲得我們的專屬產品購買管道，以優惠價格獲取業界頂尖的美容產品，助力您的專業發展。在這裡，您不僅將接受高標準的教育，還能建立起專業網絡，開啟通往成功的職業生涯。我們誠摯邀請您加入，與我們一起成就美麗與夢想！
                   </div>
