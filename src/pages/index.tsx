@@ -3,6 +3,7 @@ import CarouselBanner from "@/components/client/home/CarouselBanner";
 import CarouselComments from "@/components/client/home/CarouselComments";
 import { RootLayout } from "@/components/layout/RootLayout";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -186,64 +187,116 @@ export default function Home() {
   ])
 
   return (
-    <RootLayout>
-      <div className="px-4">
-        <div className="md:hidden">
-          <div className="">
-            <CarouselBanner>
-              {banners.map((banner) => {
-                return (
-                  <div key={banner.id} onClick={() => router.push(banner.url)}>
-                    <img
-                      src={banner.image_mobile}
-                      alt={banner.id}
-                    />
-                  </div>
-                )
-              })}
-            </CarouselBanner>
-          </div>
-        </div>
-        <div className="hidden md:block">
-          <div className="">
-            <CarouselBanner>
-              {banners.map((banner) => {
-                return (
-                  <div key={banner.id} onClick={() => router.push(banner.url)}>
-                    <img
-                      src={banner.image}
-                      alt={banner.id}
-                    />
-                  </div>
-                )
-              })}
-            </CarouselBanner>
-          </div>
-        </div>
-        <div className="mt-4">
-          <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
-            <div className="font-['BakudaiMedium']">
-              艾比美容工作室
-            </div>
-            <div className="mt-2 text-xs tracking-[3px] font-light uppercase">about ab</div>
-          </div>
-          <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-8">
-              {services.map((service) => {
-                return (
-                  <div key={service.id} onClick={() => router.push('/classes')}>
-                    <div className="mb-4 flex justify-center">
+    <>
+      <Head>
+          <title>艾比美容工作室</title>
+          <meta name="description" content={`艾比美容工作室 | 克麗緹娜`} />
+          <meta property="og:title" content={"艾比美容工作室"} />
+          <meta property="og:description" content={`艾比美容工作室 | 克麗緹娜`} />
+          {/* <meta property="og:image" content={data.image_cover} /> */}
+          <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}`} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="艾比美容工作室"/>
+          {/* <meta name="twitter:card" content={data.image_cover} /> */}
+          <meta name="twitter:title" content={"課程介紹"} />
+          <meta name="twitter:description" content={`艾比美容工作室 | 克麗緹娜`} />
+          {/* <meta name="twitter:image" content={data.image_cover} /> */}
+          {/* <meta name="twitter:site" content="@yourtwitterhandle" />
+          <meta name="twitter:creator" content="@creatorhandle" /> */}
+      </Head>
+      <RootLayout>
+        <div className="px-4">
+          <div className="md:hidden">
+            <div className="">
+              <CarouselBanner>
+                {banners.map((banner) => {
+                  return (
+                    <div key={banner.id} onClick={() => router.push(banner.url)}>
                       <img
-                        src={service.image}
-                        alt={service.name}
-                        className="object-cover aspect-[1/1] rounded-xl"
+                        src={banner.image_mobile}
+                        alt={banner.id}
                       />
                     </div>
-                    <div className="text-center text-md font-medium tracking-[3px]">{service.name}</div>
-                    <div className="mt-2 text-sm text-secondary leading-[36px] font-light tracking-[1.5px]">{service.description}</div>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </CarouselBanner>
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <div className="">
+              <CarouselBanner>
+                {banners.map((banner) => {
+                  return (
+                    <div key={banner.id} onClick={() => router.push(banner.url)}>
+                      <img
+                        src={banner.image}
+                        alt={banner.id}
+                      />
+                    </div>
+                  )
+                })}
+              </CarouselBanner>
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
+              <div className="font-['BakudaiMedium']">
+                艾比美容工作室
+              </div>
+              <div className="mt-2 text-xs tracking-[3px] font-light uppercase">about ab</div>
+            </div>
+            <div className="mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-8">
+                {services.map((service) => {
+                  return (
+                    <div key={service.id} onClick={() => router.push('/classes')}>
+                      <div className="mb-4 flex justify-center">
+                        <img
+                          src={service.image}
+                          alt={service.name}
+                          className="object-cover aspect-[1/1] rounded-xl"
+                        />
+                      </div>
+                      <div className="text-center text-md font-medium tracking-[3px]">{service.name}</div>
+                      <div className="mt-2 text-sm text-secondary leading-[36px] font-light tracking-[1.5px]">{service.description}</div>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="mt-8 flex justify-center">
+                <Button onClick={() => openLineAtAccount()}>
+                  預約諮詢
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="mt-12">
+            <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
+              精選課程
+              <div className="mt-2 text-xs tracking-[3px] font-light uppercase">featured sessions</div>
+            </div>
+            <div className="mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {features.map((feature) => {
+                  return (
+                    <div key={feature.id} className="shadow-md rounded-md">
+                      <div className="min-h-[80px] px-4 pt-4 bg-secondary font-medium text-primary text-md pb-4 rounded-tl-md rounded-tr-md">{feature.name}</div>
+                      <div className="px-4 font-light mt-4 text-sm text-secondary">{feature.time}</div>
+                      <div className="px-4 mt-4 font-semibold text-md leading-[24px] text-secondary">{feature.text}</div>
+                      <div className="border-t border-t-[#ccc] mx-4 pt-4 pb-4 mt-4 space-y-4 text-secondary">
+                        {feature.options.map((option: any) => {
+                          return (
+                            <div key={option.id} className="flex gap-1 text-sm">
+                              <div>•</div>
+                              <div>{option.name}</div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
             <div className="mt-8 flex justify-center">
               <Button onClick={() => openLineAtAccount()}>
@@ -251,107 +304,73 @@ export default function Home() {
               </Button>
             </div>
           </div>
-        </div>
-        <div className="mt-12">
-          <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
-            精選課程
-            <div className="mt-2 text-xs tracking-[3px] font-light uppercase">featured sessions</div>
-          </div>
-          <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {features.map((feature) => {
-                return (
-                  <div key={feature.id} className="shadow-md rounded-md">
-                    <div className="min-h-[80px] px-4 pt-4 bg-secondary font-medium text-primary text-md pb-4 rounded-tl-md rounded-tr-md">{feature.name}</div>
-                    <div className="px-4 font-light mt-4 text-sm text-secondary">{feature.time}</div>
-                    <div className="px-4 mt-4 font-semibold text-md leading-[24px] text-secondary">{feature.text}</div>
-                    <div className="border-t border-t-[#ccc] mx-4 pt-4 pb-4 mt-4 space-y-4 text-secondary">
-                      {feature.options.map((option: any) => {
-                        return (
-                          <div key={option.id} className="flex gap-1 text-sm">
-                            <div>•</div>
-                            <div>{option.name}</div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )
-              })}
+          <div className="mt-12">
+            <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
+              客戶好評
+              <div className="mt-2 text-xs tracking-[3px] font-light uppercase">customer comments</div>
             </div>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <Button onClick={() => openLineAtAccount()}>
-              預約諮詢
-            </Button>
-          </div>
-        </div>
-        <div className="mt-12">
-          <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
-            客戶好評
-            <div className="mt-2 text-xs tracking-[3px] font-light uppercase">customer comments</div>
-          </div>
-          <div className="mt-8">
-            <CarouselComments>
-              {comments.map((comment) => {
-                return (
-                  <div key={comment.id} className="px-4 py-4 shadow-md rounded-md h-full mr-4">
-                    <div className="flex gap-4 items-center">
-                      <img
-                        className="rounded-full w-[48px] h-[48px] object-cover"
-                        src={comment.avatar}
-                        alt={comment.name}
-                      />
-                      <div>
-                        <div className="text-xs text-secondary">{comment.name}</div>
-                        <div className="flex mt-[2px]">
-                          {Array(5).fill(0).map((v, i) => {
-                            return (
-                              <svg
-                                key={i}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="text-yellow-500 w-4 h-4"
-                              >
-                                <path
-                                  d="M12 2.5l2.09 6.26h6.58l-5.33 3.87 2.09 6.26L12 15.5l-5.33 3.87 2.09-6.26L3.43 8.76h6.58L12 2.5z"
-                                />
-                              </svg>
-                            )
-                          })}
+            <div className="mt-8">
+              <CarouselComments>
+                {comments.map((comment) => {
+                  return (
+                    <div key={comment.id} className="px-4 py-4 shadow-md rounded-md h-full mr-4">
+                      <div className="flex gap-4 items-center">
+                        <img
+                          className="rounded-full w-[48px] h-[48px] object-cover"
+                          src={comment.avatar}
+                          alt={comment.name}
+                        />
+                        <div>
+                          <div className="text-xs text-secondary">{comment.name}</div>
+                          <div className="flex mt-[2px]">
+                            {Array(5).fill(0).map((v, i) => {
+                              return (
+                                <svg
+                                  key={i}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className="text-yellow-500 w-4 h-4"
+                                >
+                                  <path
+                                    d="M12 2.5l2.09 6.26h6.58l-5.33 3.87 2.09 6.26L12 15.5l-5.33 3.87 2.09-6.26L3.43 8.76h6.58L12 2.5z"
+                                  />
+                                </svg>
+                              )
+                            })}
+                          </div>
                         </div>
                       </div>
+                      <div className="mt-4 text-sm text-secondary tracking-[1.5px] leading-[24px]">
+                        {comment.text}
+                      </div>
                     </div>
-                    <div className="mt-4 text-sm text-secondary tracking-[1.5px] leading-[24px]">
-                      {comment.text}
-                    </div>
-                  </div>
-                )
-              })}
-            </CarouselComments>
+                  )
+                })}
+              </CarouselComments>
+            </div>
           </div>
+          <div className="mt-12">
+            <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
+              品牌價值
+              <div className="mt-2 text-xs tracking-[3px] font-light uppercase">branding</div>
+            </div>
+            <div className="mt-8">
+              <img src="/images/chlitina_1.jpg" className="aspect-[16/9] object-cover w-full" />
+            </div>
+            <div className="mt-8">
+              <img src="/images/chlitina_2.jpg" className="aspect-[16/9] object-cover w-full" />
+            </div>
+          </div>
+          {/* <div className="mt-12">
+            <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
+              加入我們
+              <div className="mt-2 text-xs tracking-[3px] font-light uppercase">join us</div>
+            </div>
+            
+          </div> */}
         </div>
-        <div className="mt-12">
-          <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
-            品牌價值
-            <div className="mt-2 text-xs tracking-[3px] font-light uppercase">branding</div>
-          </div>
-          <div className="mt-8">
-            <img src="/images/chlitina_1.jpg" className="aspect-[16/9] object-cover w-full" />
-          </div>
-          <div className="mt-8">
-            <img src="/images/chlitina_2.jpg" className="aspect-[16/9] object-cover w-full" />
-          </div>
-        </div>
-        {/* <div className="mt-12">
-          <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
-            加入我們
-            <div className="mt-2 text-xs tracking-[3px] font-light uppercase">join us</div>
-          </div>
-          
-        </div> */}
-      </div>
-    </RootLayout>
+      </RootLayout>
+    </>
   );
 }

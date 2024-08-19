@@ -100,9 +100,9 @@ export default function Page() {
         <>
             <Head>
                 <title>{data.name_zh}</title>
-                <meta name="description" content={`${data.product_type_name} - ${data.name_zh}`} />
+                <meta name="description" content={`${data.product_type_name} - ${data.name_zh} | 艾比美容工作室`} />
                 <meta property="og:title" content={data.name_zh} />
-                <meta property="og:description" content={`${data.product_type_name} - ${data.name_zh}`} />
+                <meta property="og:description" content={`${data.product_type_name} - ${data.name_zh} | 艾比美容工作室`} />
                 {data.images.map((image: any, i: number) => {
                     return(
                         <meta key={i} property="og:image" content={image.url} />
@@ -111,9 +111,9 @@ export default function Page() {
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/products/${router.query.id}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
-                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:card" content={data.images && data.images.length ? data.images[0].url : ''} />
                 <meta name="twitter:title" content={data.name_zh} />
-                <meta name="twitter:description" content={`${data.product_type_name} - ${data.name_zh}`} />
+                <meta name="twitter:description" content={`${data.product_type_name} - ${data.name_zh} | 艾比美容工作室`} />
                 <meta name="twitter:image" content={data.images && data.images.length ? data.images[0].url : ''} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}

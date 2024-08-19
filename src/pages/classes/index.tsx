@@ -3,6 +3,7 @@ import { Button } from "@/components/client/Button"
 import { RootLayout } from "@/components/layout/RootLayout"
 import useApi from "@/lib/hooks/useApi"
 import openLineAtAccount from "@/lib/utils/openLineAtAccount"
+import Head from "next/head"
 import { useEffect, useMemo, useState } from "react"
 
 export async function generateMetadata() {
@@ -60,45 +61,63 @@ export default function Page() {
     }, [])
 
     return (
-        <RootLayout>
-            <div className="px-4">
-                <Breadcrumb
-                    list={[
-                        { text: '首頁', url: '/' },
-                        { text: '課程介紹' },
-                    ]}
-                />
-            </div>
-            <div className="mt-4 px-4">
-                <div className="max-w-sm mx-auto bg-primary p-4">
-                    {/* <div className="bg-pink-300 p-4 text-center text-lg font-bold">
-                        艾比美容工作室課程介紹
-                    </div> */}
-                    <div className="space-y-4">
-                        {classesMemo.map((value: any) => {
-                            return (
-                                <div key={value.class_type_id} className="flex w-full gap-4">
-                                    <h2 className="font-semibold text-lg mb-2 text-secondary basis-[33%] flex-shrink-0">{value.class_type_name}</h2>
-                                    <ul className="space-y-4 flex-1 list-square">
-                                        {value.list.map((vvalue: any) => {
-                                            return (
-                                                <li key={vvalue.id} className="text-left border-b border-b-[#ccc] pb-2">
-                                                    <span className="text-secondary">{vvalue.name}</span>
-                                                </li>
-                                            )
-                                        })}
-                                    </ul>
-                                </div>
-                            )
-                        })}
+        <>
+            <Head>
+                <title>課程介紹</title>
+                <meta name="description" content={`課程介紹 | 艾比美容工作室`} />
+                <meta property="og:title" content={"課程介紹"} />
+                <meta property="og:description" content={`課程介紹 | 艾比美容工作室`} />
+                {/* <meta property="og:image" content={data.image_cover} /> */}
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/classes`} />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="艾比美容工作室"/>
+                {/* <meta name="twitter:card" content={data.image_cover} /> */}
+                <meta name="twitter:title" content={"課程介紹"} />
+                <meta name="twitter:description" content={`課程介紹 | 艾比美容工作室`} />
+                {/* <meta name="twitter:image" content={data.image_cover} /> */}
+                {/* <meta name="twitter:site" content="@yourtwitterhandle" />
+                <meta name="twitter:creator" content="@creatorhandle" /> */}
+            </Head>
+            <RootLayout>
+                <div className="px-4">
+                    <Breadcrumb
+                        list={[
+                            { text: '首頁', url: '/' },
+                            { text: '課程介紹' },
+                        ]}
+                    />
+                </div>
+                <div className="mt-4 px-4">
+                    <div className="max-w-sm mx-auto bg-primary p-4">
+                        {/* <div className="bg-pink-300 p-4 text-center text-lg font-bold">
+                            艾比美容工作室課程介紹
+                        </div> */}
+                        <div className="space-y-4">
+                            {classesMemo.map((value: any) => {
+                                return (
+                                    <div key={value.class_type_id} className="flex w-full gap-4">
+                                        <h2 className="font-semibold text-lg mb-2 text-secondary basis-[33%] flex-shrink-0">{value.class_type_name}</h2>
+                                        <ul className="space-y-4 flex-1 list-square">
+                                            {value.list.map((vvalue: any) => {
+                                                return (
+                                                    <li key={vvalue.id} className="text-left border-b border-b-[#ccc] pb-2">
+                                                        <span className="text-secondary">{vvalue.name}</span>
+                                                    </li>
+                                                )
+                                            })}
+                                        </ul>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="mt-4 px-4 flex justify-center">
-                <Button onClick={() => openLineAtAccount()}>
-                    預約諮詢
-                </Button>
-            </div>
-        </RootLayout>
+                <div className="mt-4 px-4 flex justify-center">
+                    <Button onClick={() => openLineAtAccount()}>
+                        預約諮詢
+                    </Button>
+                </div>
+            </RootLayout>
+        </>
     )
 }

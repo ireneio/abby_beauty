@@ -1,6 +1,7 @@
 import Breadcrumb from "@/components/client/Breadcrumb";
 import { RootLayout } from "@/components/layout/RootLayout";
 import useApi from "@/lib/hooks/useApi";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -77,57 +78,75 @@ export default function Page() {
     }, [inView])
 
     return (
-        <RootLayout>
-            <div className="px-4">
-                <Breadcrumb
-                    list={[
-                        { text: '首頁', url: '/' },
-                        { text: '產品介紹', url: '/products' },
-                        { text: data.name },
-                    ]}
-                />
-            </div>
-            <div className="px-4 mt-4">
-                {/* <img
-                    src={data.image_cover}
-                    alt=""
-                    className="object-contain"
-                /> */}
-                {/* <div className="text-lg mt-4 font-semibold">
-                    {data.name}
-                </div> */}
-                <div className="ql-editor">
-                    <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
+        <>
+            <Head>
+                <title>{data.name}</title>
+                <meta name="description" content={`${data.name} | 艾比美容工作室`} />
+                <meta property="og:title" content={data.name_zh} />
+                <meta property="og:description" content={`${data.name} | 艾比美容工作室`} />
+                <meta property="og:image" content={data.image_cover} />
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/product/series/${router.query.id}`} />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="艾比美容工作室"/>
+                <meta name="twitter:card" content={data.image_cover} />
+                <meta name="twitter:title" content={data.name_zh} />
+                <meta name="twitter:description" content={`${data.name} | 艾比美容工作室`} />
+                <meta name="twitter:image" content={data.image_cover} />
+                {/* <meta name="twitter:site" content="@yourtwitterhandle" />
+                <meta name="twitter:creator" content="@creatorhandle" /> */}
+            </Head>
+            <RootLayout>
+                <div className="px-4">
+                    <Breadcrumb
+                        list={[
+                            { text: '首頁', url: '/' },
+                            { text: '產品介紹', url: '/products' },
+                            { text: data.name },
+                        ]}
+                    />
                 </div>
-                <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
-                <div className="mt-4">
-                    <div className="grid grid-cols-2 md:grid-cols-4">
-                        {productsMemo.map((product) => {
-                            return (
-                                <div key={product.id} className="cursor-pointer" onClick={() => router.push(`/products/${product.id}`)}>
-                                    <div>
-                                        <div className="min-h-[140px] flex items-center justify-center">
-                                            {product.image.url ?
-                                                <Image
-                                                    src={product.image.url}
-                                                    alt={product.name_zh}
-                                                    objectFit="contain"
-                                                    width={140}
-                                                    height={140}
-                                                /> :
-                                                <div className="w-[140px] h-[140px]"></div>}
-                                        </div>
-                                        <div className="text-sm md:text-md pb-4 pt-2">
-                                            <div className="text-secondary">{product.name_zh}</div>
+                <div className="px-4 mt-4">
+                    {/* <img
+                        src={data.image_cover}
+                        alt=""
+                        className="object-contain"
+                    /> */}
+                    {/* <div className="text-lg mt-4 font-semibold">
+                        {data.name}
+                    </div> */}
+                    <div className="ql-editor">
+                        <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
+                    </div>
+                    <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
+                    <div className="mt-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4">
+                            {productsMemo.map((product) => {
+                                return (
+                                    <div key={product.id} className="cursor-pointer" onClick={() => router.push(`/products/${product.id}`)}>
+                                        <div>
+                                            <div className="min-h-[140px] flex items-center justify-center">
+                                                {product.image.url ?
+                                                    <Image
+                                                        src={product.image.url}
+                                                        alt={product.name_zh}
+                                                        objectFit="contain"
+                                                        width={140}
+                                                        height={140}
+                                                    /> :
+                                                    <div className="w-[140px] h-[140px]"></div>}
+                                            </div>
+                                            <div className="text-sm md:text-md pb-4 pt-2">
+                                                <div className="text-secondary">{product.name_zh}</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        </div>
+                        <div ref={ref}></div>
                     </div>
-                    <div ref={ref}></div>
                 </div>
-            </div>
-        </RootLayout>
+            </RootLayout>
+        </>
     )
 }
