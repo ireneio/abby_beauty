@@ -88,6 +88,29 @@ export default function Page() {
         }
     }
 
+    const [similarProducts, setSimilarProducts] = useState<any[]>()
+
+    const getSimilarProducts = async (product_type_id: number) => {
+        const res = await api({
+            method: 'GET',
+            url: '/client/products',
+            params: {
+                product_type_id,
+            }
+        })
+        if (res.code === 0) {
+            setSimilarProducts(res.data)
+        } else {
+            setSimilarProducts([])
+        }
+    }
+
+    useEffect(() => {
+        if (data.product_type_id) {
+            getSimilarProducts(data.product_type_id)
+        }
+    }, [data.product_type_id])
+
     useEffect(() => {
         if (router.query.id) {
             getData(router.query.id as string)
