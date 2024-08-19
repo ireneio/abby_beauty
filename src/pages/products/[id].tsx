@@ -141,7 +141,6 @@ export default function Page() {
                         <div className="text-xl font-semibold">{data.name_zh}</div>
                         <div className="mt-4">
                             <div
-                                className="text-sm text-secondary"
                                 dangerouslySetInnerHTML={{ __html: data.features }}
                             ></div>
                         </div>
