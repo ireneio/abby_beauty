@@ -137,7 +137,7 @@ export default function Page() {
                             }
                         </CarouselProductImage>
                     </div>
-                    <div className="md:col-span-3">
+                    <div className="mt-4 md:mt-0 md:col-span-3">
                         <div className="text-xl font-semibold">{data.name_zh}</div>
                         <div className="mt-4">
                             <div
