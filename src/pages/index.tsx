@@ -22,12 +22,12 @@ export default function Home() {
       image_mobile: '/images/banner_mobile_2.jpg',
       url: '/product/series/16'
     },
-    // {
-    //   id: '3',
-    //   image: '',
-    //   image_mobile: '',
-    //   url: '',
-    // }
+    {
+      id: '3',
+      image: '/images/banner_3.jpg',
+      image_mobile: '/images/banner_mobile_3.jpg',
+      url: '/product/series/2'
+    },
   ])
 
   const [services] = useState<any[]>([
@@ -344,6 +344,13 @@ export default function Home() {
             <img src="/images/chlitina_2.jpg" className="aspect-[16/9] object-cover w-full" />
           </div>
         </div>
+        {/* <div className="mt-12">
+          <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
+            加入我們
+            <div className="mt-2 text-xs tracking-[3px] font-light uppercase">join us</div>
+          </div>
+          
+        </div> */}
       </div>
     </RootLayout>
   );

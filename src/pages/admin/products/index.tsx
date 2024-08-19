@@ -49,8 +49,8 @@ export default function Page() {
     const tableDataMapped = useMemo(() => {
         let arr = [...tableData]
 
-        if (router.query.page && !isNaN(Number(router.query.page))) {
-            const page = parseInt(Number(router.query.page).toString())
+        if (pagination.currentPage && !isNaN(Number(pagination.currentPage))) {
+            const page = parseInt(Number(pagination.currentPage).toString())
             arr = arr.slice((page - 1) * pagination.perPage, ((page - 1) * pagination.perPage) + pagination.perPage)
         } else {
             arr = arr.slice(0, pagination.perPage)
@@ -75,7 +75,7 @@ export default function Page() {
                 break
         }
         return arr
-    }, [tableData, search, sortBy, router.query, pagination.perPage])
+    }, [tableData, search, sortBy, pagination.currentPage, pagination.perPage])
 
     const getTableData = async () => {
         const res = await api({
@@ -138,9 +138,9 @@ export default function Page() {
     useEffect(() => {
       setPagination((prev) => ({
         ...prev,
-        currentPage:1
+        currentPage: 1
       }))
-    }, [tableDataMapped.length])
+    }, [search, sortBy])
 
   return (
     <LayoutAdmin>
@@ -252,7 +252,7 @@ export default function Page() {
         <div className='w-full sm:w-auto ml-auto'>
             <Paginator
               currentPage={pagination.currentPage}
-              total={tableDataMapped.length}
+              total={tableData.length}
               perPage={pagination.perPage}
             />
         </div>
