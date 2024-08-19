@@ -32,7 +32,7 @@
   }
   .ql-editor {
     h1 {
-      font-size: 2rem;
+      font-size: 2rem !important;
     }
     .ql-video {
       display: block;
