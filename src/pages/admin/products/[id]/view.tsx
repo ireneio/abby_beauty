@@ -115,7 +115,9 @@ export default function Page() {
                 <Subheading>規格</Subheading>
             </div>
             <div>
-              <Text>{data.size}</Text>
+              <div className='ql-editor'>
+                <div dangerouslySetInnerHTML={{ __html: data.size }}></div>
+              </div>
             </div>
         </section>
 

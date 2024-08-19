@@ -308,7 +308,10 @@ export default function Page() {
                     <Subheading>規格</Subheading>
                 </div>
                 <div>
-                    <Input {...register('size')} aria-label="規格" />
+                    <WysiwygEditor
+                        value={watch('size')}
+                        onChange={(value) => setValue('size', value)}
+                    />
                 </div>
             </section>
 
