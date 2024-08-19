@@ -26,7 +26,7 @@ export default function CarouselProduct({ children }: Props) {
         <Carousel
             swipeable={true}
             draggable={false}
-            showDots={false}
+            showDots={true}
             responsive={responsive}
             ssr={true} // means to render carousel on server-side.
             infinite={false}
@@ -41,6 +41,7 @@ export default function CarouselProduct({ children }: Props) {
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
             renderButtonGroupOutside
+            renderDotsOutside
         >
             {children}
         </Carousel>
