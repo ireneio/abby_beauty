@@ -103,7 +103,11 @@ export default function Page() {
                 <meta name="description" content={`${data.product_type_name} - ${data.name_zh}`} />
                 <meta property="og:title" content={data.name_zh} />
                 <meta property="og:description" content={`${data.product_type_name} - ${data.name_zh}`} />
-                <meta property="og:image" content={data.images && data.images.length ? data.images[0].url : ''} />
+                {data.images.map((image: any, i: number) => {
+                    return(
+                        <meta key={i} property="og:image" content={image.url} />
+                    )
+                })}
                 <meta property="og:url" content={`${process.env.NEXT_SITE_URL}/products/${router.query.id}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
