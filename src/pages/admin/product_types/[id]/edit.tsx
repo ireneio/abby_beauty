@@ -150,6 +150,7 @@ export default function Page() {
           if (res.code === 0 && res.data.length > 0) {
             const data = res.data[0]
             setValue('name', data.name)
+            setValue('description', data.description)
             if (data.image_cover) {
                 setImagePreviewList([data.image_cover])
                 setValue('image_list', [{ id: '1', url: data.image_cover }])
