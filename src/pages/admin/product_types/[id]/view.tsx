@@ -21,6 +21,7 @@ export default function Page() {
 
     const [data, setData] = useState<any>({
       name: '',
+      description: '',
       image_cover: '',
     })
 
@@ -70,6 +71,17 @@ export default function Page() {
             </div>
             <div>
               <Text>{data.name}</Text>
+            </div>
+        </section>
+
+        <Divider className="my-10" soft />
+
+        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div className="space-y-1">
+              <Subheading>系列介紹</Subheading>
+            </div>
+            <div>
+              <Text dangerouslySetInnerHTML={{ __html: data.description }}></Text>
             </div>
         </section>
 

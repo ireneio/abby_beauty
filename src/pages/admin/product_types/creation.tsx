@@ -195,7 +195,7 @@ export default function Page() {
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
-                <Subheading>產品特點</Subheading>
+                <Subheading>系列介紹</Subheading>
                 </div>
                 <div>
                     <WysiwygEditor
