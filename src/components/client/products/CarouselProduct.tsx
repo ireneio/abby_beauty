@@ -42,6 +42,7 @@ export default function CarouselProduct({ children }: Props) {
             itemClass="carousel-item-padding-40-px"
             renderButtonGroupOutside
             renderDotsOutside
+            partialVisible={true}
         >
             {children}
         </Carousel>
