@@ -30,7 +30,9 @@
     font-weight: 400;
     src: url('../fonts/Bakudai-Medium.woff') format('woff');
   }
-  html {
-    list-style: auto;
+  .ql-editor {
+    h1 {
+      font-size: 2rem;
+    }
   }
 }

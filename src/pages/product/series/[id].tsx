@@ -88,15 +88,15 @@ export default function Page() {
                 />
             </div>
             <div className="px-4 mt-4">
-                <img
+                {/* <img
                     src={data.image_cover}
                     alt=""
                     className="object-contain"
-                />
-                <div className="text-lg mt-4 font-semibold">
+                /> */}
+                {/* <div className="text-lg mt-4 font-semibold">
                     {data.name}
-                </div>
-                <div className="mt-4">
+                </div> */}
+                <div className="ql-editor">
                     <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
                 </div>
                 <div className="mt-4">
