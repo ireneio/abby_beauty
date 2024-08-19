@@ -5,7 +5,8 @@ class ClassesController {
         const rows = await db.selectFrom('classes')
             .leftJoin('class_types', 'classes.class_type_id', 'class_types.id')
             .where('classes.hidden', '!=', true)
-            .orderBy('classes.created_at', 'desc')
+            .orderBy('class_types.order', 'asc')
+            .orderBy('classes.order', 'asc')
             .select([
                 'classes.id as id',
                 'classes.name as name',
@@ -24,7 +25,8 @@ class ClassesController {
         const rows = await db.selectFrom('classes')
             .leftJoin('class_types', 'classes.class_type_id', 'class_types.id')
             .where('classes.hidden', '!=', true)
-            .orderBy('classes.created_at', 'desc')
+            .orderBy('class_types.order', 'asc')
+            .orderBy('classes.order', 'asc')
             .select([
                 'classes.id as id',
                 'classes.name as name',

@@ -3,6 +3,7 @@ import { db } from ".."
 class ClassTypesController {
     async getAll() {
         const rows = await db.selectFrom('class_types')
+            .orderBy('order', 'asc')
             .selectAll()
             .execute()
         return rows
