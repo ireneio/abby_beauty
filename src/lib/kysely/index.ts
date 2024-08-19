@@ -27,6 +27,7 @@ export interface Database {
 }
 
 export const db = createKysely<Database>({
-  connectionString: "postgres://default:qI3WkjC9uxTZ@ep-blue-unit-a1pbnu7c-pooler.ap-southeast-1.aws.neon.tech/verceldb?sslmode=require",
+  connectionString: process.env.POSTGRES_URL
 })
+
 export { sql } from 'kysely'

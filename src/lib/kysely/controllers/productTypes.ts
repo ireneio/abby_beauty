@@ -9,6 +9,7 @@ class ProductTypesController {
                 'name',
                 'image_cover',
             ])
+            .orderBy('order', 'asc')
             .execute()
         return rows
     }
