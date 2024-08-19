@@ -3,7 +3,12 @@ import { db } from ".."
 class ProductTypesController {
     async getAll() {
         const rows = await db.selectFrom('product_types')
-            .selectAll()
+            .select([
+                'id',
+                'created_at',
+                'name',
+                'image_cover',
+            ])
             .execute()
         return rows
     }
