@@ -71,18 +71,21 @@ export default function Page() {
                 <div className="px-4 mt-4">
                     {productTypes.map((productType) => {
                         return (
-                            <div key={productType.id} className="mb-4">
-                                <div className="space-y-4 cursor-pointer" onClick={() => router.push(`/product/series/${productType.id}`)}>
+                            <div key={productType.id} className="md:grid md:grid-cols-6 mb-4">
+                                <div
+                                    className="space-y-4 cursor-pointer md:col-span-2"
+                                    onClick={() => router.push(`/product/series/${productType.id}`)}
+                                >
                                     <div className="text-sm md:text-md bg-primary text-secondary px-4 py-4">
                                         {productType.name}
                                     </div>
                                     <img
                                         src={productType.image_cover}
                                         alt=""
-                                        className="object-contain"
+                                        className="object-contain w-full"
                                     />
                                 </div>
-                                <div>
+                                <div className="md:col-span-4">
                                     <CarouselProduct>
                                         {products
                                             .filter((product) => {
