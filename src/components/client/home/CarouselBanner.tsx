@@ -33,7 +33,7 @@ const CustomDot = ({ carouselItems, onClick, ...rest }: any) => {
       className={clsx("rounded-full bg-secondary border shadow-lg p-[2px]")}
       onClick={() => onClick()}
     >
-      <div className={clsx("w-[10px] h-[10px] rounded-full", active ? 'border border-primary' : '')}></div>
+      <div className={clsx("w-[8px] h-[8px] rounded-full", active ? 'border border-primary' : '')}></div>
     </button>
   );
 };

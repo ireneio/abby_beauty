@@ -189,6 +189,7 @@ function Navigation() {
   return (
     <nav className="mt-px font-display text-md font-medium tracking-tight text-white">
       <NavigationRow>
+        <NavigationItem href="/">首頁</NavigationItem>
         <NavigationItem href="/classes">課程介紹</NavigationItem>
         <NavigationItem onClick={() => handleSetExpand(0)}>
           <div className='flex justify-between'>

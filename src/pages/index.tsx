@@ -4,27 +4,32 @@ import CarouselComments from "@/components/client/home/CarouselComments";
 import { RootLayout } from "@/components/layout/RootLayout";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Home() {
+  const router = useRouter()
   const [banners] = useState<any[]>([
     {
       id: '1',
       image: '/images/banner_1.jpg',
       image_mobile: '/images/banner_mobile_1.jpg',
+      url: '/product/series/3'
     },
     {
       id: '2',
       image: '/images/banner_2.jpg',
       image_mobile: '/images/banner_mobile_2.jpg',
+      url: '/product/series/16'
     },
     // {
     //   id: '3',
     //   image: '',
     //   image_mobile: '',
+    //   url: '',
     // }
   ])
-  
+
   const [services] = useState<any[]>([
     {
       id: '1',
@@ -43,6 +48,89 @@ export default function Home() {
       image: '/images/service_3.jpg',
       name: '彩妝服務',
       description: '我們的妝前保養服務專為準備化妝的您量身打造，幫助您在上妝前達到最佳的膚質狀態。透過細緻的清潔、深層保濕與修護，讓您的肌膚更為平滑、透亮，為後續的彩妝打下完美基礎。無論是日常妝容還是重要場合的妝前準備，我們都能確保您的肌膚在最佳狀態下呈現，讓妝容更加服貼、持久。',
+    }
+  ])
+
+  const [features] = useState<any[]>([
+    {
+      id: '1',
+      name: '意猶未盡~沉浸式木質深層精油舒壓+客製化課程四選一',
+      time: '80分鐘',
+      text: '背部掌壓放鬆 + 精油純手技深層肌肉平衡釋壓按摩 60分 (使用森活木質調植物精油) (以下 4 選 1)',
+      options: [
+        {
+          id: 'a',
+          name: '九微米能量輕盈曲線 (臀部/手臂/大小腿 三選二) 20分',
+        },
+        {
+          id: 'b',
+          name: '溫和杏仁上背嫩白角質按摩 20分',
+        },
+        {
+          id: 'c',
+          name: '背部肌肉加強深層熱感放鬆 20分',
+        },
+        {
+          id: 'd',
+          name: '腹部暖宮SPA 10分 + 海藻美白曲線敷泥搭配專業P膜 10分',
+        }
+      ]
+    },
+    {
+      id: '2',
+      name: '誰做誰美~痘痘肌掃油、肌膚乾燥缺水必選！頂級植萃臉部急救呵護課程',
+      time: '90分鐘 (手技80分鐘)',
+      text: '背部掌壓放鬆 + 精油純手技深層肌肉平衡釋壓按摩 60分 (使用森活木質調植物精油)',
+      options: [
+        {
+          id: 'a',
+          name: '課程說明',
+        },
+        {
+          id: 'b',
+          name: '天然胺基酸弱酸溫和卸妝',
+        },
+        {
+          id: 'c',
+          name: '甘草精萃深層潔顏',
+        },
+        {
+          id: 'd',
+          name: '甦活新肌去角質',
+        },
+        {
+          id: 'e',
+          name: '奈米小分子熱蒸',
+        },
+        {
+          id: 'f',
+          name: '專業美容師粉刺痘痘技術淨化處理',
+        },
+        {
+          id: 'g',
+          name: '植萃掃油平衡精華/特研植物性保濕 二選一',
+        },
+        {
+          id: 'h',
+          name: '冰晶肌底導入(依膚況油專業美容師挑選)',
+        },
+        {
+          id: 'i',
+          name: '臉部SPA賦活按摩',
+        },
+        {
+          id: 'j',
+          name: '頂級松藻精粹光透白保濕面膜 (同時進行頭部舒刮 10分)',
+        },
+        {
+          id: 'k',
+          name: '肌底保養',
+        },
+        {
+          id: 'j',
+          name: '課後休憩熱茶',
+        },
+      ]
     }
   ])
 
@@ -87,7 +175,7 @@ export default function Home() {
             <CarouselBanner>
               {banners.map((banner) => {
                 return (
-                  <div key={banner.id}>
+                  <div key={banner.id} onClick={() => router.push(banner.url)}>
                     <img
                       src={banner.image_mobile}
                       alt={banner.id}
@@ -103,7 +191,7 @@ export default function Home() {
             <CarouselBanner>
               {banners.map((banner) => {
                 return (
-                  <div key={banner.id}>
+                  <div key={banner.id} onClick={() => router.push(banner.url)}>
                     <img
                       src={banner.image}
                       alt={banner.id}
@@ -125,7 +213,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {services.map((service) => {
                 return (
-                  <div key={service.id}>
+                  <div key={service.id} onClick={() => router.push('/classes')}>
                     <div className="mb-4 flex justify-center">
                       <img
                         src={service.image}
@@ -144,6 +232,40 @@ export default function Home() {
                 預約諮詢
               </Button>
             </div>
+          </div>
+        </div>
+        <div className="mt-12">
+          <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
+            精選課程
+            <div className="mt-2 text-xs tracking-[3px] font-light uppercase">featured sessions</div>
+          </div>
+          <div className="mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {features.map((feature) => {
+                return (
+                  <div key={feature.id} className="shadow-md rounded-md">
+                    <div className="min-h-[80px] px-4 pt-4 bg-secondary font-medium text-primary text-md pb-4 rounded-tl-md rounded-tr-md">{feature.name}</div>
+                    <div className="px-4 font-light mt-4 text-sm text-secondary">{feature.time}</div>
+                    <div className="px-4 mt-4 font-semibold text-md leading-[24px] text-secondary">{feature.text}</div>
+                    <div className="border-t border-t-[#ccc] mx-4 pt-4 pb-4 mt-4 space-y-4 text-secondary">
+                      {feature.options.map((option: any) => {
+                        return (
+                          <div key={option.id} className="flex gap-1 text-sm">
+                            <div>•</div>
+                            <div>{option.name}</div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Button onClick={() => openLineAtAccount()}>
+              預約諮詢
+            </Button>
           </div>
         </div>
         <div className="mt-12">
