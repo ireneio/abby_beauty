@@ -96,7 +96,7 @@ export default function Page() {
                             {classesMemo.map((value: any) => {
                                 return (
                                     <div key={value.class_type_id} className="flex w-full gap-4">
-                                        <h2 className="pt-[2px] md:pt-0 font-semibold text-sm md:text-lg mb-2 text-secondary basis-[33%] flex-shrink-0">{value.class_type_name}</h2>
+                                        <h2 className="pt-[4px] md:pt-0 font-semibold text-sm md:text-lg mb-2 text-secondary basis-[33%] flex-shrink-0">{value.class_type_name}</h2>
                                         <ul className="space-y-2 md:space-y-4 flex-1 list-square">
                                             {value.list.map((vvalue: any) => {
                                                 return (
