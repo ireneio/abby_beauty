@@ -49,7 +49,7 @@ const handler = router.handler({
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '10mb', // Set the desired size limit, e.g., '2mb', '10mb', etc.
+      sizeLimit: '100mb', // Set the desired size limit, e.g., '2mb', '10mb', etc.
     },
   },
 };
