@@ -108,7 +108,7 @@ export default function Page() {
                         <meta key={i} property="og:image" content={image.url} />
                     )
                 })}
-                <meta property="og:url" content={`${process.env.NEXT_SITE_URL}/products/${router.query.id}`} />
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/products/${router.query.id}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
                 <meta name="twitter:card" content="summary_large_image" />
