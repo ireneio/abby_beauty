@@ -99,6 +99,7 @@ export default function Page() {
                 <div className="ql-editor">
                     <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
                 </div>
+                <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
                 <div className="mt-4">
                     <div className="grid grid-cols-2 md:grid-cols-4">
                         {productsMemo.map((product) => {
