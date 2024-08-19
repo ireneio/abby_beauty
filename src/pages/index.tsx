@@ -363,27 +363,37 @@ export default function Home() {
               <img src="/images/chlitina_2.jpg" className="object-contain w-full" />
             </div>
           </div>
-          {/* <div className="mt-12">
+          <div className="mt-12">
             <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
               加入我們
               <div className="mt-2 text-xs tracking-[3px] font-light uppercase">join us</div>
             </div>
             <div className="mt-4">
-              <div>
-                <div>
-                  <BookOpenIcon className="w-[48px] h-[48px]" />
+              <div className="bg-primary px-8 py-8 shadow-md rounded-md">
+                <div className="grid grid-cols-2 gap-x-8">
+                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
+                    <div>
+                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
+                    </div>
+                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">專業的培訓課程</div>
+                  </div>
+                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
+                    <ArchiveBoxIcon className="text-primary w-[48px] h-[48px]" />
+                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">優質的產品購買管道</div>
+                  </div>
                 </div>
-                <div>專業的培訓課程</div>
-              </div>
-              <div>
-                <ArchiveBoxIcon className="w-[48px] h-[48px]" />
-                <div>優質的產品購買管道</div>
-              </div>
-              <div>
-                我們專為有志於在美容行業發展的學員設計了一系列培訓課程，涵蓋最新的技術與趨勢，幫助您快速提升技能，打下堅實的職業基礎。同時，您還將獲得我們的專屬產品購買管道，以優惠價格獲取業界頂尖的美容產品，助力您的專業發展。在這裡，您不僅將接受高標準的教育，還能建立起專業網絡，開啟通往成功的職業生涯。我們誠摯邀請您加入，與我們一起成就美麗與夢想！
+                <div className="mt-8">
+                  <div className="font-light text-md text-secondary tracking-[1.5px] leading-[24px]">
+                    我們專為有志於在美容行業發展的學員設計了一系列培訓課程，涵蓋最新的技術與趨勢，幫助您快速提升技能，打下堅實的職業基礎。
+                    <br/> <br/>同時，您還將獲得我們的專屬產品購買管道，以優惠價格獲取業界頂尖的美容產品，助力您的專業發展。在這裡，您不僅將接受高標準的教育，還能建立起專業網絡，開啟通往成功的職業生涯。我們誠摯邀請您加入，與我們一起成就美麗與夢想！
+                  </div>
+                </div>
+                <div className="mt-8 flex justify-center">
+                  <Button onClick={() => openLineAtAccount()}>暸解更多</Button>
+                </div>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </RootLayout>
     </>
