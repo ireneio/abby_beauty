@@ -32,7 +32,8 @@ class ProductsController {
                 'product_types.name as product_type_name',
                 'products.hidden'
             ])
-            .orderBy('order', 'asc')
+            .orderBy('product_types.order', 'asc')
+            .orderBy('products.order', 'asc')
             .execute()
 
         const productImagesQuery = db.selectFrom('product_images')
@@ -43,7 +44,7 @@ class ProductsController {
                 'product_images.url',
                 'product_images.order',
             ])
-            .orderBy('order', 'asc')
+            .orderBy('product_images.order', 'asc')
 
         const productImages = await productImagesQuery.execute()
 
@@ -74,7 +75,8 @@ class ProductsController {
                 'product_types.name as product_type_name',
                 'products.hidden'
             ])
-            .orderBy('order', 'asc')
+            .orderBy('product_types.order', 'asc')
+            .orderBy('products.order', 'asc')
             .execute()
 
         const productImagesQuery = db.selectFrom('product_images')
@@ -85,7 +87,7 @@ class ProductsController {
                 'product_images.url',
                 'product_images.order',
             ])
-            .orderBy('order', 'asc')
+            .orderBy('product_images.order', 'asc')
 
         const productImages = await productImagesQuery.execute()
 
