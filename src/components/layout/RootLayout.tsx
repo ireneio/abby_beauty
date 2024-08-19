@@ -139,7 +139,7 @@ function NavigationItem({
     return (
       <Link
         href={href}
-        className="text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 even:mt-px sm:mx-0 sm:even:mt-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
+        className="text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 mt-px sm:mx-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
       >
         {children}
         <span className="absolute inset-y-0 -z-10 w-screen bg-white opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
@@ -147,7 +147,7 @@ function NavigationItem({
     )
   }
   return (
-    <div onClick={() => onClick && onClick()} className='text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 even:mt-px sm:mx-0 sm:even:mt-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16'>
+    <div onClick={() => onClick && onClick()} className='text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 mt-px sm:mx-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16'>
       {children}
       <span className="absolute inset-y-0 -z-10 w-screen bg-white opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
     </div>
@@ -187,7 +187,7 @@ function Navigation() {
   }
 
   return (
-    <nav className="mt-px font-display text-md font-medium tracking-tight text-white">
+    <nav className="font-display text-md font-medium tracking-tight text-white">
       <NavigationRow>
         <NavigationItem href="/">首頁</NavigationItem>
         <NavigationItem href="/classes">課程介紹</NavigationItem>

@@ -1,9 +1,10 @@
 import { Button } from "@/components/client/Button";
 import CarouselBanner from "@/components/client/home/CarouselBanner";
 import CarouselComments from "@/components/client/home/CarouselComments";
+import { Logo } from "@/components/client/Logo";
 import { RootLayout } from "@/components/layout/RootLayout";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
-import { ArchiveBoxIcon, BookOpenIcon } from "@heroicons/react/16/solid";
+import { ArchiveBoxIcon, BookOpenIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -368,9 +369,23 @@ export default function Home() {
               加入我們
               <div className="mt-2 text-xs tracking-[3px] font-light uppercase">join us</div>
             </div>
-            <div className="mt-4">
+            <div className="mt-12 md:hidden w-full h-[1px] bg-[#ccc]"></div>
+            <div className="mt-12 md:mt-8">
               <div className="bg-primary px-8 py-8 shadow-md rounded-md">
-                <div className="grid grid-cols-2 gap-x-8">
+                <div className="flex justify-center bg-white py-4 rounded-md">
+                  <div className="text-lg font-semibold tracking-[1.5px] font-['BakudaiMedium']">
+                    克麗緹娜
+                    <br/>
+                    艾比美容工作室
+                  </div>
+                </div>
+                <div className="mt-4 flex justify-center">
+                  <XMarkIcon className="text-black w-[32px] h-[32px]" />
+                </div>
+                <div className="rounded-md px-8 py-8 bg-white mt-4">
+                  <img src="/images/logo_chlitina.jpg" alt="Chlitina Logo" />
+                </div>
+                <div className="grid grid-cols-2 gap-x-8 mt-8">
                   <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
                     <div>
                       <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
