@@ -118,14 +118,18 @@ export default function Page() {
                 />
             </div>
             <div className="px-4 mt-4">
-                <div className="md:flex gap-x-8">
-                    <div className="basis-[50%]">
+                <div className="md:grid-cols-4 md:gap-x-8">
+                    <div className="md:col-span-1">
                         <CarouselProductImage>
-                            {data.images.length ? 
+                            {data.images.length ?
                                 data.images.map((image: any) => {
                                     return (
                                         <div key={image.id}>
-                                            <img src={image.url} alt="" className="object-contain aspect-[1/1] max-w-[100%]" />
+                                            <img
+                                                src={image.url}
+                                                alt=""
+                                                className="object-contain aspect-[1/1]"
+                                            />
                                         </div>
                                     )
                                 }) :
@@ -133,7 +137,7 @@ export default function Page() {
                             }
                         </CarouselProductImage>
                     </div>
-                    <div className="basis-[50%]">
+                    <div className="md:col-span-3">
                         <div className="text-xl font-semibold">{data.name_zh}</div>
                         <div
                             className="text-sm text-secondary mt-4"

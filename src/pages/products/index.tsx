@@ -85,7 +85,7 @@ export default function Page() {
                                         className="object-contain w-full"
                                     />
                                 </div>
-                                <div className="md:col-span-4">
+                                <div className="md:col-span-4 mt-4 md:mt-0">
                                     <CarouselProduct>
                                         {products
                                             .filter((product) => {
