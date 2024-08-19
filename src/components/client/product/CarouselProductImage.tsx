@@ -38,7 +38,6 @@ export default function CarouselProductImage({ children }: Props) {
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
             renderButtonGroupOutside
-            renderDotsOutside
         >
             {children}
         </Carousel>
