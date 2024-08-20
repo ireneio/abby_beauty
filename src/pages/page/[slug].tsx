@@ -11,10 +11,10 @@ export default function Page() {
         content: '',
     })
 
-    const getData = async () => {
+    const getData = async (slug: string) => {
         const res = await api({
             method: 'GET',
-            url: `/client/page/${router.query.slug}`
+            url: `/client/page/${slug}`
         })
         if (res.code === 0) {
             setData(res.data)
@@ -22,8 +22,10 @@ export default function Page() {
     }
 
     useEffect(() => {
-        getData()
-    }, [])
+        if (router.query.slug) {
+            getData(router.query.slug as string)
+        }
+    }, [router.query.slug])
 
     return (
         <>
