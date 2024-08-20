@@ -30,8 +30,8 @@ export default function Page() {
     return (
         <>
             <RootLayout>
-                <div>{data.title}</div>
-                <div className="mt-4">
+                <div className="px-4">{data.title}</div>
+                <div className="mt-4 px-4">
                     <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
                 </div>
             </RootLayout>
