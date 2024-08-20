@@ -81,6 +81,10 @@ export default function Page() {
         getTableData()
     }, [])
 
+    const handlePreview = (row: any) => {
+      window.open(`${process.env.NEXT_PUBLIC_SITE_URL}/page/${row.slug}`, '_blank')
+    }
+
   return (
     <LayoutAdmin>
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -146,7 +150,7 @@ export default function Page() {
                                 操作
                               </DropdownButton>
                               <DropdownMenu anchor="bottom end">
-                                  <DropdownItem>預覽</DropdownItem>
+                                  <DropdownItem onClick={() => handlePreview(row)}>預覽</DropdownItem>
                                   <DropdownItem href={`/admin/pages/${row.id}/view`}>查看</DropdownItem>
                                   <DropdownItem href={`/admin/pages/${row.id}/edit`}>編輯</DropdownItem>
                               </DropdownMenu>

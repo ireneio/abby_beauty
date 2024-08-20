@@ -17,6 +17,24 @@ class PagesController {
 
         return rows
     }
+    async getBySlug({
+        slug,
+        allow_access,
+    }: {
+        slug: string,
+        allow_access?: boolean,
+    }) {
+        const query = db.selectFrom('pages')
+        if (allow_access !== undefined) {
+            query.where('allow_access', '=', allow_access)
+        }
+        const row = await query
+            .where('slug', '=', slug)
+            .selectAll()
+            .executeTakeFirst()
+
+        return row
+    }
     async getById({
         id,
         allow_access,

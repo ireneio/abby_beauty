@@ -42,8 +42,6 @@ export default function Page() {
     const router = useRouter()
     const { api } = useApi()
 
-    const [imagePreviewList, setImagePreviewList] = useState<any[]>([])
-
     const {
         register,
         handleSubmit,
@@ -66,20 +64,6 @@ export default function Page() {
             method: 'POST',
             url: `/admin/pages`,
             data,
-        })
-        return res
-    }
-
-    const uploadFile = async (file: any) => {
-        const formData = new FormData();
-        formData.append('file', file)
-        const res = await api({
-            method: 'POST',
-            url: `/admin/files`,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            data: formData,
         })
         return res
     }
