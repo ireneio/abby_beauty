@@ -25,7 +25,7 @@ export interface Database {
   products: Product,
   pages: Page,
   class_types: ClassType,
-  page_private: PagePrivate,
+  pages_private: PagePrivate,
 }
 
 export const db = createKysely<Database>({

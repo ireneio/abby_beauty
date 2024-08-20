@@ -4,7 +4,7 @@ class PagesPrivateController {
     async getAll(params?: {
         allow_access?: boolean,
     }) {
-        const query = db.selectFrom('pages')
+        const query = db.selectFrom('pages_private')
         if (params) {
             const { allow_access } = params
             if (allow_access !== undefined) {
@@ -24,7 +24,7 @@ class PagesPrivateController {
         slug: string,
         allow_access?: boolean,
     }) {
-        const query = db.selectFrom('pages')
+        const query = db.selectFrom('pages_private')
         if (allow_access !== undefined) {
             query.where('allow_access', '=', allow_access)
         }
@@ -42,7 +42,7 @@ class PagesPrivateController {
         id: number,
         allow_access?: boolean,
     }) {
-        const query = db.selectFrom('pages')
+        const query = db.selectFrom('pages_private')
         if (allow_access !== undefined) {
             query.where('allow_access', '=', allow_access)
         }
@@ -62,7 +62,7 @@ class PagesPrivateController {
         slug: string,
         content: string
     }) {
-        const row = await db.insertInto('pages')
+        const row = await db.insertInto('pages_private')
             .values([
                 {
                     title,
@@ -85,7 +85,7 @@ class PagesPrivateController {
         title?: string,
         content?: string
     }) {
-        let query = db.updateTable('pages')
+        let query = db.updateTable('pages_private')
 
         if (slug !== undefined) {
             query = query.set('slug', slug)
