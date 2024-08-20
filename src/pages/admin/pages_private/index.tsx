@@ -82,7 +82,7 @@ export default function Page() {
     }, [])
 
     const handlePreview = (row: any) => {
-      window.open(`${process.env.NEXT_PUBLIC_SITE_URL}/page/${row.slug}`, '_blank')
+      window.open(`${process.env.NEXT_PUBLIC_SITE_URL}/page_private/${row.slug}`, '_blank')
     }
 
   return (
