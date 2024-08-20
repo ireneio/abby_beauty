@@ -14,7 +14,7 @@ export default function Page() {
     const getData = async (slug: string) => {
         const res = await api({
             method: 'GET',
-            url: `/client/page/${slug}`
+            url: `/client/pages/${slug}`
         })
         if (res.code === 0) {
             setData(res.data)
