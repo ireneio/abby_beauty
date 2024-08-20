@@ -17,7 +17,12 @@ export default function Page() {
             url: `/client/pages/${slug}`
         })
         if (res.code === 0) {
-            setData(res.data)
+            setData({
+                ...res.data,
+                content: res.data.content
+                    .replaceAll('&lt;', '<')
+                    .replaceAll('&gt;', '>')
+            })
         }
     }
 
