@@ -35,7 +35,7 @@ export default function Page() {
     return (
         <>
             <div className="mt-4 px-4">{data.title}</div>
-            <div className="mt-4 px-4">
+            <div className="mt-4 mb-4 px-4">
                 <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
             </div>
         </>
