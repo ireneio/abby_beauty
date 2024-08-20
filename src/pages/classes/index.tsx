@@ -89,9 +89,6 @@ export default function Page() {
                 </div>
                 <div className="mt-4 px-4">
                     <div className="max-w-sm mx-auto bg-primary p-4">
-                        {/* <div className="bg-pink-300 p-4 text-center text-lg font-bold">
-                            艾比美容工作室課程介紹
-                        </div> */}
                         <div className="space-y-4">
                             {classesMemo.map((value: any) => {
                                 return (
