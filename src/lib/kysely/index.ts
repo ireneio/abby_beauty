@@ -10,6 +10,7 @@ import ProductImage from './models/ProductImage'
 import Product from './models/Product'
 import Page from './models/Page'
 import ClassType from './models/ClassType'
+import PagePrivate from './models/PagePrivate'
 
 // Keys of this interface are table names.
 export interface Database {
@@ -24,6 +25,7 @@ export interface Database {
   products: Product,
   pages: Page,
   class_types: ClassType,
+  page_private: PagePrivate,
 }
 
 export const db = createKysely<Database>({

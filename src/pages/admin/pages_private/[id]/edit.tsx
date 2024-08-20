@@ -27,8 +27,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { ReactSortable } from "react-sortablejs";
 
 export const metadata: Metadata = {
-  title: '自訂頁面',
-  description: '編輯自訂頁面',
+  title: '小抄頁面',
+  description: '編輯小抄頁面',
 }
 
 type Inputs = {
@@ -41,8 +41,6 @@ export default function Page() {
     const dispatch = useAppDispatch()
     const router = useRouter()
     const { api } = useApi()
-
-    const [imagePreviewList, setImagePreviewList] = useState<any[]>([])
 
     const {
         register,
@@ -64,22 +62,8 @@ export default function Page() {
     const update = async (data: any) => {    
         const res = await api({
             method: 'POST',
-            url: `/admin/pages/${router.query.id}`,
+            url: `/admin/pages_private/${router.query.id}`,
             data,
-        })
-        return res
-    }
-
-    const uploadFile = async (file: any) => {
-        const formData = new FormData();
-        formData.append('file', file)
-        const res = await api({
-            method: 'POST',
-            url: `/admin/files`,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            data: formData,
         })
         return res
     }
@@ -90,18 +74,16 @@ export default function Page() {
         })
 
         if (res.code === 0) {
-            router.replace(`/admin/pages/${router.query.id}/view`)
+            router.replace(`/admin/pages_private/${router.query.id}/view`)
         } else {
             dispatch(openAlert({ title: `錯誤(${res.code})` }))
         }
     }
 
-    const imageRef = useRef(null)
-
     const getData = async () => {
       const res = await api({
         method: 'GET',
-        url: `/admin/pages/${router.query.id}`,
+        url: `/admin/pages_private/${router.query.id}`,
       })
       return res
     }
@@ -123,7 +105,7 @@ export default function Page() {
     <LayoutAdmin>
         <NotificationPopup />
         <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
-            <Heading>編輯自訂頁面</Heading>
+            <Heading>編輯小抄頁面</Heading>
             <Divider className="my-10 mt-6" />
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -177,10 +159,10 @@ export default function Page() {
             <Divider className="my-10" soft />
 
             <div className="flex justify-end gap-4">
-              <Button type="reset" plain onClick={() => router.push(`/admin/pages`)}>
+              <Button type="reset" plain onClick={() => router.push(`/admin/pages_private`)}>
                 返回列表
               </Button>
-              <Button type="reset" plain onClick={() => router.push(`/admin/pages/${router.query.id}/view`)}>
+              <Button type="reset" plain onClick={() => router.push(`/admin/pages_private/${router.query.id}/view`)}>
                 查看
               </Button>
               <Button
