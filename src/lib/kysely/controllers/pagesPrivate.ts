@@ -13,6 +13,7 @@ class PagesPrivateController {
         }
         const rows = await query
             .selectAll()
+            .orderBy('order', 'asc')
             .execute()
 
         return rows
