@@ -148,7 +148,7 @@ export default function Home() {
           name: '肌底保養',
         },
         {
-          id: 'j',
+          id: 'l',
           name: '課後休憩熱茶',
         },
       ]

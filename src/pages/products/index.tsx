@@ -136,41 +136,47 @@ export default function Page() {
                                 </div>
                             )
                         })}
-                        <div className="space-y-4 cursor-pointer">
-                            <div className="text-sm md:text-md bg-primary text-secondary px-4 py-4">
-                                其他產品
-                            </div>
-                        </div>
-                        <div>
-                            <CarouselProduct>
-                                {products
-                                    .filter((product) => {
-                                        return !product.product_type_id
-                                    })
-                                    .map((product) => {
-                                        return (
-                                            <div key={product.id} className="relative" onClick={() => router.push(`/products/${product.id}`)}>
-                                                <div className="px-4">
-                                                    <div className="min-h-[140px] flex items-center justify-center">
-                                                        {product.image.url ?
-                                                            <Image
-                                                                src={product.image.url}
-                                                                alt={product.name_zh}
-                                                                objectFit="contain"
-                                                                width={140}
-                                                                height={140}
-                                                            /> :
-                                                            <div className="w-[140px] h-[140px]"></div>}
+                        {products
+                            .filter((product) => {
+                                return !product.product_type_id
+                            }).length ?
+                            <>
+                                <div className="space-y-4 cursor-pointer">
+                                    <div className="text-sm md:text-md bg-primary text-secondary px-4 py-4">
+                                        其他產品
+                                    </div>
+                                </div>
+                                <div>
+                                    <CarouselProduct>
+                                        {products
+                                            .filter((product) => {
+                                                return !product.product_type_id
+                                            })
+                                            .map((product) => {
+                                                return (
+                                                    <div key={product.id} className="relative" onClick={() => router.push(`/products/${product.id}`)}>
+                                                        <div className="px-4">
+                                                            <div className="min-h-[140px] flex items-center justify-center">
+                                                                {product.image.url ?
+                                                                    <Image
+                                                                        src={product.image.url}
+                                                                        alt={product.name_zh}
+                                                                        objectFit="contain"
+                                                                        width={140}
+                                                                        height={140}
+                                                                    /> :
+                                                                    <div className="w-[140px] h-[140px]"></div>}
+                                                            </div>
+                                                            <div className="text-sm md:text-md pb-4 pt-2">
+                                                                <div className="text-secondary">{product.name_zh}</div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className="text-sm md:text-md pb-4 pt-2">
-                                                        <div className="text-secondary">{product.name_zh}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                            </CarouselProduct>
-                        </div>
+                                                )
+                                            })}
+                                    </CarouselProduct>
+                                </div>
+                            </> : null}
                     </div>
                 </div>
             </RootLayout>

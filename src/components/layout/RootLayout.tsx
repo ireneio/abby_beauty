@@ -24,7 +24,7 @@ import openLineAtAccount from '@/lib/utils/openLineAtAccount'
 import LineFloatButton from '../client/LineFloatButton'
 import useApi from '@/lib/hooks/useApi'
 import { useRouter } from 'next/router'
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid'
+import { ArrowDownIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid'
 
 const RootLayoutContext = createContext<{
   logoHovered: boolean
@@ -55,6 +55,7 @@ function Header({
   onToggle,
   toggleRef,
   invert = false,
+  productTypes,
 }: {
   panelId: string
   icon: React.ComponentType<{ className?: string }>
@@ -62,29 +63,60 @@ function Header({
   onToggle: () => void
   toggleRef: React.RefObject<HTMLButtonElement>
   invert?: boolean
+  productTypes: any[]
 }) {
+  const router = useRouter()
   let { logoHovered, setLogoHovered } = useContext(RootLayoutContext)!
 
   return (
     // <Container>
       <div className="flex items-center justify-between max-w-7xl mx-auto px-4">
-        <Link
-          href="/"
-          aria-label="Home"
-          onMouseEnter={() => setLogoHovered(true)}
-          onMouseLeave={() => setLogoHovered(false)}
-        >
-          <Logomark
-            className="h-8 sm:hidden"
-            invert={invert}
-            filled={logoHovered}
-          />
-          <Logo
-            className="hidden h-8 sm:block"
-            invert={invert}
-            filled={logoHovered}
-          />
-        </Link>
+        <div className='flex items-center gap-12'>
+          <Link
+            href="/"
+            aria-label="Home"
+            onMouseEnter={() => setLogoHovered(true)}
+            onMouseLeave={() => setLogoHovered(false)}
+          >
+            <Logomark
+              className="h-8 sm:hidden"
+              invert={invert}
+              filled={logoHovered}
+            />
+            <Logo
+              className="hidden h-8 sm:block"
+              invert={invert}
+              filled={logoHovered}
+            />
+          </Link>
+          <div className='hidden lg:flex h-full gap-x-8'>
+            <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/classes')}>
+              <div className='text-sm text-secondary'>課程介紹</div>
+            </div>
+            <div className='relative group'>
+              <div className='cursor-pointer flex items-center hover:opacity-[0.75] py-4'>
+                <div className='text-sm text-secondary'>產品介紹</div>
+                <div>
+                  <ChevronDownIcon className='text-secondary w-[20px] h-[20px]' />
+                </div>
+              </div>
+              <div className='text-secondary text-xs opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-12 left-0 min-w-[200px] bg-white shadow-lg border border-gray-200 transition-opacity duration-200'>
+                <div className='py-2 px-2 cursor-pointer hover:opacity-[0.75]' onClick={() => router.push('/products')}>全系列產品</div>
+                  {productTypes.map((productType: any) => {
+                    return (
+                      <div
+                        key={productType.id}
+                        onClick={() => router.push(`/product/series/${productType.id}`)}
+                        className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
+                      >
+                        {productType.name}
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="flex items-center gap-x-8">
           <Button onClick={() => openLineAtAccount()}>
             預約諮詢
@@ -96,7 +128,7 @@ function Header({
             aria-expanded={expanded ? 'true' : 'false'}
             aria-controls={panelId}
             className={clsx(
-              'group -m-2.5 rounded-full p-2.5 transition',
+              'lg:hidden group -m-2.5 rounded-full p-2.5 transition',
               invert ? 'hover:bg-white/10' : 'hover:bg-neutral-950/10',
             )}
             aria-label="Toggle navigation"
@@ -154,27 +186,9 @@ function NavigationItem({
   )
 }
 
-function Navigation() {
+function Navigation({ productTypes }: { productTypes: any[] }) {
   const router = useRouter()
-  const { api } = useApi()
-  const [productTypes, setProductTypes] = useState<any[]>([])
   const [expandedIndexList, setExpandedIndexList] = useState<number[]>([])
-
-  const getProductTypes = async () => {
-    const res = await api({
-      method: 'GET',
-      url: '/client/product_types'
-    })
-    if (res.code === 0) {
-      setProductTypes(res.data)
-    } else {
-      setProductTypes([])
-    }
-  }
-
-  useEffect(() => {    
-    getProductTypes()
-  }, [])
 
   const handleSetExpand = (index: number) => {
     if (expandedIndexList.includes(index)) {
@@ -206,7 +220,7 @@ function Navigation() {
         >
           全系列產品
         </div>
-        {productTypes.map((productType) => {
+        {productTypes.map((productType: any) => {
           return (
             <div
               key={productType.id}
@@ -229,6 +243,9 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
   let navRef = useRef<React.ElementRef<'div'>>(null)
   let shouldReduceMotion = useReducedMotion()
 
+  const { api } = useApi()
+  const [productTypes, setProductTypes] = useState<any[]>([])
+
   useEffect(() => {
     function onClick(event: MouseEvent) {
       if (
@@ -244,6 +261,22 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener('click', onClick)
     }
+  }, [])
+
+  const getProductTypes = async () => {
+    const res = await api({
+      method: 'GET',
+      url: '/client/product_types'
+    })
+    if (res.code === 0) {
+      setProductTypes(res.data)
+    } else {
+      setProductTypes([])
+    }
+  }
+
+  useEffect(() => {
+    getProductTypes()
   }, [])
 
   return (
@@ -266,6 +299,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
                 closeRef.current?.focus({ preventScroll: true }),
               )
             }}
+            productTypes={productTypes}
           />
         </div>
 
@@ -292,9 +326,10 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
                     openRef.current?.focus({ preventScroll: true }),
                   )
                 }}
+                productTypes={productTypes}
               />
             </div>
-            <Navigation />
+            <Navigation productTypes={productTypes} />
             {/* <div className="relative bg-[#f5f1eb] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[#ccc]">
               <Container className='px-6 py-4'>
                 <Button>

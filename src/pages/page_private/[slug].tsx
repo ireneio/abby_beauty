@@ -35,7 +35,7 @@ export default function Page() {
 
     return (
         <>
-            <div className="mt-4 px-4 flex items-center gap-4">
+            <div className="mt-4 px-4 pb-4 flex items-center gap-4 border-b border-b-[#ccc]">
                 <div onClick={() => router.push('/page_private')}>
                     <ArrowLeftIcon className="w-[24px] h-[24px]" />
                 </div>
