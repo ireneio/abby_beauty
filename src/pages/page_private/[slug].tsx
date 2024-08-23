@@ -42,7 +42,9 @@ export default function Page() {
                 <span>{data.title}</span>
             </div>
             <div className="mt-4 mb-4 px-4">
-                <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+                <div className="overflow-auto">
+                    <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+                </div>
             </div>
         </>
     )
