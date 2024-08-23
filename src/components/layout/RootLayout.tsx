@@ -230,7 +230,7 @@ function Navigation({ productTypes }: { productTypes: any[] }) {
           )
         })}
       </div>
-      {/* <div className='border-b-[1px] border-b-[#ccc]'></div> */}
+      <div className='h-8 w-full bg-[#f5f1eb]'></div>
     </nav>
   )
 }
