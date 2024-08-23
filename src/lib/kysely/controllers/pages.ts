@@ -12,7 +12,12 @@ class PagesController {
             }
         }
         const rows = await query
-            .selectAll()
+            .select([
+                'id',
+                'title',
+                'allow_access',
+                'created_at'
+            ])
             .execute()
 
         return rows

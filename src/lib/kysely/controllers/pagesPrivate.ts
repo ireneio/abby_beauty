@@ -12,7 +12,13 @@ class PagesPrivateController {
             }
         }
         const rows = await query
-            .selectAll()
+            .select([
+                'id',
+                'title',
+                'order',
+                'allow_access',
+                'created_at',
+            ])
             .orderBy('order', 'asc')
             .execute()
 
