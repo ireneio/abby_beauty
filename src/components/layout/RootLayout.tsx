@@ -201,7 +201,7 @@ function Navigation({ productTypes }: { productTypes: any[] }) {
   }
 
   return (
-    <nav className="font-display text-md font-medium tracking-tight text-white">
+    <nav className="max-h-[calc(100vh-112px)] overflow-auto font-display text-md font-medium tracking-tight text-white">
       <NavigationRow>
         <NavigationItem href="/">首頁</NavigationItem>
         <NavigationItem href="/classes">課程介紹</NavigationItem>
@@ -224,7 +224,7 @@ function Navigation({ productTypes }: { productTypes: any[] }) {
           return (
             <div
               key={productType.id}
-              className='border-b border-b-[#ccc] cursor-pointer px-8 py-2 hover:opacity-[0.75]'
+              className='border-b border-b-[#ccc] cursor-pointer px-12 py-2 hover:opacity-[0.75]'
               onClick={() => router.push(`/product/series/${productType.id}`)}
             >{productType.name}</div>
           )
@@ -281,9 +281,9 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
 
   return (
     <MotionConfig transition={shouldReduceMotion ? { duration: 0 } : undefined}>
-      <header>
+      <header className='fixed top-0 left-0 z-[2] w-full'>
         <div
-          className="absolute left-0 right-0 top-2 z-40 pt-4"
+          className="bg-white absolute left-0 right-0 top-2 lg:top-0 z-40 pt-4 pb-4"
           aria-hidden={expanded ? 'true' : undefined}
           // @ts-ignore (https://github.com/facebook/react/issues/17157)
           inert={expanded ? '' : undefined}
@@ -307,7 +307,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
           layout
           id={panelId}
           style={{ height: expanded ? 'auto' : '0.5rem' }}
-          className="relative z-50 overflow-hidden bg-[#f5f1eb] pt-2"
+          className="lg:hidden relative z-50 overflow-hidden bg-[#f5f1eb] pt-2"
           aria-hidden={expanded ? undefined : 'true'}
           // @ts-ignore (https://github.com/facebook/react/issues/17157)
           inert={expanded ? undefined : ''}
@@ -344,7 +344,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
       <motion.div
         layout
         style={{ borderTopLeftRadius: 40, borderTopRightRadius: 40 }}
-        className="relative flex flex-auto overflow-hidden bg-white pt-[calc(88px+12px)]"
+        className="relative flex flex-auto overflow-hidden bg-white pt-[calc(112px)] lg:pt-[calc(112px - 8px)]"
       >
         <motion.div
           layout
