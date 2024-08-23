@@ -15,6 +15,7 @@ class PagesController {
             .select([
                 'id',
                 'title',
+                'slug',
                 'allow_access',
                 'created_at'
             ])

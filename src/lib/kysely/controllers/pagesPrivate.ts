@@ -15,6 +15,7 @@ class PagesPrivateController {
             .select([
                 'id',
                 'title',
+                'slug',
                 'order',
                 'allow_access',
                 'created_at',
