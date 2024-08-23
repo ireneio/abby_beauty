@@ -438,7 +438,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div> */}
-                <div className="mt-8">
+                <div className="mt-0">
                   <div className="font-light text-sm text-secondary leading-[36px] tracking-[1.5px]">
                     我們為對美容充滿興趣與熱忱的零基礎學員，提供專業的教學課程和手技訓練，涵蓋初階與進階班，並提供終身免費複訓的權利。學員無需綁約，亦不需繳納任何形式的訂金。
                     <br /><br />課程由經驗豐富的專業講師以系統化的方式授課，指導肌膚判別、皮膚生理學、產品學、銷售技巧等專業知識，並提供精心編寫、圖文並茂的教材供學員使用。
