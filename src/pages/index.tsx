@@ -3,7 +3,7 @@ import CarouselBanner from "@/components/client/home/CarouselBanner";
 import CarouselComments from "@/components/client/home/CarouselComments";
 import { Logo } from "@/components/client/Logo";
 import { RootLayout } from "@/components/layout/RootLayout";
-import openLineAtAccount from "@/lib/utils/openLineAtAccount";
+import openLineAtAccount, { lineAccountHandle } from "@/lib/utils/openLineAtAccount";
 import { ArchiveBoxIcon, BookOpenIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import Head from "next/head";
 import Image from "next/image";
@@ -15,20 +15,32 @@ export default function Home() {
   const [banners] = useState<any[]>([
     {
       id: '1',
-      image: '/images/banner_1.jpg',
-      image_mobile: '/images/banner_mobile_1.jpg',
-      url: '/product/series/3'
+      image: '/images/banners/戰痘達人_橫幅.jpg',
+      image_mobile: '/images/banners/戰痘達人_直幅.jpg',
+      url: `https://line.me/R/ti/p/${lineAccountHandle}`
     },
     {
       id: '2',
-      image: '/images/banner_2.jpg',
-      image_mobile: '/images/banner_mobile_2.jpg',
-      url: '/product/series/16'
+      image: '/images/banners/輕粉戰痘_橫幅.jpg',
+      image_mobile: '/images/banners/輕粉戰痘_直幅.jpg',
+      url: '/product/series/8'
     },
     {
       id: '3',
-      image: '/images/banner_3.jpg',
-      image_mobile: '/images/banner_mobile_3.jpg',
+      image: '/images/banners/banner_1.jpg',
+      image_mobile: '/images/banners/banner_mobile_1.jpg',
+      url: '/product/series/3'
+    },
+    {
+      id: '4',
+      image: '/images/banners/banner_2.jpg',
+      image_mobile: '/images/banners/banner_mobile_2.jpg',
+      url: '/product/series/16'
+    },
+    {
+      id: '5',
+      image: '/images/banners/banner_3.jpg',
+      image_mobile: '/images/banners/banner_mobile_3.jpg',
       url: '/product/series/2'
     },
   ])
@@ -386,22 +398,54 @@ export default function Home() {
             <div className="mt-12 md:mt-8">
               <div className="bg-primary px-8 py-8 shadow-md rounded-md">
                 
-                <div className="grid grid-cols-2 gap-x-8 mt-8">
+                {/* <div className="grid grid-cols-2 gap-x-8 mt-8">
                   <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
                     <div>
                       <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
                     </div>
-                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">專業的培訓課程</div>
+                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
+                      專業講師系統化教學
+                    </div>
                   </div>
                   <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
-                    <ArchiveBoxIcon className="text-primary w-[48px] h-[48px]" />
-                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">優質的產品購買管道</div>
+                    <Hand className="text-primary w-[48px] h-[48px]" />
+                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
+                      資深美容師一對一輔導手技
+                    </div>
                   </div>
-                </div>
+                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
+                    <div>
+                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
+                    </div>
+                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
+                      圖文並茂的教學教材
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
+                    <div>
+                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
+                    </div>
+                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
+                      專屬的進貨管道
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
+                    <div>
+                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
+                    </div>
+                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
+                      終身複訓資格
+                    </div>
+                  </div>
+                </div> */}
                 <div className="mt-8">
                   <div className="font-light text-sm text-secondary leading-[36px] tracking-[1.5px]">
-                    我們專為有志於在美容行業發展的學員設計了一系列培訓課程，涵蓋最新的技術與趨勢，幫助您快速提升技能，打下堅實的職業基礎。
-                    <br/> <br/>同時，您還將獲得我們的專屬產品購買管道，以優惠價格獲取業界頂尖的美容產品，助力您的專業發展。在這裡，您不僅將接受高標準的教育，還能建立起專業網絡，開啟通往成功的職業生涯。我們誠摯邀請您加入，與我們一起成就美麗與夢想！
+                    我們為對美容充滿興趣與熱忱的零基礎學員，提供專業的教學課程和手技訓練，涵蓋初階與進階班，並提供終身免費複訓的權利。學員無需綁約，亦不需繳納任何形式的訂金。
+                    <br /><br />課程由經驗豐富的專業講師以系統化的方式授課，指導肌膚判別、皮膚生理學、產品學、銷售技巧等專業知識，並提供精心編寫、圖文並茂的教材供學員使用。
+                    <br /><br />課程中將分享克麗緹娜產品，針對不同膚況提供醫美級的產品選擇。
+                    <br /><br />此外，資深美容師將在課程中指導美容手技。課程外，學員還可享受加盟店長的手把手專業輔導，包含臨摹、實際客人操作和手技矯正等專業指導。
+                    <br /><br />課程結束後，公司提供完善的加盟開店制度，提供學員專屬的進貨管道及協助打造加盟品牌。
+                    <br /><br />我們的產品均由克麗緹娜提供。克麗緹娜是一個擁有超過三十年歷史的美容品牌，在台灣及國際市場廣受歡迎，連續8次榮獲國際品牌獎，並在全球擁有數千家加盟店。
                   </div>
                 </div>
                 <div className="mt-8 flex justify-center">
