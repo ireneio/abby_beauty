@@ -26,17 +26,17 @@ type FormInputs = {
     know_us_list: string[]
 }
 
-function Page({ swal, data }: any) {
+function Page({ swal, serverData }: any) {
     const router = useRouter()
     const { api } = useApi()
-    // const [data, setData] = useState({
-    //     id: '',
-    //     title_short: '',
-    //     title: '',
-    //     slug: '',
-    //     subtitle: '',
-    //     content: '',
-    // })
+    const [data, setData] = useState({
+        id: '',
+        title_short: '',
+        title: '',
+        slug: '',
+        subtitle: '',
+        content: '',
+    })
 
     const timeOfDayOptions = [
         { label: '上午 (10:00-12:00)', value: '上午 (10:00-12:00)' },
@@ -97,29 +97,29 @@ function Page({ swal, data }: any) {
         await createTrialReservation(data)
     }
 
-    // const getData = async (slug: string) => {
-    //     const res = await api({
-    //         method: 'GET',
-    //         url: `/client/trials/${slug}`
-    //     })
-    //     if (res.code === 0) {
-    //         setData(res.data)
-    //     }
-    // }
+    const getData = async (slug: string) => {
+        const res = await api({
+            method: 'GET',
+            url: `/client/trials/${slug}`
+        })
+        if (res.code === 0) {
+            setData(res.data)
+        }
+    }
 
-    // useEffect(() => {
-    //     if (router.query.slug) {
-    //         getData(router.query.slug as string)
-    //     }
-    // }, [router.query.slug])
+    useEffect(() => {
+        if (router.query.slug) {
+            getData(router.query.slug as string)
+        }
+    }, [router.query.slug])
 
     return (
         <>
             <Head>
-                <title>{data.title_short}</title>
-                <meta name="description" content={`預約體驗課程 - ${data.title} | 艾比美容工作室`} />
-                <meta property="og:title" content={data.title_short} />
-                <meta property="og:description" content={`預約體驗課程 - ${data.title} | 艾比美容工作室`} />
+                <title>{serverData.title_short}</title>
+                <meta name="description" content={`預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
+                <meta property="og:title" content={serverData.title_short} />
+                <meta property="og:description" content={`預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
                 {/* {data.images.map((image: any, i: number) => {
                     return(
                         <meta key={i} property="og:image" content={image.url} />
@@ -129,8 +129,8 @@ function Page({ swal, data }: any) {
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
                 {/* <meta name="twitter:card" content={data.images && data.images.length ? data.images[0].url : ''} /> */}
-                <meta name="twitter:title" content={data.title_short} />
-                <meta name="twitter:description" content={`預約體驗課程 - ${data.title} | 艾比美容工作室`} />
+                <meta name="twitter:title" content={serverData.title_short} />
+                <meta name="twitter:description" content={`預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
                 {/* <meta name="twitter:image" content={data.images && data.images.length ? data.images[0].url : ''} /> */}
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
@@ -145,7 +145,7 @@ function Page({ swal, data }: any) {
                         ]}
                     />
                 </div>
-                <h2 className="mt-4 text-highlight text-lg bg-primary px-4 py-4 font-semibold">{data.title}</h2>
+                <h2 className="mt-4 max-w-[720px] mx-auto text-highlight text-lg bg-primary px-4 py-4 font-semibold">{data.title}</h2>
                 <div className="px-4 max-w-[720px] mx-auto">
                     {data.subtitle ? <div className="mt-4 text-sm font-light font-secondary">{data.subtitle}</div> : null}
                     <div className="mt-8 h-[1px] w-full bg-[#ccc]"></div>
@@ -257,14 +257,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         const { slug } = params
         const res = await api(defaultInstance, {
             method: 'GET',
-            url: `/client/trials/${slug}`,
+            url: `/client/trials/${slug}/server`,
         })
         if (res.code === 0) {
-            return { props: { data: res.data } }
+            return { props: { serverData: res.data } }
         }
-        return { props: { data: null }}
+        return { props: { serverData: null }}
     }
-    return { props: { data: null }}
+    return { props: { serverData: null }}
 };
 
 export default withSwal(Page)

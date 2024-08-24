@@ -32,6 +32,18 @@ class TrialsController {
 
         return row
     }
+    async getBySlugServerSide({ slug }: { slug: string }) {
+        const row = await db.selectFrom('trials')
+            .where('hidden', '!=', true)
+            .where('slug', '=', slug)
+            .select([
+                'title',
+                'title_short',
+            ])
+            .executeTakeFirst()
+
+        return row
+    }
     async create({
        title,
        title_short,
