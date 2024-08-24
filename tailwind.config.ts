@@ -16,6 +16,9 @@ const config: Config = {
       colors: {
         primary: '#f5f1eb',
         secondary: '#7a787a',
+        'secondary-dark': '#484a49',
+        danger: '#d95950',
+        highlight: '#8f8472',
       },
       listStyleType: {
         none: 'none',

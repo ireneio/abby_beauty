@@ -41,4 +41,7 @@
       aspect-ratio: 16/9;
     }
   }
+  /* [type="button"].swal2-styled {
+    border-radius: 4px;
+  } */
 }

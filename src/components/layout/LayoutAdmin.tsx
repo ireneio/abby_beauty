@@ -23,7 +23,7 @@ import { SidebarLayout } from '@/components/common/sidebar-layout'
 import { PropsWithChildren, useEffect } from 'react'
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from 'next/router'
-import { ArrowRightStartOnRectangleIcon, BookOpenIcon, ChevronUpIcon, CubeIcon, DocumentIcon, DocumentTextIcon, TagIcon } from '@heroicons/react/16/solid'
+import { ArrowRightStartOnRectangleIcon, BookOpenIcon, ChevronUpIcon, CubeIcon, DocumentIcon, DocumentTextIcon, RectangleGroupIcon, TagIcon } from '@heroicons/react/16/solid'
 
 export default function LayoutAdmin({ children }: PropsWithChildren) {
   const router = useRouter()
@@ -77,6 +77,10 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
           <SidebarBody>
             <SidebarSection>
               <SidebarHeading>課程管理</SidebarHeading>
+              <SidebarItem href="/admin/trials">
+                <RectangleGroupIcon />
+                <SidebarLabel>體驗課程管理</SidebarLabel>
+              </SidebarItem>
               <SidebarItem href="/admin/classes">
                 <BookOpenIcon />
                 <SidebarLabel>課程列表管理</SidebarLabel>

@@ -14,6 +14,7 @@
   "dependencies": {
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
+    "@react-email/tailwind": "^0.1.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@tiptap/pm": "^2.6.4",
     "@tiptap/react": "^2.6.4",
@@ -27,6 +28,7 @@
     "framer-motion": "^11.3.27",
     "fs": "^0.0.1-security",
     "kysely": "^0.27.4",
+    "mailing-core": "^1.1.0",
     "multer": "^1.4.5-lts.1",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
@@ -41,6 +43,8 @@
     "react-quill": "^2.0.0",
     "react-redux": "^9.1.2",
     "react-sortablejs": "^6.1.4",
+    "react-sweetalert2": "^0.6.0",
+    "resend": "^4.0.0",
     "sortablejs": "^1.15.2"
   },
   "devDependencies": {

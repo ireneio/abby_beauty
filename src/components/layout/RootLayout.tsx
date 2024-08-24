@@ -56,6 +56,7 @@ function Header({
   toggleRef,
   invert = false,
   productTypes,
+  trials,
 }: {
   panelId: string
   icon: React.ComponentType<{ className?: string }>
@@ -64,6 +65,7 @@ function Header({
   toggleRef: React.RefObject<HTMLButtonElement>
   invert?: boolean
   productTypes: any[]
+  trials: any[]
 }) {
   const router = useRouter()
   let { logoHovered, setLogoHovered } = useContext(RootLayoutContext)!
@@ -90,6 +92,28 @@ function Header({
             />
           </Link>
           <div className='hidden lg:flex h-full gap-x-8'>
+            <div className='relative group'>
+              <div className='cursor-pointer flex items-center hover:opacity-[0.75] py-4'>
+                <div className='text-sm text-secondary'>預約體驗課程</div>
+                <div>
+                  <ChevronDownIcon className='text-secondary w-[20px] h-[20px]' />
+                </div>
+              </div>
+              <div className='text-secondary text-xs opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-12 left-0 min-w-[200px] bg-white shadow-lg border border-gray-200 transition-opacity duration-200'>
+                <div className='py-2 px-2 cursor-pointer hover:opacity-[0.75]' onClick={() => router.push('/products')}>全系列產品</div>
+                  {trials.map((trial: any) => {
+                    return (
+                      <div
+                        key={trial.id}
+                        onClick={() => router.push(`/trial/${trial.slug}`)}
+                        className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
+                      >
+                        {trial.title_short}
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
             <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/classes')}>
               <div className='text-sm text-secondary'>課程介紹</div>
             </div>
@@ -150,10 +174,8 @@ function Header({
 
 function NavigationRow({ className, children }: { className?: string, children: React.ReactNode }) {
   return (
-    <div className={clsx("even:mt-px sm:bg-[#f5f1eb] border-b border-b-[#ccc]", className)}>
-      <Container>
-        <div className="grid grid-cols-1 sm:grid-cols-2">{children}</div>
-      </Container>
+    <div className={clsx("sm:bg-primary border-b border-b-[#ccc]", className)}>
+      <div className="grid grid-cols-1">{children}</div>
     </div>
   )
 }
@@ -171,22 +193,20 @@ function NavigationItem({
     return (
       <Link
         href={href}
-        className="text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 mt-px sm:mx-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
+        className="px-6 text-secondary-dark group relative isolate bg-primary py-4 mt-px sm:mx-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16"
       >
         {children}
-        <span className="absolute inset-y-0 -z-10 w-screen bg-white opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
       </Link>
     )
   }
   return (
-    <div onClick={() => onClick && onClick()} className='text-[#484a49] group relative isolate -mx-6 bg-[#f5f1eb] px-6 py-4 mt-px sm:mx-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16'>
+    <div onClick={() => onClick && onClick()} className='px-6 text-secondary-dark group relative isolate bg-primary py-4 mt-px sm:mx-0 sm:even:border-l sm:even:border-[#ccc] sm:even:pl-16'>
       {children}
-      <span className="absolute inset-y-0 -z-10 w-screen bg-white opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
     </div>
   )
 }
 
-function Navigation({ productTypes }: { productTypes: any[] }) {
+function Navigation({ productTypes, trials }: { productTypes: any[], trials: any[] }) {
   const router = useRouter()
   const [expandedIndexList, setExpandedIndexList] = useState<number[]>([])
 
@@ -201,10 +221,34 @@ function Navigation({ productTypes }: { productTypes: any[] }) {
   }
 
   return (
-    <nav className="max-h-[calc(100vh-112px)] overflow-auto font-display text-md font-medium tracking-tight text-white">
+    <nav className="border-t border-t-[#ccc] max-h-[calc(100vh-112px)] overflow-auto font-display text-md font-medium tracking-tight text-white">
       <NavigationRow>
         <NavigationItem href="/">首頁</NavigationItem>
+      </NavigationRow>
+      <NavigationRow>
+        <NavigationItem onClick={() => handleSetExpand(1)}>
+          <div className='flex justify-between'>
+            預約體驗課程
+            <ChevronDownIcon className={clsx('w-[24px]', !expandedIndexList.includes(1) ? 'block' : 'hidden')} />
+            <ChevronUpIcon className={clsx('w-[24px]', expandedIndexList.includes(1) ? 'block' : 'hidden')} />
+          </div>
+        </NavigationItem>
+      </NavigationRow>
+      <div className={clsx('bg-primary text-secondary', expandedIndexList.includes(1) ? 'block' : 'hidden')}>
+        {trials.map((trial: any) => {
+          return (
+            <div
+              key={trial.id}
+              className='border-b border-b-[#ccc] cursor-pointer px-12 py-2 hover:opacity-[0.75]'
+              onClick={() => router.push(`/trial/${trial.slug}`)}
+            >{trial.title_short}</div>
+          )
+        })}
+      </div>
+      <NavigationRow>
         <NavigationItem href="/classes">課程介紹</NavigationItem>
+      </NavigationRow>
+      <NavigationRow>
         <NavigationItem onClick={() => handleSetExpand(0)}>
           <div className='flex justify-between'>
             產品介紹
@@ -230,7 +274,7 @@ function Navigation({ productTypes }: { productTypes: any[] }) {
           )
         })}
       </div>
-      <div className='h-8 w-full bg-[#f5f1eb]'></div>
+      <div className='h-8 w-full bg-primary'></div>
     </nav>
   )
 }
@@ -245,6 +289,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
 
   const { api } = useApi()
   const [productTypes, setProductTypes] = useState<any[]>([])
+  const [trials, setTrials] = useState<any[]>([])
 
   useEffect(() => {
     function onClick(event: MouseEvent) {
@@ -275,8 +320,23 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const getTrials = async () => {
+    const res = await api({
+      method: 'GET',
+      url: '/client/trials'
+    })
+    if (res.code === 0) {
+      setTrials(res.data)
+    } else {
+      setTrials([])
+    }
+  }
+
   useEffect(() => {
-    getProductTypes()
+    Promise.all([
+      getProductTypes(),
+      getTrials()
+    ])
   }, [])
 
   return (
@@ -300,6 +360,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
               )
             }}
             productTypes={productTypes}
+            trials={trials}
           />
         </div>
 
@@ -307,13 +368,13 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
           layout
           id={panelId}
           style={{ height: expanded ? 'auto' : '0.5rem' }}
-          className="lg:hidden relative z-50 overflow-hidden bg-[#f5f1eb] pt-2"
+          className="lg:hidden relative z-50 overflow-hidden bg-primary pt-2"
           aria-hidden={expanded ? undefined : 'true'}
           // @ts-ignore (https://github.com/facebook/react/issues/17157)
           inert={expanded ? undefined : ''}
         >
-          <motion.div layout className="bg-[#ccc]">
-            <div ref={navRef} className="bg-[#f5f1eb] pb-4 pt-4">
+          <motion.div layout>
+            <div ref={navRef} className="bg-primary pb-4 pt-4">
               <Header
                 invert
                 panelId={panelId}
@@ -327,16 +388,13 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
                   )
                 }}
                 productTypes={productTypes}
+                trials={trials}
               />
             </div>
-            <Navigation productTypes={productTypes} />
-            {/* <div className="relative bg-[#f5f1eb] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[#ccc]">
-              <Container className='px-6 py-4'>
-                <Button>
-                  預約諮詢
-                </Button>
-              </Container>
-            </div> */}
+            <Navigation
+              trials={trials}
+              productTypes={productTypes}
+            />
           </motion.div>
         </motion.div>
       </header>
@@ -350,16 +408,9 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
           layout
           className="relative isolate flex w-full flex-col pt-0"
         >
-          {/* <GridPattern
-            className="absolute inset-x-0 -top-14 -z-10 h-[1000px] w-full fill-neutral-50 stroke-neutral-950/5 [mask-image:linear-gradient(to_bottom_left,white_40%,transparent_50%)]"
-            yOffset={-96}
-            interactive
-          /> */}
-
           <main className="w-full flex-auto max-w-7xl mx-auto">
             {children}
           </main>
-
           <Footer />
           <LineFloatButton />
         </motion.div>
