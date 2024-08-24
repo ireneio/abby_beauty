@@ -1,13 +1,30 @@
 import Breadcrumb from "@/components/client/Breadcrumb";
 import { RootLayout } from "@/components/layout/RootLayout";
-import useApi from "@/lib/hooks/useApi";
+import { api } from "@/lib/api/connector";
+import useApi, { defaultInstance } from "@/lib/hooks/useApi";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-export default function Page() {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    if (params) {
+        const { id } = params
+        const res = await api(defaultInstance, {
+            method: 'GET',
+            url: `/client/product_types/${id}`,
+        })
+        if (res.code === 0 && Array.isArray(res.data) && res.data.length > 0) {
+            return { props: { serverData: res.data[0] } }
+        }
+        return { props: { serverData: null }}
+    }
+    return { props: { serverData: null }}
+};
+
+export default function Page({ serverData }: any) {
     const router = useRouter()
     const { api } = useApi()
     const { ref, inView, entry } = useInView({
@@ -80,18 +97,18 @@ export default function Page() {
     return (
         <>
             <Head>
-                <title>{data.name}</title>
-                <meta name="description" content={`${data.name} | 艾比美容工作室`} />
-                <meta property="og:title" content={data.name_zh} />
-                <meta property="og:description" content={`${data.name} | 艾比美容工作室`} />
-                <meta property="og:image" content={data.image_cover} />
+                <title>{serverData.name}</title>
+                <meta name="description" content={`${serverData.name} | 艾比美容工作室`} />
+                <meta property="og:title" content={serverData.name_zh} />
+                <meta property="og:description" content={`${serverData.name} | 艾比美容工作室`} />
+                <meta property="og:image" content={serverData.image_cover} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/product/series/${router.query.id}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
-                <meta name="twitter:card" content={data.image_cover} />
-                <meta name="twitter:title" content={data.name_zh} />
-                <meta name="twitter:description" content={`${data.name} | 艾比美容工作室`} />
-                <meta name="twitter:image" content={data.image_cover} />
+                <meta name="twitter:card" content={serverData.image_cover} />
+                <meta name="twitter:title" content={serverData.name_zh} />
+                <meta name="twitter:description" content={`${serverData.name} | 艾比美容工作室`} />
+                <meta name="twitter:image" content={serverData.image_cover} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>

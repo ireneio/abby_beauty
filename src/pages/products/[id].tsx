@@ -7,12 +7,12 @@ import { api } from "@/lib/api/connector";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import clsx from "clsx";
-import { Metadata, ResolvingMetadata } from "next";
+import { GetServerSideProps, Metadata, ResolvingMetadata } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
-export default function Page() {
+export default function Page({ serverData }: any) {
     const { api } = useApi() 
     const router = useRouter()
     const [data, setData] = useState<any>({
@@ -99,11 +99,11 @@ export default function Page() {
     return (
         <>
             <Head>
-                <title>{data.name_zh}</title>
-                <meta name="description" content={`${data.product_type_name} - ${data.name_zh} | 艾比美容工作室`} />
-                <meta property="og:title" content={data.name_zh} />
-                <meta property="og:description" content={`${data.product_type_name} - ${data.name_zh} | 艾比美容工作室`} />
-                {data.images.map((image: any, i: number) => {
+                <title>{serverData.name_zh}</title>
+                <meta name="description" content={`${serverData.product_type_name} - ${serverData.name_zh} | 艾比美容工作室`} />
+                <meta property="og:title" content={serverData.name_zh} />
+                <meta property="og:description" content={`${serverData.product_type_name} - ${serverData.name_zh} | 艾比美容工作室`} />
+                {serverData.images.map((image: any, i: number) => {
                     return(
                         <meta key={i} property="og:image" content={image.url} />
                     )
@@ -111,10 +111,10 @@ export default function Page() {
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/products/${router.query.id}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
-                <meta name="twitter:card" content={data.images && data.images.length ? data.images[0].url : ''} />
-                <meta name="twitter:title" content={data.name_zh} />
-                <meta name="twitter:description" content={`${data.product_type_name} - ${data.name_zh} | 艾比美容工作室`} />
-                <meta name="twitter:image" content={data.images && data.images.length ? data.images[0].url : ''} />
+                <meta name="twitter:card" content={serverData.images && serverData.images.length ? serverData.images[0].url : ''} />
+                <meta name="twitter:title" content={serverData.name_zh} />
+                <meta name="twitter:description" content={`${serverData.product_type_name} - ${serverData.name_zh} | 艾比美容工作室`} />
+                <meta name="twitter:image" content={serverData.images && serverData.images.length ? serverData.images[0].url : ''} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
@@ -249,3 +249,18 @@ export default function Page() {
         </>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    if (params) {
+        const { id } = params
+        const res = await api(defaultInstance, {
+            method: 'GET',
+            url: `/client/products/${id}`,
+        })
+        if (res.code === 0 && Array.isArray(res.data) && res.data.length > 0) {
+            return { props: { serverData: res.data[0] } }
+        }
+        return { props: { serverData: null }}
+    }
+    return { props: { serverData: null }}
+};
