@@ -8,6 +8,7 @@ import { Select } from "@/components/common/select";
 import { RootLayout } from "@/components/layout/RootLayout";
 import useApi from "@/lib/hooks/useApi";
 import dayjs from "dayjs";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -111,119 +112,141 @@ function Page({ swal }: any) {
     }, [router.query.slug])
 
     return (
-        <RootLayout>
-            <div className="px-4">
-                <Breadcrumb
-                    list={[
-                        { text: '首頁', url: '/' },
-                        { text: '預約體驗課程' },
-                        { text: data.title_short, url: `/trial/${data.slug}` },
-                    ]}
-                />
-            </div>
-            <h2 className="mt-4 text-highlight text-lg bg-primary px-4 py-4 font-semibold">{data.title}</h2>
-            <div className="px-4 max-w-[720px] mx-auto">
-                {data.subtitle ? <div className="mt-4 text-sm font-light font-secondary">{data.subtitle}</div> : null}
-                <div className="mt-8 h-[1px] w-full bg-[#ccc]"></div>
-                <div className="mt-8 text-secondary">
-                    <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+        <>
+            <Head>
+                <title>{data.title_short}</title>
+                <meta name="description" content={`預約體驗課程 - ${data.title} | 艾比美容工作室`} />
+                <meta property="og:title" content={data.title_short} />
+                <meta property="og:description" content={`預約體驗課程 - ${data.title} | 艾比美容工作室`} />
+                {/* {data.images.map((image: any, i: number) => {
+                    return(
+                        <meta key={i} property="og:image" content={image.url} />
+                    )
+                })} */}
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/products/${router.query.id}`} />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="艾比美容工作室"/>
+                {/* <meta name="twitter:card" content={data.images && data.images.length ? data.images[0].url : ''} /> */}
+                <meta name="twitter:title" content={data.title_short} />
+                <meta name="twitter:description" content={`預約體驗課程 - ${data.title} | 艾比美容工作室`} />
+                {/* <meta name="twitter:image" content={data.images && data.images.length ? data.images[0].url : ''} /> */}
+                {/* <meta name="twitter:site" content="@yourtwitterhandle" />
+                <meta name="twitter:creator" content="@creatorhandle" /> */}
+            </Head>
+            <RootLayout>
+                <div className="px-4">
+                    <Breadcrumb
+                        list={[
+                            { text: '首頁', url: '/' },
+                            { text: '預約體驗課程' },
+                            { text: data.title_short, url: `/trial/${data.slug}` },
+                        ]}
+                    />
                 </div>
-                <div className="mt-8 max-w-[500px] mx-auto">
-                    <div className="text-md bg-primary text-secondary text-center px-4 py-4">馬上預約體驗</div>
-                    <div className="mt-4 mb-4 border-b border-b-[#ccc] w-full h-[1px]"></div>
-                    <Field>
-                        <Label>
-                            姓名
-                            <RequiredMark />
-                        </Label>
-                        <Input {...form.register('name', { required: true })} />
-                        {form.formState.errors.name ? <span className="text-danger text-xs">請輸入姓名</span> : null}
-                    </Field>
-                    <Field className="mt-4">
-                        <Label>
-                            Email
-                            <RequiredMark />
-                        </Label>
-                        <Input type="email" {...form.register('email', { required: true })} />
-                        {form.formState.errors.email ? <span className="text-danger text-xs">請輸入正確格式的 Email</span> : null}
-                    </Field>
-                    <Field className="mt-4">
-                        <Label>
-                            聯絡電話
-                            <RequiredMark />
-                        </Label>
-                        <Input type="tel" {...form.register('phone', { required: true })} />
-                        {form.formState.errors.name ? <span className="text-danger text-xs">請輸入聯絡電話</span> : null}
-                    </Field>
-                    <Field className="mt-4">
-                        <Label>
-                            LINE ID
-                        </Label>
-                        <Input {...form.register('line_id')} />
-                        <div className="mt-1 font-light text-sm">以利我們即時與您聯繫。</div>
-                    </Field>
-                    <Field className="mt-4">
-                        <Label>
-                            您想預約的日期
-                            <RequiredMark />
-                        </Label>
-                        <Input min={dayjs().format('YYYY-MM-DD')} type="date" {...form.register('date', { required: true })} />
-                        {form.formState.errors.date ? <span className="text-danger text-xs">請選擇您想預約的日期</span> : null}
-                    </Field>
-                    <Field className="mt-4">
-                        <Label>
-                            方便我們連繫您的時段
-                            <RequiredMark />
-                        </Label>
-                        <Select {...form.register('time_of_day', { required: true })}>
-                            {timeOfDayOptions.map((time, i) => {
-                                return (
-                                    <option key={i} value={time.value}>{time.label}</option>
-                                )
-                            })}
-                        </Select>
-                        {form.formState.errors.time_of_day ? <span className="text-danger text-xs">請選擇方便我們連繫您的時段</span> : null}
-                    </Field>
-                    <Field className="mt-4">
-                        <Label>
-                            您是從哪裡得知我們的網頁呢?
-                        </Label>
-                        <CheckboxGroup>
-                            {knowUsOptions.map((v, i) => {
-                                return (
-                                <CheckboxField key={i}>
-                                    <Checkbox
-                                        onChange={(checked) => {
-                                            if (checked) {
-                                                form.setValue('know_us_list', [...form.getValues('know_us_list'), v.value])
-                                            } else {
-                                                form.setValue('know_us_list', form.getValues('know_us_list').filter((value: any) => value !== v.value))
-                                            }
-                                        }}
-                                        checked={form.watch('know_us_list').includes(v.value)}
-                                    />
-                                    <Label>{v.label}</Label>
-                                </CheckboxField>
-                                )
-                            })}
-                            </CheckboxGroup>
-                    </Field>
-                    <div className="mt-8 flex justify-center">
-                        <Button
-                            loading={form.formState.isSubmitting}
-                            onClick={form.handleSubmit(onSubmit)}
-                        >立即預約</Button>
+                <h2 className="mt-4 text-highlight text-lg bg-primary px-4 py-4 font-semibold">{data.title}</h2>
+                <div className="px-4 max-w-[720px] mx-auto">
+                    {data.subtitle ? <div className="mt-4 text-sm font-light font-secondary">{data.subtitle}</div> : null}
+                    <div className="mt-8 h-[1px] w-full bg-[#ccc]"></div>
+                    <div className="mt-8 text-secondary">
+                        <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
                     </div>
-                    <div className="mt-8">
-                        <div className="text-md text-center text-secondary">
-                            表單送出後不代表預約成功，<br />
-                            我們將於2~3個工作天內<br />
-                            電話與您聯繫確認！感謝您！
+                    <div className="mt-8 max-w-[500px] mx-auto">
+                        <div className="text-md bg-primary text-secondary text-center px-4 py-4">馬上預約體驗</div>
+                        <div className="mt-4 mb-4 border-b border-b-[#ccc] w-full h-[1px]"></div>
+                        <Field>
+                            <Label>
+                                姓名
+                                <RequiredMark />
+                            </Label>
+                            <Input {...form.register('name', { required: true })} />
+                            {form.formState.errors.name ? <span className="text-danger text-xs">請輸入姓名</span> : null}
+                        </Field>
+                        <Field className="mt-4">
+                            <Label>
+                                Email
+                                <RequiredMark />
+                            </Label>
+                            <Input type="email" {...form.register('email', { required: true })} />
+                            {form.formState.errors.email ? <span className="text-danger text-xs">請輸入正確格式的 Email</span> : null}
+                        </Field>
+                        <Field className="mt-4">
+                            <Label>
+                                聯絡電話
+                                <RequiredMark />
+                            </Label>
+                            <Input type="tel" {...form.register('phone', { required: true })} />
+                            {form.formState.errors.name ? <span className="text-danger text-xs">請輸入聯絡電話</span> : null}
+                        </Field>
+                        <Field className="mt-4">
+                            <Label>
+                                LINE ID
+                            </Label>
+                            <Input {...form.register('line_id')} />
+                            <div className="mt-1 font-light text-sm">以利我們即時與您聯繫。</div>
+                        </Field>
+                        <Field className="mt-4">
+                            <Label>
+                                您想預約的日期
+                                <RequiredMark />
+                            </Label>
+                            <Input min={dayjs().format('YYYY-MM-DD')} type="date" {...form.register('date', { required: true })} />
+                            {form.formState.errors.date ? <span className="text-danger text-xs">請選擇您想預約的日期</span> : null}
+                        </Field>
+                        <Field className="mt-4">
+                            <Label>
+                                方便我們連繫您的時段
+                                <RequiredMark />
+                            </Label>
+                            <Select {...form.register('time_of_day', { required: true })}>
+                                {timeOfDayOptions.map((time, i) => {
+                                    return (
+                                        <option key={i} value={time.value}>{time.label}</option>
+                                    )
+                                })}
+                            </Select>
+                            {form.formState.errors.time_of_day ? <span className="text-danger text-xs">請選擇方便我們連繫您的時段</span> : null}
+                        </Field>
+                        <Field className="mt-4">
+                            <Label>
+                                您是從哪裡得知我們的網頁呢?
+                            </Label>
+                            <CheckboxGroup>
+                                {knowUsOptions.map((v, i) => {
+                                    return (
+                                    <CheckboxField key={i}>
+                                        <Checkbox
+                                            onChange={(checked) => {
+                                                if (checked) {
+                                                    form.setValue('know_us_list', [...form.getValues('know_us_list'), v.value])
+                                                } else {
+                                                    form.setValue('know_us_list', form.getValues('know_us_list').filter((value: any) => value !== v.value))
+                                                }
+                                            }}
+                                            checked={form.watch('know_us_list').includes(v.value)}
+                                        />
+                                        <Label>{v.label}</Label>
+                                    </CheckboxField>
+                                    )
+                                })}
+                                </CheckboxGroup>
+                        </Field>
+                        <div className="mt-8 flex justify-center">
+                            <Button
+                                loading={form.formState.isSubmitting}
+                                onClick={form.handleSubmit(onSubmit)}
+                            >立即預約</Button>
+                        </div>
+                        <div className="mt-8">
+                            <div className="text-md text-center text-secondary">
+                                表單送出後不代表預約成功，<br />
+                                我們將於2~3個工作天內<br />
+                                電話與您聯繫確認！感謝您！
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </RootLayout>
+            </RootLayout>
+        </>
     )
 }
 

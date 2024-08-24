@@ -64,9 +64,11 @@ class TrialsReservationsController {
             .executeTakeFirst()
         
         try {
-            await sendTrialsReservationEmail({
-                to: 'keiko15678@gmail.com'
+            const sendTrialsReservationEmailRes = await sendTrialsReservationEmail({
+                to: 'ires63888@gmail.com'
             })
+            console.log('sendTrialsReservationEmailRes', sendTrialsReservationEmailRes);
+            
         } catch (e) {
             console.log(e);
         }
