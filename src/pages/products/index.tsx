@@ -65,14 +65,14 @@ export default function Page() {
                 <meta name="description" content={`產品介紹 | 艾比美容工作室`} />
                 <meta property="og:title" content={"產品介紹"} />
                 <meta property="og:description" content={`產品介紹 | 艾比美容工作室`} />
-                {/* <meta property="og:image" content={data.image_cover} /> */}
+                <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/products`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
-                {/* <meta name="twitter:card" content={data.image_cover} /> */}
+                <meta property="twitter:card" content={`${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`} />
                 <meta name="twitter:title" content={"產品介紹"} />
                 <meta name="twitter:description" content={`產品介紹 | 艾比美容工作室`} />
-                {/* <meta name="twitter:image" content={data.image_cover} /> */}
+                <meta property="twitter:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
