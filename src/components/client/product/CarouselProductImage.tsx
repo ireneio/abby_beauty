@@ -32,7 +32,7 @@ export default function CarouselProductImage({ children }: Props) {
             keyBoardControl={true}
             customTransition="all .5"
             transitionDuration={500}
-            containerClass="w-full"
+            containerClass="w-full pb-8"
             // removeArrowOnDeviceType={["tablet", "mobile"]}
             // deviceType={"mobile"}
             dotListClass="custom-dot-list-style"

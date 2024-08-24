@@ -238,7 +238,7 @@ function Navigation({ productTypes, trials }: { productTypes: any[], trials: any
           return (
             <div
               key={trial.id}
-              className='border-b border-b-[#ccc] cursor-pointer px-12 py-2 hover:opacity-[0.75]'
+              className='border-b border-b-[#ccc] cursor-pointer px-10 py-2 hover:opacity-[0.75]'
               onClick={() => router.push(`/trial/${trial.slug}`)}
             >{trial.title_short}</div>
           )
@@ -258,7 +258,7 @@ function Navigation({ productTypes, trials }: { productTypes: any[], trials: any
       </NavigationRow>
       <div className={clsx('bg-primary text-secondary', expandedIndexList.includes(0) ? 'block' : 'hidden')}>
         <div
-          className='border-b border-b-[#ccc] cursor-pointer px-8 py-2 hover:opacity-[0.75]'
+          className='border-b border-b-[#ccc] cursor-pointer px-6 py-2 hover:opacity-[0.75]'
           onClick={() => router.push(`/products`)}
         >
           全系列產品
@@ -267,7 +267,7 @@ function Navigation({ productTypes, trials }: { productTypes: any[], trials: any
           return (
             <div
               key={productType.id}
-              className='border-b border-b-[#ccc] cursor-pointer px-12 py-2 hover:opacity-[0.75]'
+              className='border-b border-b-[#ccc] cursor-pointer px-10 py-2 hover:opacity-[0.75]'
               onClick={() => router.push(`/product/series/${productType.id}`)}
             >{productType.name}</div>
           )
