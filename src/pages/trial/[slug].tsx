@@ -141,7 +141,7 @@ function Page({ swal, serverData }: any) {
                         list={[
                             { text: '首頁', url: '/' },
                             { text: '預約體驗課程' },
-                            { text: data.title_short, url: `/trial/${data.slug}` },
+                            { text: data.title_short },
                         ]}
                     />
                 </div>
