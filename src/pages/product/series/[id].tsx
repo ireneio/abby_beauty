@@ -99,14 +99,14 @@ export default function Page({ serverData }: any) {
             <Head>
                 <title>{serverData.name}</title>
                 <meta name="description" content={`${serverData.name} | 艾比美容工作室`} />
-                <meta property="og:title" content={serverData.name_zh} />
+                <meta property="og:title" content={serverData.name} />
                 <meta property="og:description" content={`${serverData.name} | 艾比美容工作室`} />
                 <meta property="og:image" content={serverData.image_cover} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/product/series/${router.query.id}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
                 <meta name="twitter:card" content={serverData.image_cover} />
-                <meta name="twitter:title" content={serverData.name_zh} />
+                <meta name="twitter:title" content={serverData.name} />
                 <meta name="twitter:description" content={`${serverData.name} | 艾比美容工作室`} />
                 <meta name="twitter:image" content={serverData.image_cover} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
