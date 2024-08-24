@@ -120,14 +120,14 @@ function Page({ swal, serverData }: any) {
                 <meta name="description" content={`預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
                 <meta property="og:title" content={serverData.title_short} />
                 <meta property="og:description" content={`預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
-                <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`} />
+                <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/trial/${router.query.slug}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="艾比美容工作室"/>
-                <meta property="twitter:card" content={`${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`} />
+                <meta property="twitter:card" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 <meta name="twitter:title" content={serverData.title_short} />
                 <meta name="twitter:description" content={`預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
-                <meta property="twitter:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`} />
+                <meta property="twitter:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
