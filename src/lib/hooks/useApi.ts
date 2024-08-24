@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios"
 import { api } from "../api/connector"
 // import { tokenGetValue } from "./token"
 
-const envApiUrl = '/api'
+const envApiUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api`
 console.log("[env] API_URL", envApiUrl)
 
 export const defaultInstance = axios.create({

@@ -6,8 +6,10 @@ import { Field, Label } from "@/components/common/fieldset";
 import { Input } from "@/components/common/input";
 import { Select } from "@/components/common/select";
 import { RootLayout } from "@/components/layout/RootLayout";
-import useApi from "@/lib/hooks/useApi";
+import { api } from "@/lib/api/connector";
+import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import dayjs from "dayjs";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -24,17 +26,17 @@ type FormInputs = {
     know_us_list: string[]
 }
 
-function Page({ swal }: any) {
+function Page({ swal, data }: any) {
     const router = useRouter()
     const { api } = useApi()
-    const [data, setData] = useState({
-        id: '',
-        title_short: '',
-        title: '',
-        slug: '',
-        subtitle: '',
-        content: '',
-    })
+    // const [data, setData] = useState({
+    //     id: '',
+    //     title_short: '',
+    //     title: '',
+    //     slug: '',
+    //     subtitle: '',
+    //     content: '',
+    // })
 
     const timeOfDayOptions = [
         { label: '上午 (10:00-12:00)', value: '上午 (10:00-12:00)' },
@@ -95,21 +97,21 @@ function Page({ swal }: any) {
         await createTrialReservation(data)
     }
 
-    const getData = async (slug: string) => {
-        const res = await api({
-            method: 'GET',
-            url: `/client/trials/${slug}`
-        })
-        if (res.code === 0) {
-            setData(res.data)
-        }
-    }
+    // const getData = async (slug: string) => {
+    //     const res = await api({
+    //         method: 'GET',
+    //         url: `/client/trials/${slug}`
+    //     })
+    //     if (res.code === 0) {
+    //         setData(res.data)
+    //     }
+    // }
 
-    useEffect(() => {
-        if (router.query.slug) {
-            getData(router.query.slug as string)
-        }
-    }, [router.query.slug])
+    // useEffect(() => {
+    //     if (router.query.slug) {
+    //         getData(router.query.slug as string)
+    //     }
+    // }, [router.query.slug])
 
     return (
         <>
@@ -249,5 +251,20 @@ function Page({ swal }: any) {
         </>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    if (params) {
+        const { slug } = params
+        const res = await api(defaultInstance, {
+            method: 'GET',
+            url: `/client/trials/${slug}`,
+        })
+        if (res.code === 0) {
+            return { props: { data: res.data } }
+        }
+        return { props: { data: null }}
+    }
+    return { props: { data: null }}
+};
 
 export default withSwal(Page)
