@@ -142,15 +142,14 @@ function Page({ swal, serverData }: any) {
                     />
                 </div>
                 <h2 className="mt-4 max-w-[720px] mx-auto text-highlight text-lg bg-primary px-4 py-4 font-semibold">{data.title}</h2>
-                <div className="px-4 max-w-[720px] mx-auto">
-                    {data.subtitle ? <div className="mt-4 text-sm font-light text-secondary">{data.subtitle}</div> : null}
+                <div className="max-w-[720px] mx-auto">
+                    {data.subtitle ? <div className="px-4 mt-4 text-sm font-light text-secondary">{data.subtitle}</div> : null}
                     <div className="mt-4 h-[1px] w-full bg-[#ccc]"></div>
-                    <div className="mt-8 text-secondary">
+                    <div className="px-4 mt-8 text-secondary">
                         <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
                     </div>
-                    <div className="mt-8 max-w-[500px] mx-auto">
+                    <div className="px-4 mt-8 max-w-[500px] mx-auto">
                         <div className="text-md bg-primary text-secondary text-center px-4 py-4">馬上預約體驗</div>
-                        {/* <div className="mt-4 mb-4 border-b border-b-[#ccc] w-full h-[1px]"></div> */}
                         <Field className="mt-4">
                             <Label>
                                 姓名
