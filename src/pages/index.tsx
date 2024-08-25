@@ -17,13 +17,13 @@ export default function Home() {
       id: '1',
       image: '/images/banners/戰痘達人_橫幅.jpg',
       image_mobile: '/images/banners/戰痘達人_直幅.jpg',
-      url: `https://line.me/R/ti/p/${lineAccountHandle}`
+      url: '/product/series/8'
     },
     {
       id: '2',
       image: '/images/banners/輕粉戰痘_橫幅.jpg',
       image_mobile: '/images/banners/輕粉戰痘_直幅.jpg',
-      url: '/product/series/8'
+      url: `https://line.me/R/ti/p/${lineAccountHandle}`
     },
     {
       id: '3',
@@ -286,7 +286,7 @@ export default function Home() {
           </div>
           <div className="mt-12">
             <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
-              精選課程
+              體驗課程
               <div className="mt-2 text-xs tracking-[3px] font-light uppercase">featured sessions</div>
             </div>
             <div className="mt-8">

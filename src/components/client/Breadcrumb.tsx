@@ -14,7 +14,10 @@ export default function Breadcrumb({ list }: Props) {
                 return (
                     <div key={i} className="flex gap-1">
                         <div
-                            className={i !== arr.length - 1 ? clsx("text-secondary cursor-pointer hover:text-black") : "text-black"}
+                            className={clsx(
+                                i !== arr.length - 1 ?  "text-secondary"  : "text-black",
+                                item.url ? 'cursor-pointer hover:text-black' : '',
+                            )}
                             onClick={() => i !== arr.length - 1 && item.url ? router.push(item.url) : null}
                         >
                             {item.text}
