@@ -12,6 +12,7 @@ import {
 
 import { Tailwind } from "@react-email/tailwind";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export default function AdminReservation({ message }: any) {
     return (
@@ -39,6 +40,7 @@ export default function AdminReservation({ message }: any) {
                 <Text>方便預約的時間: {message.time_of_day}</Text>
               </Section>
             </Container>
+            <Footer />
           </Body>
         </Tailwind>
       </Html>
