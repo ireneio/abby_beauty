@@ -32,9 +32,7 @@ const toolbarOptions = [
 
 // Define your custom image handler function
 function imageHandler() {
-  // console.log('editor', editor);
-  
-  // console.log('quill', this.quill.getSelection());
+  // @ts-ignore
   const quill = this.quill
 
   const input = document.createElement('input');
@@ -78,13 +76,6 @@ type Props = {
 }
 
 const WysiwygEditor = ({ onChange, value }: Props) => {
-  // const handleChange = (value, delta, source, editor) => {
-  //   onChange(value)
-
-  //   console.log(value, delta, source, editor);
-    
-  // }
-
   return (
     <ReactQuill
       modules={{
@@ -92,7 +83,6 @@ const WysiwygEditor = ({ onChange, value }: Props) => {
           container: toolbarOptions,
           handlers: {
             'image': imageHandler
-            // 'image': imageHandler // This will not overwrite the handler but set up initially
           }
         }
       }}
