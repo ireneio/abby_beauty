@@ -121,7 +121,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
             <Dropdown>
               <DropdownButton as={SidebarItem}>
                 <span className="flex min-w-0 items-center gap-3">
-                  <Avatar src="/profile-photo.jpg" className="size-10" square alt="" />
+                  {/* <Avatar src="/profile-photo.jpg" className="size-10" square alt="" /> */}
                   <span className="min-w-0">
                     <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
                       {session?.user?.name}
