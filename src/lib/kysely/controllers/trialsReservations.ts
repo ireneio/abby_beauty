@@ -34,6 +34,7 @@ class TrialsReservationsController {
        phone,
        line_id,
        date,
+       trial_name,
        time_of_day,
        know_us_list,
     }: {
@@ -41,16 +42,18 @@ class TrialsReservationsController {
         email: string,
         phone: string,
         date: string,
+        trial_name: string,
         time_of_day: string,
         know_us_list?: string[]
-        line_id?: string
+        line_id?: string,
     }) {
         const values: any = {
             name,
             email,
             phone,
             date,
-            time_of_day
+            time_of_day,
+            trial_name
         }
         if (line_id !== undefined) {
             values.line_id = line_id
@@ -73,6 +76,7 @@ class TrialsReservationsController {
                     date,
                     time_of_day,
                     line_id,
+                    trial_name,
                 }
             })            
         } catch (e) {

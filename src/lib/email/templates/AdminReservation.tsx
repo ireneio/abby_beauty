@@ -19,11 +19,13 @@ export default function AdminReservation({ message }: any) {
         <Head />
         <Preview>艾比美容工作室 | 體驗課程預約通知</Preview>
         <Tailwind>
-          <Body className="bg-gray-100 text-black">
+          <Body className="text-black">
             <Header />
             <Container>
               <Section className="bg-white borderBlack my-10 px-10 py-4 rounded-md">
                 <Heading>預約人資訊</Heading>
+                <Text>體驗的課程: {message.trial_name}</Text>
+                <Hr />
                 <Text>姓名: {message.name}</Text>
                 <Hr />
                 <Text>Email: {message.email}</Text>

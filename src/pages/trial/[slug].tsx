@@ -92,9 +92,11 @@ function Page({ swal, serverData }: any) {
         }
     }
 
-    const onSubmit = async (data: any) => {
-        console.log(data);
-        await createTrialReservation(data)
+    const onSubmit = async (formData: any) => {
+        await createTrialReservation({
+            ...formData,
+            trial_name: data.title_short,
+        })
     }
 
     const getData = async (slug: string) => {
