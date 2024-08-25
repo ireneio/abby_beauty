@@ -133,7 +133,7 @@ export default function Page() {
             url: '/admin/class_types'
         })
         if (res.code === 0) {
-            setClassTypes(res.data)
+            setClassTypes(res.data.classTypes)
         } else {
             setClassTypes([])
         }
@@ -220,7 +220,7 @@ export default function Page() {
                 </div>
             </section>
 
-            <Divider className="my-10" soft />
+            {/* <Divider className="my-10" soft />
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
@@ -230,7 +230,7 @@ export default function Page() {
                 <div>
                 <Input {...register('minutes')} type="tel" aria-label="時長" />
                 </div>
-            </section>
+            </section> */}
 
             <Divider className="my-10" soft />
 
@@ -258,7 +258,7 @@ export default function Page() {
                 </Button>
                 <Button
                     loading={isSubmitting}
-                    disabled={!watch('name') || !watch('minutes')}
+                    disabled={!watch('name')}
                     type="submit"
                 >
                     儲存

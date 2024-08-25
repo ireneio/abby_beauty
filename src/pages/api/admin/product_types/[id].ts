@@ -16,7 +16,7 @@ router.use(async (req, res, next) => {
     return res.status(200).json({
       code: ErrorCode.NOT_AUTHENTICATED,
     })
-  }  
+  }
   const userId = session.user?.id;
   if (!userId) {
     return res.status(200).json({

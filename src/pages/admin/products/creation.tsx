@@ -19,16 +19,12 @@ import { openAlert } from '@/lib/store/features/global/globalSlice'
 import fileToBase64 from '@/lib/utils/fileToBase64'
 import { MinusIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ReactSortable } from "react-sortablejs";
-
-export const metadata: Metadata = {
-  title: '產品',
-  description: '新增產品',
-}
 
 type Inputs = {
     name_en: string,
@@ -158,7 +154,7 @@ export default function Page() {
             url: '/admin/product_types'
         })
         if (res.code === 0) {
-            setProductTypes(res.data)
+            setProductTypes(res.data.productTypes)
         } else {
             setProductTypes([])
         }
@@ -169,214 +165,218 @@ export default function Page() {
     }, [])
 
   return (
-    <LayoutAdmin>
-        <NotificationPopup />
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
-            <Heading>新增產品</Heading>
-            <Divider className="my-10 mt-6" />
+    <>
+        <Head>
+            <title>產品管理</title>
+            <meta name="description" content="新增產品" />
+        </Head>
+        <LayoutAdmin>
+            <NotificationPopup />
+            <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
+                <Heading>新增產品</Heading>
+                <Divider className="my-10 mt-6" />
 
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>
-                        圖片
-                        <RequiredMark />
-                    </Subheading>
-                </div>
-                <div className='space-y-4'>
-                    <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
-                        {imagePreviewList.map((item, i) => (
-                            <div key={i} className='relative w-[148px]'>
-                                <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
-                                    <Button className='w-[2rem] h-[2rem]'>
-                                        <MinusIcon />
-                                    </Button>
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>
+                            圖片
+                            <RequiredMark />
+                        </Subheading>
+                    </div>
+                    <div className='space-y-4'>
+                        <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
+                            {imagePreviewList.map((item, i) => (
+                                <div key={i} className='relative w-[148px]'>
+                                    <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
+                                        <Button className='w-[2rem] h-[2rem]'>
+                                            <MinusIcon />
+                                        </Button>
+                                    </div>
+                                    <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
                                 </div>
-                                <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
-                            </div>
-                        ))}
-                    </ReactSortable>
-                    <Input
-                        ref={imageRef}
-                        type="file"
-                        multiple
-                        accept='image/*'
-                        aria-label="圖片"
-                        onClick={() => {
-                            if (imageRef.current) {
-                                // @ts-ignore
-                                imageRef.current.value = ''
-                            }
-                        }}
-                        onChange={(e) => {                            
-                            const image_list: any = getValues('image_list')                            
-                            if (image_list) {
-                              setValue('image_list', [...image_list, ...e.target.files as any] as any)
-                            } else {
-                              setValue('image_list', [...e.target.files as any] as any)
-                            }
-                            handleSetImagePreview(e.target.files)
-                        }}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>
-                        中文名稱
-                        <RequiredMark />
-                    </Subheading>
-                </div>
-                <div>
-                    <Input {...register('name_zh')} aria-label="中文名稱" />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>
-                        英文名稱
-                    </Subheading>
-                </div>
-                <div>
-                    <Input {...register('name_en')} aria-label="英文名稱" />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>
-                        系列
-                    </Subheading>
-                    <Text>選擇產品系列</Text>
-                </div>
-                <div>
-                    <Select
-                        {...register('product_type_id')}
-                        aria-label="選擇系列"
-                    >
-                        <option value="">選擇系列</option>
-                        {productTypes.map((v) => {
-                            return (
-                                <option key={v.id} value={v.id}>{v.name}</option>
-                            )
-                        })}
-                    </Select>
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>規格</Subheading>
-                </div>
-                <div>
-                    <WysiwygEditor
-                        value={watch('size')}
-                        onChange={(value) => setValue('size', value)}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                <Subheading>產品特點</Subheading>
-                </div>
-                <div>
-                    <WysiwygEditor
-                        value={watch('features')}
-                        onChange={(value) => setValue('features', value)}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                <Subheading>成份內容</Subheading>
-                </div>
-                <div>
-                    <WysiwygEditor
-                        value={watch('ingredients')}
-                        onChange={(value) => setValue('ingredients', value)}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                <Subheading>適用對象</Subheading>
-                </div>
-                <div>
-                    <WysiwygEditor
-                        value={watch('target_users')}
-                        onChange={(value) => setValue('target_users', value)}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                <Subheading>使用方法</Subheading>
-                </div>
-                <div>
-                    <WysiwygEditor
-                        value={watch('usage')}
-                        onChange={(value) => setValue('usage', value)}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>上架狀態</Subheading>
-                    <Text>設定是否上架於前台</Text>
-                </div>
-                <div>
-                    <SwitchField>
-                        <Switch
-                            onChange={(checked) => {
-                                setValue('hidden', !checked)
+                            ))}
+                        </ReactSortable>
+                        <Input
+                            ref={imageRef}
+                            type="file"
+                            multiple
+                            accept='image/*'
+                            aria-label="圖片"
+                            onClick={() => {
+                                if (imageRef.current) {
+                                    // @ts-ignore
+                                    imageRef.current.value = ''
+                                }
                             }}
-                            checked={watch('hidden') === false}
+                            onChange={(e) => {                            
+                                const image_list: any = getValues('image_list')                            
+                                if (image_list) {
+                                setValue('image_list', [...image_list, ...e.target.files as any] as any)
+                                } else {
+                                setValue('image_list', [...e.target.files as any] as any)
+                                }
+                                handleSetImagePreview(e.target.files)
+                            }}
                         />
-                    </SwitchField>
-                </div>
-            </section>
+                    </div>
+                </section>
 
-            <Divider className="my-10" soft />
+                <Divider className="my-10" soft />
 
-            <div className="flex justify-end gap-4">
-            <Button type="reset" plain>
-                <Link href="/admin/products">
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>
+                            中文名稱
+                            <RequiredMark />
+                        </Subheading>
+                    </div>
+                    <div>
+                        <Input {...register('name_zh')} aria-label="中文名稱" />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>
+                            英文名稱
+                        </Subheading>
+                    </div>
+                    <div>
+                        <Input {...register('name_en')} aria-label="英文名稱" />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>
+                            系列
+                        </Subheading>
+                        <Text>選擇產品系列</Text>
+                    </div>
+                    <div>
+                        <Select
+                            {...register('product_type_id')}
+                            aria-label="選擇系列"
+                        >
+                            <option value="">選擇系列</option>
+                            {productTypes.map((v) => {
+                                return (
+                                    <option key={v.id} value={v.id}>{v.name}</option>
+                                )
+                            })}
+                        </Select>
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>規格</Subheading>
+                    </div>
+                    <div>
+                        <WysiwygEditor
+                            value={watch('size')}
+                            onChange={(value) => setValue('size', value)}
+                        />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                    <Subheading>產品特點</Subheading>
+                    </div>
+                    <div>
+                        <WysiwygEditor
+                            value={watch('features')}
+                            onChange={(value) => setValue('features', value)}
+                        />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                    <Subheading>成份內容</Subheading>
+                    </div>
+                    <div>
+                        <WysiwygEditor
+                            value={watch('ingredients')}
+                            onChange={(value) => setValue('ingredients', value)}
+                        />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                    <Subheading>適用對象</Subheading>
+                    </div>
+                    <div>
+                        <WysiwygEditor
+                            value={watch('target_users')}
+                            onChange={(value) => setValue('target_users', value)}
+                        />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                    <Subheading>使用方法</Subheading>
+                    </div>
+                    <div>
+                        <WysiwygEditor
+                            value={watch('usage')}
+                            onChange={(value) => setValue('usage', value)}
+                        />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>上架狀態</Subheading>
+                        <Text>設定是否上架於前台</Text>
+                    </div>
+                    <div>
+                        <SwitchField>
+                            <Switch
+                                onChange={(checked) => {
+                                    setValue('hidden', !checked)
+                                }}
+                                checked={watch('hidden') === false}
+                            />
+                        </SwitchField>
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <div className="flex justify-end gap-4">
+                <Button type="reset" plain href="/admin/products">
                     返回列表
-                </Link>
-            </Button>
-            <Button
-                loading={isSubmitting}
-                disabled={submitDisabled}
-                type="submit"
-            >
-                儲存
-            </Button>
-            </div>
-        </form>
-    </LayoutAdmin>
+                </Button>
+                <Button
+                    loading={isSubmitting}
+                    disabled={submitDisabled}
+                    type="submit"
+                >
+                    儲存
+                </Button>
+                </div>
+            </form>
+        </LayoutAdmin>
+    </>
   )
 }

@@ -1,16 +1,8 @@
-import DialogDeleteConfirm from '@/components/admin/DialogDeleteConfirm'
 import RequiredMark from '@/components/admin/RequiredMark'
 import { Button } from '@/components/common/button'
-import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/common/checkbox'
 import { Divider } from '@/components/common/divider'
-import { Label } from '@/components/common/fieldset'
 import { Heading, Subheading } from '@/components/common/heading'
 import { Input } from '@/components/common/input'
-import { Select } from '@/components/common/select'
-import { Switch, SwitchField } from '@/components/common/switch'
-import { Text } from '@/components/common/text'
-import { Textarea } from '@/components/common/textarea'
-import Tiptap from '@/components/common/Tiptap'
 import WysiwygEditor from '@/components/common/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
@@ -19,17 +11,11 @@ import { useAppDispatch } from '@/lib/store'
 import { openAlert } from '@/lib/store/features/global/globalSlice'
 import fileToBase64 from '@/lib/utils/fileToBase64'
 import { MinusIcon } from '@heroicons/react/16/solid'
-import type { Metadata } from 'next'
-import Link from 'next/link'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ReactSortable } from "react-sortablejs";
-
-export const metadata: Metadata = {
-  title: '產品系列',
-  description: '編輯產品系列',
-}
 
 type Inputs = {
     name: string,
@@ -161,95 +147,101 @@ export default function Page() {
     }, [router.query.id])
 
   return (
-    <LayoutAdmin>
-        <NotificationPopup />
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
-            <Heading>編輯產品系列</Heading>
-            <Divider className="my-10 mt-6" />
+    <>
+        <Head>
+            <title>產品系列管理</title>
+            <meta name="description" content="編輯產品系列" />
+        </Head>
+        <LayoutAdmin>
+            <NotificationPopup />
+            <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
+                <Heading>編輯產品系列</Heading>
+                <Divider className="my-10 mt-6" />
 
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>封面圖</Subheading>
-                </div>
-                <div className='space-y-4'>
-                    <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
-                        {imagePreviewList.map((item, i) => (
-                            <div key={i} className='relative w-[148px]'>
-                                <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
-                                    <Button className='w-[2rem] h-[2rem]'>
-                                        <MinusIcon />
-                                    </Button>
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>封面圖</Subheading>
+                    </div>
+                    <div className='space-y-4'>
+                        <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
+                            {imagePreviewList.map((item, i) => (
+                                <div key={i} className='relative w-[148px]'>
+                                    <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
+                                        <Button className='w-[2rem] h-[2rem]'>
+                                            <MinusIcon />
+                                        </Button>
+                                    </div>
+                                    <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
                                 </div>
-                                <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
-                            </div>
-                        ))}
-                    </ReactSortable>
-                    <Input
-                        ref={imageRef}
-                        type="file"
-                        multiple
-                        accept='image/*'
-                        aria-label="圖片"
-                        onClick={() => {
-                            if (imageRef.current) {
-                                // @ts-ignore
-                                imageRef.current.value = ''
-                            }
-                        }}
-                        onChange={(e) => {
-                            setValue('image_list', [...e.target.files as any] as any)
-                            handleSetImagePreview(e.target.files)
-                        }}
-                    />
+                            ))}
+                        </ReactSortable>
+                        <Input
+                            ref={imageRef}
+                            type="file"
+                            multiple
+                            accept='image/*'
+                            aria-label="圖片"
+                            onClick={() => {
+                                if (imageRef.current) {
+                                    // @ts-ignore
+                                    imageRef.current.value = ''
+                                }
+                            }}
+                            onChange={(e) => {
+                                setValue('image_list', [...e.target.files as any] as any)
+                                handleSetImagePreview(e.target.files)
+                            }}
+                        />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                        <Subheading>
+                            名稱
+                            <RequiredMark />
+                        </Subheading>
+                    </div>
+                    <div>
+                        <Input {...register('name')} aria-label="名稱" />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                    <Subheading>系列介紹</Subheading>
+                    </div>
+                    <div>
+                        <WysiwygEditor
+                            value={watch('description')}
+                            onChange={(value) => setValue('description', value)}
+                        />
+                    </div>
+                </section>
+
+                <Divider className="my-10" soft />
+
+                <div className="flex justify-end gap-4">
+                <Button type="reset" plain onClick={() => router.push('/admin/product_types')}>
+                    返回列表
+                </Button>
+                <Button type="reset" plain onClick={() => router.push(`/admin/product_types/${router.query.id}/view`)}>
+                    查看
+                </Button>
+                <Button
+                    loading={isSubmitting}
+                    disabled={submitDisabled}
+                    type="submit"
+                >
+                    儲存
+                </Button>
                 </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                    <Subheading>
-                        名稱
-                        <RequiredMark />
-                    </Subheading>
-                </div>
-                <div>
-                    <Input {...register('name')} aria-label="名稱" />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="space-y-1">
-                <Subheading>系列介紹</Subheading>
-                </div>
-                <div>
-                    <WysiwygEditor
-                        value={watch('description')}
-                        onChange={(value) => setValue('description', value)}
-                    />
-                </div>
-            </section>
-
-            <Divider className="my-10" soft />
-
-            <div className="flex justify-end gap-4">
-              <Button type="reset" plain onClick={() => router.push('/admin/product_types')}>
-                返回列表
-              </Button>
-              <Button type="reset" plain onClick={() => router.push(`/admin/product_types/${router.query.id}/view`)}>
-                查看
-              </Button>
-              <Button
-                  loading={isSubmitting}
-                  disabled={submitDisabled}
-                  type="submit"
-              >
-                  儲存
-            </Button>
-            </div>
-        </form>
-    </LayoutAdmin>
+            </form>
+        </LayoutAdmin>
+    </>
   )
 }

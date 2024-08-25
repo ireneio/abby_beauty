@@ -40,8 +40,8 @@ type Inputs = {
 }
 
 export default function Page() {
-    const dispatch = useAppDispatch()
-    const router = useRouter()
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const { api } = useApi()
 
   const [classs, setClass] = useState<any>({
@@ -60,12 +60,12 @@ export default function Page() {
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     defaultValues: {
-        name: '',
-        minutes: '',
-        image_cover: '',
-        available_for_reservation: true,
-        image_cover_selected: null,
-        class_type_id: null,
+      name: '',
+      minutes: '',
+      image_cover: '',
+      available_for_reservation: true,
+      image_cover_selected: null,
+      class_type_id: null,
     }
   })
 
@@ -85,7 +85,7 @@ export default function Page() {
         method: 'POST',
         url: `/admin/files`,
         headers: {
-            'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
         },
         data: formData,
     })
@@ -163,11 +163,12 @@ export default function Page() {
     setValue('minutes', classs.minutes)
     setValue('image_cover', classs.image_cover)
     setValue('available_for_reservation', classs.available_for_reservation)
+    setValue('class_type_id', classs.class_type_id)
   }, [classs])
 
   useEffect(() => {
     if (router.query.id) {
-        getClass()
+      getClass()
     }
   }, [router.query])
 
@@ -187,21 +188,21 @@ export default function Page() {
 
   const [classTypes, setClassTypes] = useState<any[]>([])
 
-    const getClassTypes = async () => {
-        const res = await api({
-            method: 'GET',
-            url: '/admin/class_types'
-        })
-        if (res.code === 0) {
-            setClassTypes(res.data)
-        } else {
-            setClassTypes([])
-        }
+  const getClassTypes = async () => {
+    const res = await api({
+      method: 'GET',
+      url: '/admin/class_types'
+    })
+    if (res.code === 0) {
+      setClassTypes(res.data.classTypes)
+    } else {
+      setClassTypes([])
     }
+  }
 
-    useEffect(() => {
-      getClassTypes()
-    }, [])
+  useEffect(() => {
+    getClassTypes()
+  }, [])
 
   return (
     <LayoutAdmin>
@@ -277,9 +278,9 @@ export default function Page() {
                 </div>
             </section>
 
-            <Divider className="my-10" soft />
+        <Divider className="my-10" soft />
 
-        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
             <Subheading>時長</Subheading>
               <Text>單位: 分鐘</Text>
@@ -289,7 +290,7 @@ export default function Page() {
             </div>
         </section>
 
-        <Divider className="my-10" soft />
+        <Divider className="my-10" soft /> */}
 
         {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
         <div className="space-y-1">
@@ -330,7 +331,7 @@ export default function Page() {
           <Button type="reset" plain onClick={() => router.push(`/admin/classes/${router.query.id}/view`)}>
             查看
           </Button>
-          <Button loading={isSubmitting} disabled={!watch('name') || !watch('minutes')} type="submit">儲存</Button>
+          <Button loading={isSubmitting} disabled={!watch('name')} type="submit">儲存</Button>
         </div>
       </form>
     </LayoutAdmin>

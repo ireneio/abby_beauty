@@ -16,12 +16,9 @@ import { EllipsisVerticalIcon, MagnifyingGlassIcon } from '@heroicons/react/16/s
 import dayjs from 'dayjs'
 import type { Metadata } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
-
-export const metadata: Metadata = {
-  title: '產品',
-  description: '產品列表管理',
-}
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import debounce from 'lodash/debounce';
+import Head from 'next/head'
 
 export default function Page() {
     const router = useRouter()
@@ -33,59 +30,41 @@ export default function Page() {
     ]
     const [search, setSearch] = useState('')
     const [pagination, setPagination] = useState({
+        total: 0,
         currentPage: 1,
         perPage: 10,
     })
     const [tableData, setTableData] = useState<any[]>([])
 
     const tableHeaders = [
-        { label: '縮圖', value: 'image' },
-        { label: '系列', value: 'product_type_name' },
-        { label: '中文名稱', value: 'name_zh' },
-        { label: '上架狀態', value: 'hidden' },
-        { label: '操作', value: 'action' },
+      { label: '縮圖', value: 'image' },
+      { label: '系列', value: 'product_type_name' },
+      { label: '中文名稱', value: 'name_zh' },
+      { label: '上架狀態', value: 'hidden' },
+      { label: '操作', value: 'action' },
     ]
 
-    const tableDataMapped = useMemo(() => {
-        let arr = [...tableData]
-
-        if (pagination.currentPage && !isNaN(Number(pagination.currentPage))) {
-            const page = parseInt(Number(pagination.currentPage).toString())
-            arr = arr.slice((page - 1) * pagination.perPage, ((page - 1) * pagination.perPage) + pagination.perPage)
-        } else {
-            arr = arr.slice(0, pagination.perPage)
-        }
-
-        if (search !== '') {
-            arr = arr.filter((v) => {
-              return (
-                v.name_zh.toLowerCase().includes(search.toLowerCase()) ||
-                v.product_type_name.toLowerCase().includes(search.toLowerCase())
-              )
-            })
-        }
-
-        switch (sortBy) {
-            case 'hidden':
-                arr = arr.sort((a, b) => a.hidden ? 1 : -1)
-                break
-            case 'default':
-            default:
-                arr = arr.sort((a, b) => dayjs(a.created_at).isBefore(dayjs(b.created_at)) ? 1 : -1)
-                break
-        }
-        return arr
-    }, [tableData, search, sortBy, pagination.currentPage, pagination.perPage])
-
-    const getTableData = async () => {
+    const getTableData = async (params: any) => {
         const res = await api({
           method: 'GET',
-          url: '/admin/products'
+          url: '/admin/products',
+          params,
         })
         if (res.code === 0) {
-          setTableData(res.data)
+          setTableData(res.data.products)
+          setPagination((prev) => {
+            return {
+              ...prev,
+              total: res.data.total
+            }
+          })
         } else {
           setTableData([])
+          setPagination({
+            currentPage: 1,
+            perPage: 10,
+            total: 0
+          })
         }
     }
 
@@ -97,34 +76,48 @@ export default function Page() {
     const [deleteLoading, setDeleteLoading] = useState(false)
 
     const hideProduct = async () => {
-        const res = await api({
-            method: 'POST',
-            url: `/admin/products/${deleteObj.id}`,
-            data: {
-              hidden: !deleteObj.hidden
-            }
-        })
-        return res
+      const res = await api({
+        method: 'POST',
+        url: `/admin/products/${deleteObj.id}`,
+        data: {
+          hidden: !deleteObj.hidden
+        }
+      })
+      return res
     }
 
     const handleToggleHidden = (obj: any) => {
-        setHiddenObj(obj)
-        setShowDeleteConfirm(true)
+      setHiddenObj(obj)
+      setShowDeleteConfirm(true)
     }
 
     const handleDeleteConfirm = async () => {
         setDeleteLoading(true)
         const res = await hideProduct()
         if (res.code === 0 && res.success) {
-            await getTableData()
+            await fetchData()
             setShowDeleteConfirm(false)
         }
         setDeleteLoading(false)
     }
+
+    const fetchData = async () => {
+      await getTableData({
+        page: pagination.currentPage,
+        perPage: pagination.perPage,
+        search: search,
+        sortBy: sortBy === 'hidden' ? 'hidden' : 'created_at',
+        sortDirection: sortBy === 'hidden' ? 'asc' : 'desc'
+      })
+    }
     
     useEffect(() => {
-        getTableData()
-    }, [])
+      const debouncedFetchData = debounce(fetchData, 800);
+
+      debouncedFetchData()
+      
+      return () => debouncedFetchData.cancel()
+    }, [pagination.currentPage, pagination.perPage, search, sortBy])
 
     useEffect(() => {
       if (router.query.page) {
@@ -135,15 +128,56 @@ export default function Page() {
       }
     }, [router.query.page])
 
+    const handleSearch = (value: string) => {
+      const _value = value.trim()
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, search: _value },
+      })
+      setSearch(_value)
+    }
+
+    const handleSortBy = (value: string) => {
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, sortBy: value },
+      })
+      setSortBy(value)
+    }
+
+    const handlePerPage = (value: number) => {
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, perPage: value },
+      })
+      setPagination((prev) => ({ ...prev, page: 1, perPage: value }))
+    }
+
     useEffect(() => {
-      setPagination((prev) => ({
-        ...prev,
-        currentPage: 1
-      }))
-    }, [search, sortBy])
+      if (router.query.search) {
+        setSearch(router.query.search as string)
+      }
+    }, [router.query.search])
+
+    useEffect(() => {
+      if (router.query.sortBy) {
+        setSortBy(router.query.sortBy as string)
+      }
+    }, [router.query.sortBy])
+
+    useEffect(() => {
+      if (router.query.perPage) {
+        setPagination((prev) => ({ ...prev, perPage: Number(router.query.perPage) }))
+      }
+    }, [router.query.perPage])
 
   return (
-    <LayoutAdmin>
+    <>
+      <Head>
+        <title>產品管理</title>
+        <meta name="description" content="產品列表管理" />
+      </Head>
+      <LayoutAdmin>
         <DialogDeleteConfirm
           open={showDeleteConfirm}
           onCancel={() => setShowDeleteConfirm(false)}
@@ -152,111 +186,113 @@ export default function Page() {
         >
           {deleteObj.hidden ? '確認上架?' : '確認下架?'}
         </DialogDeleteConfirm>
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="max-sm:w-full sm:flex-1">
-          <Heading>產品列表管理</Heading>
-          <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
-            <div className='w-full sm:w-auto'>
-              <InputGroup>
-                <MagnifyingGlassIcon />
-                <Input
-                    onChange={(e) => setSearch(e.target.value)}
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="max-sm:w-full sm:flex-1">
+            <Heading>產品列表管理</Heading>
+            <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
+              <div className='w-full sm:w-auto'>
+                <InputGroup>
+                  <MagnifyingGlassIcon />
+                  <Input
+                    value={search}
+                    onChange={(e) => handleSearch(e.target.value)}
                     placeholder="搜尋名稱或系列..."
-                />
-              </InputGroup>
-            </div>
-            <div className='w-full sm:w-auto'>
-              <Select onChange={(e) => setSortBy(e.target.value)}>
-                {sortByList.map((v) => {
-                    return (
-                        <option key={v.value} value={v.value}>{v.label}</option>
-                    )
-                })}
-              </Select>
+                  />
+                </InputGroup>
+              </div>
+              <div className='w-full sm:w-auto'>
+                <Select onChange={(e) => handleSortBy(e.target.value)}>
+                  {sortByList.map((v) => {
+                      return (
+                          <option key={v.value} value={v.value}>{v.label}</option>
+                      )
+                  })}
+                </Select>
+              </div>
             </div>
           </div>
+          <Button onClick={() => router.push('/admin/products/creation')}>
+            建立
+          </Button>
         </div>
-        <Button onClick={() => router.push('/admin/products/creation')}>
-          建立
-        </Button>
-      </div>
-      <ul className="mt-4">
-        <Table
-          dense
-          className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]"
-        >
-            <TableHead>
-                <TableRow>
-                    {tableHeaders.map((header) => {
-                        return (
-                          <TableHeader
-                              key={header.value}
-                          >
-                              {header.label}
-                          </TableHeader>
-                        )
-                    })}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {tableDataMapped.map((row) => {
-                    return (
-                      <TableRow key={row.id}>
-                          <TableCell className="font-medium">
-                            {row.images.length > 0 ?
-                              <img
-                                src={row.images[0].url}
-                                className='w-[6rem] h-[6rem] object-contain'
-                              /> :
-                              <div className='w-[6rem] h-[6rem]'></div>
-                            }
-                          </TableCell>
-                          <TableCell>{row.product_type_name}</TableCell>
-                          <TableCell className='max-w-[140px] overflow-hidden'>
-                            {row.name_zh}
-                          </TableCell>
-                          <TableCell>
-                            <Badge color={row.hidden ? 'zinc' : 'lime'}>
-                              {row.hidden ? '已下架' : '已上架'}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Dropdown>
-                              <DropdownButton plain aria-label="More options">
-                                <EllipsisVerticalIcon />
-                                操作
-                              </DropdownButton>
-                              <DropdownMenu anchor="bottom end">
-                                  <DropdownItem>預覽</DropdownItem>
-                                  <DropdownItem href={`/admin/products/${row.id}/view`}>查看</DropdownItem>
-                                  <DropdownItem href={`/admin/products/${row.id}/edit`}>編輯</DropdownItem>
-                                  <DropdownItem onClick={() => handleToggleHidden(row)}>
-                                    {row.hidden ? '上架' : '下架'}
-                                  </DropdownItem>
-                              </DropdownMenu>
-                            </Dropdown>
-                          </TableCell>
-                      </TableRow>
-                    )
-                })}
-            </TableBody>
-        </Table>
-      </ul>
-      <div className='mt-4 flex flex-wrap space-y-4 items-center'>
-        <div className='w-full sm:w-[120px]'>
-            <SelectPerPage
-              value={pagination.perPage}
-              onChange={(value) => setPagination((prev) => ({ ...prev, perPage: value }))}
-            />
+        <ul className="mt-4">
+          <Table
+            dense
+            className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]"
+          >
+              <TableHead>
+                  <TableRow>
+                      {tableHeaders.map((header) => {
+                          return (
+                            <TableHeader
+                                key={header.value}
+                            >
+                                {header.label}
+                            </TableHeader>
+                          )
+                      })}
+                  </TableRow>
+              </TableHead>
+              <TableBody>
+                  {tableData.map((row) => {
+                      return (
+                        <TableRow key={row.id}>
+                            <TableCell className="font-medium">
+                              {row.images.length > 0 ?
+                                <img
+                                  src={row.images[0].url}
+                                  className='min-w-[6rem] min-h-[6rem] w-[6rem] h-[6rem] object-contain'
+                                /> :
+                                <div className='w-[6rem] h-[6rem]'></div>
+                              }
+                            </TableCell>
+                            <TableCell>{row.product_type_name}</TableCell>
+                            <TableCell>
+                              {row.name_zh}
+                            </TableCell>
+                            <TableCell>
+                              <Badge color={row.hidden ? 'zinc' : 'lime'}>
+                                {row.hidden ? '已下架' : '已上架'}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Dropdown>
+                                <DropdownButton plain aria-label="More options">
+                                  <EllipsisVerticalIcon />
+                                  操作
+                                </DropdownButton>
+                                <DropdownMenu anchor="bottom end">
+                                    {/* <DropdownItem>預覽</DropdownItem> */}
+                                    <DropdownItem href={`/admin/products/${row.id}/view`}>查看</DropdownItem>
+                                    <DropdownItem href={`/admin/products/${row.id}/edit`}>編輯</DropdownItem>
+                                    <DropdownItem onClick={() => handleToggleHidden(row)}>
+                                      {row.hidden ? '上架' : '下架'}
+                                    </DropdownItem>
+                                </DropdownMenu>
+                              </Dropdown>
+                            </TableCell>
+                        </TableRow>
+                      )
+                  })}
+              </TableBody>
+          </Table>
+        </ul>
+        <div className='mt-4 flex flex-wrap space-y-4 items-center'>
+          <div className='w-full sm:w-[120px]'>
+              <SelectPerPage
+                value={pagination.perPage}
+                onChange={(value) => handlePerPage(value)}
+              />
+          </div>
+          <div className='w-full sm:w-auto ml-auto'>
+              <Paginator
+                currentPage={pagination.currentPage}
+                total={pagination.total}
+                perPage={pagination.perPage}
+              />
+          </div>
         </div>
-        <div className='w-full sm:w-auto ml-auto'>
-            <Paginator
-              currentPage={pagination.currentPage}
-              total={tableData.length}
-              perPage={pagination.perPage}
-            />
-        </div>
-      </div>
-    </LayoutAdmin>
+      </LayoutAdmin>
+    </>
   )
 }

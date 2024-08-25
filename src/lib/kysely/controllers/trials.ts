@@ -1,7 +1,7 @@
 import { db } from ".."
 
 class TrialsController {
-    async getAll() {
+    async getAllClient() {
         const rows = await db.selectFrom('trials')
             .where('hidden', '!=', true)
             .select([
@@ -13,6 +13,71 @@ class TrialsController {
             .execute()
 
         return rows
+    }
+    async getAll({
+        page,
+        perPage,
+        sortBy,
+        sortDirection,
+        search,
+    }: {
+        page?: number,
+        perPage?: number,
+        sortBy?: string,
+        sortDirection?: 'asc' | 'desc',
+        search?: string
+    }) {
+
+        // Base query for counting total records
+        let countQuery = db
+            .selectFrom('trials')
+
+        if (search) {
+            countQuery = countQuery.where((eb) => eb('trials.title_short', 'like', `%${search}%`))
+        }
+
+        const countResult = await countQuery
+            .select([db.fn.count('trials.id').as('total')])
+            .executeTakeFirst();
+
+        const total = Number(countResult?.total) ?? 0;
+
+        let query = db.selectFrom('trials')
+
+        if (page !== undefined && perPage !== undefined) {
+            const offset = (Number(page) - 1) * Number(perPage)
+            const limit = Number(perPage)
+            
+            query = query.offset(offset)
+            query = query.limit(limit)
+        }
+
+        if (search) {
+            query = query.where((eb) => eb('trials.title_short', 'like', `%${search}%`))
+        }
+
+        if (sortBy === 'created_at') {
+            query = query.orderBy('trials.created_at', sortDirection)
+        }
+
+        if (sortBy === 'order') {
+            query = query.orderBy('trials.order', sortDirection)
+        }
+
+        const rows = await query
+            .where('hidden', '!=', true)
+            .select([
+                'id',
+                'slug',
+                'title_short',
+            ])
+            .orderBy('order', 'asc')
+            .execute()
+
+        return {
+            trials: rows,
+            total,
+        }
     }
     async getById({ id }: { id: number }) {
         const row = await db.selectFrom('trials')
@@ -126,7 +191,17 @@ class TrialsController {
             .executeTakeFirst()
         
         return row
-     }
+    }
+    async bulkUpdateOrders({ items }: { items: { id: number; order: number }[] }) {
+        await Promise.all(items.map(item =>
+          db.updateTable('trials')
+            .set({
+              order: item.order,
+            })
+            .where('id', '=', item.id)
+            .execute()
+        ));
+    }
 }
 
 export default TrialsController

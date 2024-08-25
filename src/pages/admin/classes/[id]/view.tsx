@@ -89,7 +89,7 @@ export default function Page() {
 
             <Divider className="my-10" soft />
 
-        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
             <Subheading>時長</Subheading>
             <Text>單位: 分鐘</Text>
@@ -99,7 +99,7 @@ export default function Page() {
             </div>
         </section>
 
-        <Divider className="my-10" soft />
+        <Divider className="my-10" soft /> */}
 
         {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
         <div className="space-y-1">

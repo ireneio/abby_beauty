@@ -19,53 +19,57 @@ export default function Paginator({ currentPage = 1, total = 0, perPage = 10 }: 
         return 1
     }, [total, perPage])
 
-    const hasGap = useMemo(() => {
-        return totalPages > 6
-    }, [totalPages])
-
     const pagesMap = useMemo(() => {
-        const _currentPage = currentPage - 1
-        const _totalPages = totalPages - 1
-        if (_totalPages <= 5) {
-          return Array(_totalPages + 1)
-            .fill(0)
-            .map((item, index) => index)
-        }
-        const arr = []
-        if (_currentPage + 3 >= _totalPages - 1) {
-          arr.push("...")
-          arr.push(_totalPages - 4)
-          arr.push(_totalPages - 3)
-          arr.push(_totalPages - 2)
-          arr.push(_totalPages - 1)
-          return arr
+        const _currentPage = currentPage; // 1-based index
+        const _totalPages = totalPages;   // 1-based index
+    
+        const pages = [];
+    
+        // Always include the first page
+        pages.push(1);
+
+        if (_totalPages === 1) {
+            return pages
         }
     
-        if (_currentPage !== 0) {
-          arr.push(_currentPage - 1)
-          arr.push(_currentPage)
-        } else {
-          arr.push(_currentPage)
-          arr.push(_currentPage + 1)
+        // Add ellipsis if the current page is far enough from the start
+        if (_currentPage > 4) {
+            pages.push("...");
         }
-        arr.push("...")
-        arr.push(_totalPages - 2)
-        arr.push(_totalPages - 1)
-        return arr
-      }, [totalPages, currentPage])
+    
+        // Calculate start and end for middle pages
+        const startPage = Math.max(2, _currentPage - 1);
+        const endPage = Math.min(_totalPages - 1, _currentPage + 1);
+    
+        // Add the middle pages
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+    
+        // Add ellipsis if the current page is far enough from the end
+        if (_currentPage < _totalPages - 3) {
+            pages.push("...");
+        }
+    
+        // Always include the last page
+        pages.push(_totalPages);
+    
+        return pages;
+    }, [totalPages, currentPage]);
+    
 
     const PageComponents = () => {
         return (
-            pagesMap.map((page) => {
+            pagesMap.map((page, i) => {
                 if (page === '...') {
                     return (
-                        <PaginationGap key={'...'} />
+                        <PaginationGap key={i} />
                     )
                 }
-                const _page = Number(page) + 1
+                const _page = Number(page)
                 return (
                     <PaginationPage
-                        key={_page}
+                        key={i}
                         href={`?page=${_page}`}
                         current={Number(currentPage) === _page}
                     >

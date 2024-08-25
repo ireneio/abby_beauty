@@ -21,12 +21,60 @@ class ClassesController {
             .execute()
         return rows
     }
-    async getAll() {
-        const rows = await db.selectFrom('classes')
+    async getAll({
+        page,
+        perPage,
+        sortBy,
+        sortDirection,
+        search,
+    }: {
+        page?: number,
+        perPage?: number,
+        sortBy?: string,
+        sortDirection?: 'asc' | 'desc',
+        search?: string
+    }) {
+        let countQuery = db
+            .selectFrom('classes')
+
+        if (search) {
+            countQuery = countQuery.where((eb) => eb('classes.name', 'like', `%${search}%`))
+        }
+
+        const countResult = await countQuery
+            .select([db.fn.count('classes.id').as('total')])
+            .executeTakeFirst();
+
+        const total = Number(countResult?.total) ?? 0;
+
+        let query = db.selectFrom('classes')
             .leftJoin('class_types', 'classes.class_type_id', 'class_types.id')
             .where('classes.hidden', '!=', true)
-            .orderBy('class_types.order', 'asc')
-            .orderBy('classes.order', 'asc')
+
+        if (page !== undefined && perPage !== undefined) {
+            const offset = (Number(page) - 1) * Number(perPage)
+            const limit = Number(perPage)
+            
+            query = query.offset(offset)
+            query = query.limit(limit)
+        }
+
+        if (search) {
+            query = query.where((eb) => eb('classes.name', 'like', `%${search}%`))
+        }
+
+        if (sortBy === 'created_at') {
+            query = query.orderBy('classes.created_at', sortDirection)
+        }
+
+        if (sortBy === 'order') {
+            query = query.orderBy('classes.order', sortDirection)
+        }
+
+        const rows = await query
+            .where('classes.hidden', '!=', true)
+            // .orderBy('class_types.order', 'asc')
+            // .orderBy('classes.order', 'asc')
             .select([
                 'classes.id as id',
                 'classes.name as name',
@@ -39,7 +87,11 @@ class ClassesController {
                 'classes.updated_at as updated_at',
             ])
             .execute()
-        return rows
+            
+        return {
+            classes: rows,
+            total,
+        }
     }
 
     async getById(id: number) {

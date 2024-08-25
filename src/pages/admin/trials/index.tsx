@@ -14,6 +14,7 @@ import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
 import { EllipsisVerticalIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid'
 import dayjs from 'dayjs'
+import { debounce } from 'lodash'
 import type { Metadata } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -32,57 +33,115 @@ export default function Page() {
     ]
     const [search, setSearch] = useState('')
     const [pagination, setPagination] = useState({
-        perPage: 10,
+      total: 0,
+      perPage: 10,
+      currentPage: 1,
     })
     const [tableData, setTableData] = useState<any[]>([])
 
     const tableHeaders = [
-        { label: '標題', value: 'title' },
-        { label: '操作', value: 'action' },
+      { label: '縮寫標題', value: 'title_short' },
+      { label: '操作', value: 'action' },
     ]
 
-    const tableDataMapped = useMemo(() => {
-        let arr = [...tableData]
+    const handlePreview = (row: any) => {
+      window.open(`${process.env.NEXT_PUBLIC_SITE_URL}/trial/${row.slug}`, '_blank')
+    }
 
-        if (router.query.page && !isNaN(Number(router.query.page))) {
-            const page = parseInt(Number(router.query.page).toString())
-            arr = arr.slice((page - 1) * pagination.perPage, ((page - 1) * pagination.perPage) + pagination.perPage)
-        } else {
-            arr = arr.slice(0, pagination.perPage)
-        }
-
-        if (search !== '') {
-            arr = arr.filter((v) => v.title.toLowerCase().includes(search.toLowerCase()))
-        }
-
-        switch (sortBy) {
-            case 'default':
-            default:
-                arr = arr.sort((a, b) => dayjs(a.created_at).isBefore(dayjs(b.created_at)) ? 1 : -1)
-                break
-        }
-        return arr
-    }, [tableData, search, sortBy, router.query, pagination.perPage])
-
-    const getTableData = async () => {
-        const res = await api({
-          method: 'GET',
-          url: '/admin/trials'
+    const getTableData = async (params: any) => {
+      const res = await api({
+        method: 'GET',
+        url: '/admin/trials',
+        params,
+      })
+      if (res.code === 0) {
+        setTableData(res.data.trials)
+        setPagination((prev) => {
+          return {
+            ...prev,
+            total: res.data.total
+          }
         })
-        if (res.code === 0) {
-          setTableData(res.data)
-        } else {
-          setTableData([])
-        }
+      } else {
+        setTableData([])
+        setPagination({
+          currentPage: 1,
+          perPage: 10,
+          total: 0
+        })
+      }
+    }
+    
+    const fetchData = async () => {
+      await getTableData({
+        page: pagination.currentPage,
+        perPage: pagination.perPage,
+        search: search,
+        sortBy: 'created_at',
+        sortDirection: 'desc'
+      })
     }
     
     useEffect(() => {
-        getTableData()
-    }, [])
+      const debouncedFetchData = debounce(fetchData, 800);
 
-    const handlePreview = (row: any) => {
-      window.open(`${process.env.NEXT_PUBLIC_SITE_URL}/page/${row.slug}`, '_blank')
+      debouncedFetchData()
+      
+      return () => debouncedFetchData.cancel()
+    }, [pagination.currentPage, pagination.perPage, search, sortBy])
+
+    useEffect(() => {
+      if (router.query.page) {
+        setPagination((prev) => ({
+          ...prev,
+          currentPage: Number(router.query.page)
+        }))
+      }
+    }, [router.query.page])
+
+    const handleSearch = (value: string) => {
+      const _value = value.trim()
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, search: _value },
+      })
+      setSearch(_value)
     }
+
+    const handleSortBy = (value: string) => {
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, sortBy: value },
+      })
+      setSortBy(value)
+    }
+
+    const handlePerPage = (value: number) => {
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, perPage: value },
+      })
+      setPagination((prev) => ({ ...prev, page: 1, perPage: value }))
+    }
+
+    useEffect(() => {
+      if (router.query.search) {
+        setSearch(router.query.search as string)
+      }
+    }, [router.query.search])
+
+    useEffect(() => {
+      if (router.query.sortBy) {
+        setSortBy(router.query.sortBy as string)
+      }
+    }, [router.query.sortBy])
+
+    useEffect(() => {
+      if (router.query.perPage) {
+        setPagination((prev) => ({ ...prev, perPage: Number(router.query.perPage) }))
+      }
+    }, [router.query.perPage])
+
 
   return (
     <LayoutAdmin>
@@ -94,19 +153,23 @@ export default function Page() {
               <InputGroup>
                 <MagnifyingGlassIcon />
                 <Input
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="搜尋標題..."
+                  value={search}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder="搜尋縮寫標題..."
                 />
               </InputGroup>
             </div>
             <div className='w-full sm:w-auto'>
-              <Select onChange={(e) => setSortBy(e.target.value)}>
+              <Select onChange={(e) => handleSortBy(e.target.value)}>
                 {sortByList.map((v) => {
                     return (
-                        <option key={v.value} value={v.value}>{v.label}</option>
+                      <option key={v.value} value={v.value}>{v.label}</option>
                     )
                 })}
               </Select>
+            </div>
+            <div>
+              <Button onClick={() => router.push('/admin/trials/sort')}>調整前台排序</Button>
             </div>
           </div>
         </div>
@@ -133,7 +196,7 @@ export default function Page() {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {tableDataMapped.map((row) => {
+                {tableData.map((row) => {
                     return (
                       <TableRow key={row.id}>
                           <TableCell>{row.title_short}</TableCell>
@@ -160,13 +223,13 @@ export default function Page() {
         <div className='w-full sm:w-[120px]'>
             <SelectPerPage
               value={pagination.perPage}
-              onChange={(value) => setPagination((prev) => ({ ...prev, perPage: value }))}
+              onChange={(value) => handlePerPage(value)}
             />
         </div>
         <div className='w-full sm:w-auto ml-auto'>
             <Paginator
-              currentPage={router.query.page || 1}
-              total={tableData.length}
+              currentPage={pagination.currentPage}
+              total={pagination.total}
               perPage={pagination.perPage}
             />
         </div>

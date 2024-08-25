@@ -11,7 +11,7 @@ const controller = new TrialsController()
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
 router.get(async (req, res) => {
-  const data = await controller.getAll()
+  const data = await controller.getAllClient()
   return res.status(200).json({
     code: ErrorCode.SUCCESS,
     data,

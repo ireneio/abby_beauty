@@ -1,4 +1,4 @@
-import { db } from ".."
+import { db, sql } from ".."
 
 class ProductsController {
     async getAllClient(
@@ -55,10 +55,68 @@ class ProductsController {
             }
         })
     }
-    async getAll() {
-        const productsQuery = db.selectFrom('products')
+    async getAll({
+        page,
+        perPage,
+        sortBy,
+        sortDirection,
+        search,
+    }: {
+        page?: number,
+        perPage?: number,
+        sortBy?: string,
+        sortDirection?: 'asc' | 'desc',
+        search?: string
+    }) {
+        
+        // Base query for counting total records
+        let countQuery = db
+            .selectFrom('products')
+            .leftJoin('product_types', 'products.product_type_id', 'product_types.id');
+
+        if (search) {
+            countQuery = countQuery.where((eb) => eb.or([
+                eb('products.name_zh', 'like', `%${search}%`),
+                eb('product_types.name', 'like', `%${search}%`)
+            ]))
+        }
+
+        const countResult = await countQuery
+            .select([db.fn.count('products.id').as('total')])
+            .executeTakeFirst();
+
+        const total = Number(countResult?.total) ?? 0;
+
+        let productsQuery = db.selectFrom('products')
             .leftJoin('product_types', 'products.product_type_id', 'product_types.id')
+
+        if (page !== undefined && perPage !== undefined) {
+            const offset = (Number(page) - 1) * Number(perPage)
+            const limit = Number(perPage)
             
+            productsQuery = productsQuery.offset(offset)
+            productsQuery = productsQuery.limit(limit)
+        }
+
+        if (search) {
+            productsQuery = productsQuery.where((eb) => eb.or([
+                eb('products.name_zh', 'like', `%${search}%`),
+                eb('product_types.name', 'like', `%${search}%`)
+            ]))
+        }
+
+        // if (searchCondition) {
+        //     productsQuery = productsQuery.where(searchCondition);
+        // }
+
+        if (sortBy === 'created_at') {
+            productsQuery = productsQuery.orderBy('products.created_at', sortDirection)
+        }
+
+        if (sortBy === 'hidden') {
+            productsQuery = productsQuery.orderBy('products.hidden', sortDirection)
+        }
+
         const products = await productsQuery
             .select([
                 'products.id',
@@ -73,10 +131,9 @@ class ProductsController {
                 'products.usage',
                 'product_types.id as product_type_id',
                 'product_types.name as product_type_name',
-                'products.hidden'
+                'products.hidden',
+                'products.order'
             ])
-            .orderBy('product_types.order', 'asc')
-            .orderBy('products.order', 'asc')
             .execute()
 
         const productImagesQuery = db.selectFrom('product_images')
@@ -91,12 +148,15 @@ class ProductsController {
 
         const productImages = await productImagesQuery.execute()
 
-        return products.map((product) => {
-            return {
-                ...product,
-                images: productImages.filter((image) => image.product_id === product.id)
-            }
-        })
+        return {
+            products: products.map((product) => {
+                return {
+                    ...product,
+                    images: productImages.filter((image) => image.product_id === product.id)
+                }
+            }),
+            total,
+        }
     }
     async getByIdClient({ id }: { id: number }) {
         const productsQuery = db.selectFrom('products')

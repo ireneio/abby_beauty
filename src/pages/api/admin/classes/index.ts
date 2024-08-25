@@ -26,7 +26,7 @@ router.use(async (req, res, next) => {
   req.query.userId = userId
   await next()
 }).get(async (req, res) => {
-  const data = await controller.getAll()
+  const data = await controller.getAll({ ...req.query })
   return res.status(200).json({
     code: ErrorCode.SUCCESS,
     data,

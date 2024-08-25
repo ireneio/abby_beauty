@@ -4,9 +4,9 @@ import ErrorCode from "@/lib/api/errorCodes";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { createRouter } from "next-connect";
-import ProductTypesController from "@/lib/kysely/controllers/productTypes";
+import ClassTypesController from "@/lib/kysely/controllers/classTypes";
 
-const controller = new ProductTypesController()
+const controller = new ClassTypesController()
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -25,14 +25,8 @@ router.use(async (req, res, next) => {
   }
   req.query.userId = userId
   await next()
-}).get(async (req, res) => {
-  const data = await controller.getAll({ ...req.query })
-  return res.status(200).json({
-    code: ErrorCode.SUCCESS,
-    data,
-  });
 }).post(async (req, res) => {
-  const row = await controller.create({ ...req.body })
+  const row = await controller.bulkUpdateOrders({ ...req.body })
   return res.status(200).json({
     code: ErrorCode.SUCCESS,
     data: row,
