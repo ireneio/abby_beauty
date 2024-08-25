@@ -1,4 +1,4 @@
-import { sendTrialsReservationEmail } from "@/lib/resend/sendEmail"
+import { sendAdminTrialsReservationEmail } from "@/lib/email/sendEmail"
 import { db } from ".."
 
 class TrialsReservationsController {
@@ -64,13 +64,20 @@ class TrialsReservationsController {
             .executeTakeFirst()
         
         try {
-            const sendTrialsReservationEmailRes = await sendTrialsReservationEmail({
-                to: 'ires63888@gmail.com'
-            })
-            console.log('sendTrialsReservationEmailRes', sendTrialsReservationEmailRes);
-            
+            await sendAdminTrialsReservationEmail({
+                to: 'ires63888@gmail.com',
+                message: {
+                    name,
+                    email,
+                    phone,
+                    date,
+                    time_of_day,
+                    line_id,
+                }
+            })            
         } catch (e) {
             console.log(e);
+            return row
         }
         
         return row
