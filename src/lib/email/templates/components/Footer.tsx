@@ -8,7 +8,7 @@ import {
 export default function Footer() {
     return (
         <Container className="p-4 bg-[#f5f1eb]">
-            <div className="flex items-center justify-center gap-4 w-full">
+            <div className="flex items-center justify-between gap-4 w-full">
                 <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}`}>
                     <Text className="underline text-[#484a49] text-sm flex items-center">
                         預約體驗課程
