@@ -10,7 +10,7 @@ import { Select } from '@/components/common/select'
 import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
 import { Textarea } from '@/components/common/textarea'
-import Tiptap from '@/components/common/Tiptap'
+
 import WysiwygEditor from '@/components/common/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
