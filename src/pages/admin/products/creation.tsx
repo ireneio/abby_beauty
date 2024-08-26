@@ -316,7 +316,7 @@ export default function Page() {
 
                 <Divider className="my-10" soft />
 
-                <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="space-y-1">
                     <Subheading>適用對象</Subheading>
                     </div>
@@ -328,7 +328,7 @@ export default function Page() {
                     </div>
                 </section>
 
-                <Divider className="my-10" soft />
+                <Divider className="my-10" soft /> */}
 
                 <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="space-y-1">
