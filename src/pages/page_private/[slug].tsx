@@ -1,3 +1,4 @@
+import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import { RootLayout } from "@/components/layout/RootLayout";
 import useApi from "@/lib/hooks/useApi";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
@@ -43,11 +44,7 @@ export default function Page() {
             </div>
             <div className="mt-4 mb-4 px-4">
                 <div className="overflow-auto">
-                    <div className="ql-snow">
-                        <div className="ql-editor">
-                            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
-                        </div>
-                    </div>
+                    <QuillContentWrapper content={data.content} />
                 </div>
             </div>
         </>

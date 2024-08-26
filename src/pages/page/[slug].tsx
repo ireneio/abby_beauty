@@ -1,3 +1,4 @@
+import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
@@ -74,11 +75,7 @@ export default function Page({ serverData }: any) {
             <RootLayout>
                 <div className="px-4">{data.title}</div>
                 <div className="mt-4 px-4">
-                    <div className="ql-snow">
-                        <div className="ql-editor">
-                            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
-                        </div>
-                    </div>
+                    <QuillContentWrapper content={data.content} />
                 </div>
             </RootLayout>
         </>

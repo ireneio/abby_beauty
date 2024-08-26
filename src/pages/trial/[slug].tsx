@@ -1,6 +1,7 @@
 import RequiredMark from "@/components/admin/RequiredMark";
 import Breadcrumb from "@/components/client/Breadcrumb";
 import { Button } from "@/components/client/Button";
+import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import { Checkbox, CheckboxField, CheckboxGroup } from "@/components/common/checkbox";
 import { Field, Label } from "@/components/common/fieldset";
 import { Input } from "@/components/common/input";
@@ -148,11 +149,7 @@ function Page({ swal, serverData }: any) {
                     {data.subtitle ? <div className="px-4 mt-4 text-sm font-light text-secondary">{data.subtitle}</div> : null}
                     <div className="mt-4 h-[1px] w-full bg-[#ccc]"></div>
                     <div className="px-4 mt-8 text-secondary">
-                        <div className="ql-snow">
-                            <div className="ql-editor">
-                                <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
-                            </div>
-                        </div>
+                        <QuillContentWrapper content={data.content} />
                     </div>
                     <div className="px-4 mt-8 max-w-[500px] mx-auto">
                         <div className="text-md bg-primary text-secondary text-center px-4 py-4">馬上預約體驗</div>

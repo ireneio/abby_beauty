@@ -31,9 +31,6 @@
     src: url('../fonts/Bakudai-Medium.woff') format('woff');
   }
   .ql-editor {
-    h1 {
-      font-size: 2rem !important;
-    }
     .ql-video {
       display: block;
       max-width: 100%;
@@ -51,7 +48,4 @@
       list-style-position: inside !important;
     }
   }
-  /* [type="button"].swal2-styled {
-    border-radius: 4px;
-  } */
 }

@@ -2,6 +2,7 @@ import Breadcrumb from "@/components/client/Breadcrumb";
 import { Button } from "@/components/client/Button";
 import CarouselProductImage from "@/components/client/product/CarouselProductImage";
 import CarouselSimilarProducts from "@/components/client/product/CarouselSimilarProducts";
+import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
@@ -147,23 +148,13 @@ export default function Page({ serverData }: any) {
                             <div className="mt-4 md:mt-0 md:col-span-2">
                                 <div className="text-xl font-semibold">{data.name_zh}</div>
                                 <div className="mt-4">
-                                    <div className="ql-snow">
-                                        <div
-                                            className="ql-editor"
-                                            dangerouslySetInnerHTML={{ __html: data.features }}
-                                        ></div>
-                                    </div>
+                                    <QuillContentWrapper content={data.features} />
                                 </div>
                                 <div className="text-sm text-secondary bg-primary px-4 py-4 mt-4">
                                     產品規格
                                 </div>
                                 <div className="mt-4 px-4">
-                                    <div className="ql-snow">
-                                        <div
-                                            className="ql-editor"
-                                            dangerouslySetInnerHTML={{ __html: data.size }}
-                                        ></div>
-                                    </div>
+                                    <QuillContentWrapper content={data.size} />
                                 </div>
                                 <div className="mt-8">
                                     <Button onClick={() => handleLearnMore()}>
@@ -178,21 +169,13 @@ export default function Page({ serverData }: any) {
                                     主成份
                                 </div>
                                 <div className="mt-8 px-4">
-                                    <div className="ql-snow">
-                                        <div className="ql-editor">
-                                            <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
-                                        </div>
-                                    </div>
+                                    <QuillContentWrapper content={data.ingredients} />
                                 </div>
                                 <div className="mt-8 text-sm text-secondary bg-primary px-4 py-4">
                                     使用方式
                                 </div>
                                 <div className="mt-8 px-4">
-                                    <div className="ql-snow">
-                                        <div className="ql-editor">
-                                            <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
-                                        </div>
-                                    </div>
+                                    <QuillContentWrapper content={data.usage} />
                                 </div>
                             </div>
                         </div>
@@ -213,18 +196,10 @@ export default function Page({ serverData }: any) {
                             </div>
                             <div className="mt-4 px-4">
                                 {currentTab === 0 ?
-                                    <div className="ql-snow">
-                                        <div className="ql-editor">
-                                            <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
-                                        </div>
-                                    </div>
+                                    <QuillContentWrapper content={data.ingredients} />
                                     : null}
                                 {currentTab === 1 ?
-                                    <div className="ql-snow">
-                                        <div className="ql-editor">
-                                            <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
-                                        </div>
-                                    </div>
+                                    <QuillContentWrapper content={data.usage} />
                                 : null}
                             </div>
                         </div>

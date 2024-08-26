@@ -1,4 +1,5 @@
 import Breadcrumb from "@/components/client/Breadcrumb";
+import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
@@ -123,11 +124,7 @@ export default function Page({ serverData }: any) {
                     />
                 </div>
                 <div className="px-4 mt-4">
-                    <div className="ql-snow">
-                        <div className="ql-editor">
-                            <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
-                        </div>
-                    </div>
+                    <QuillContentWrapper content={data.description} />
                     <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
                     <div className="mt-4">
                         <div className="grid grid-cols-2 md:grid-cols-4">

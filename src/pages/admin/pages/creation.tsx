@@ -139,7 +139,7 @@ export default function Page() {
             <Divider className="my-10" soft />
 
             <div className="flex justify-end gap-4">
-                <Button type="reset" plain onClick={() => router.push('/admin/products')}>
+                <Button type="reset" plain onClick={() => router.push('/admin/pages')}>
                     返回列表
                 </Button>
                 <Button
