@@ -37,7 +37,7 @@ export default function AdminReservation({ message }: any) {
                 <Hr />
                 <Text>想預約的日期: {message.date}</Text>
                 <Hr />
-                <Text>方便預約的時間: {message.time_of_day}</Text>
+                <Text>方便聯繫的時段: {message.time_of_day}</Text>
               </Section>
             </Container>
             <Footer />
