@@ -148,6 +148,7 @@ export default function Page({ serverData }: any) {
                                 <div className="text-xl font-semibold">{data.name_zh}</div>
                                 <div className="mt-4">
                                     <div
+                                        className="ql-editor"
                                         dangerouslySetInnerHTML={{ __html: data.features }}
                                     ></div>
                                 </div>
@@ -156,7 +157,7 @@ export default function Page({ serverData }: any) {
                                 </div>
                                 <div className="mt-4 px-4">
                                     <div
-                                        className="mt-4"
+                                        className="ql-editor"
                                         dangerouslySetInnerHTML={{ __html: data.size }}
                                     ></div>
                                 </div>
@@ -173,13 +174,17 @@ export default function Page({ serverData }: any) {
                                     主成份
                                 </div>
                                 <div className="mt-8 px-4">
-                                    <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
+                                    <div className="ql-editor">
+                                        <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
+                                    </div>
                                 </div>
                                 <div className="mt-8 text-sm text-secondary bg-primary px-4 py-4">
                                     使用方式
                                 </div>
                                 <div className="mt-8 px-4">
-                                    <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
+                                    <div className="ql-editor">
+                                        <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,10 +204,10 @@ export default function Page({ serverData }: any) {
                                 </div>
                             </div>
                             <div className="mt-4 px-4">
-                                {currentTab === 0 ? <div>
+                                {currentTab === 0 ? <div className="ql-editor">
                                     <div dangerouslySetInnerHTML={{ __html: data.ingredients }}></div>
                                 </div> : null}
-                                {currentTab === 1 ? <div>
+                                {currentTab === 1 ? <div className="ql-editor">
                                     <div dangerouslySetInnerHTML={{ __html: data.usage }}></div>
                                 </div> : null}
                             </div>
