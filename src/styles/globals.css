@@ -41,10 +41,12 @@
       aspect-ratio: 16/9;
     }
     ul {
+      padding-left: 0 !important;
       list-style-type: disc !important;
       list-style-position: inside !important;
     }
     ol {
+      padding-left: 0 !important;
       list-style-type: decimal !important;
       list-style-position: inside !important;
     }

@@ -123,8 +123,10 @@ export default function Page({ serverData }: any) {
                     />
                 </div>
                 <div className="px-4 mt-4">
-                    <div className="ql-editor">
-                        <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
+                    <div className="ql-snow">
+                        <div className="ql-editor">
+                            <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
+                        </div>
                     </div>
                     <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
                     <div className="mt-4">

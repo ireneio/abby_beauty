@@ -43,7 +43,11 @@ export default function Page() {
             </div>
             <div className="mt-4 mb-4 px-4">
                 <div className="overflow-auto">
-                    <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+                    <div className="ql-snow">
+                        <div className="ql-editor">
+                            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

@@ -74,7 +74,11 @@ export default function Page({ serverData }: any) {
             <RootLayout>
                 <div className="px-4">{data.title}</div>
                 <div className="mt-4 px-4">
-                    <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+                    <div className="ql-snow">
+                        <div className="ql-editor">
+                            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+                        </div>
+                    </div>
                 </div>
             </RootLayout>
         </>
