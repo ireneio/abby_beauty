@@ -6,7 +6,6 @@ import StoreProvider from "@/lib/store/provider";
 import "@/styles/globals.css";
 
 import 'react-quill/dist/quill.snow.css';
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 

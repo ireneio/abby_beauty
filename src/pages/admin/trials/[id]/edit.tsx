@@ -11,7 +11,7 @@ import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
 import { Textarea } from '@/components/common/textarea'
 
-import WysiwygEditor from '@/components/common/WysiwygEditor'
+import WysiwygEditor from '@/components/admin/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'

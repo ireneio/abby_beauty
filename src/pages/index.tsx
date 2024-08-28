@@ -203,7 +203,7 @@ export default function Home() {
   return (
     <>
       <Head>
-          <title>艾比美容工作室</title>
+          <title>艾比美容工作室 板橋做臉/板橋美容/預約體驗價$1700</title>
           <meta name="description" content={`艾比美容工作室 | 克麗緹娜`} />
           <meta property="og:title" content={"艾比美容工作室"} />
           <meta property="og:description" content={`艾比美容工作室 | 克麗緹娜`} />

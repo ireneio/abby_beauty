@@ -1,5 +1,3 @@
-'use client'
-
 import {
   createContext,
   useContext,
@@ -14,17 +12,13 @@ import clsx from 'clsx'
 import { motion, MotionConfig, useReducedMotion } from 'framer-motion'
 
 import { Button } from '@/components/client/Button'
-import { Container } from '@/components/client/Container'
 import { Footer } from '@/components/client/Footer'
-import { GridPattern } from '@/components/client/GridPattern'
 import { Logo, Logomark } from '@/components/client/Logo'
-import { Offices } from '@/components/client/Offices'
-import { SocialMedia } from '@/components/client/SocialMedia'
 import openLineAtAccount from '@/lib/utils/openLineAtAccount'
 import LineFloatButton from '../client/LineFloatButton'
 import useApi from '@/lib/hooks/useApi'
 import { useRouter } from 'next/router'
-import { ArrowDownIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid'
 
 const RootLayoutContext = createContext<{
   logoHovered: boolean
