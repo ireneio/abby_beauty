@@ -1,12 +1,10 @@
 import { Button } from "@/components/client/Button";
 import CarouselBanner from "@/components/client/home/CarouselBanner";
 import CarouselComments from "@/components/client/home/CarouselComments";
-import { Logo } from "@/components/client/Logo";
 import { RootLayout } from "@/components/layout/RootLayout";
 import openLineAtAccount, { lineAccountHandle } from "@/lib/utils/openLineAtAccount";
-import { ArchiveBoxIcon, BookOpenIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import { XMarkIcon } from "@heroicons/react/16/solid";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -15,9 +13,9 @@ export default function Home() {
   const [banners] = useState<any[]>([
     {
       id: '1',
-      image: '/images/banners/戰痘達人_橫幅.jpg',
-      image_mobile: '/images/banners/戰痘達人_直幅.jpg',
-      url: '/product/series/8'
+      image: '/images/banners/淨鑽體驗價1500橫幅.jpg',
+      image_mobile: '/images/banners/淨鑽體驗價1500 直幅.jpg',
+      url: `https://line.me/R/ti/p/${lineAccountHandle}`
     },
     {
       id: '2',

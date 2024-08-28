@@ -9,6 +9,7 @@ import { Select } from "@/components/common/select";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
+import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import dayjs from "dayjs";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -151,7 +152,10 @@ function Page({ swal, serverData }: any) {
                     <div className="px-4 mt-8 text-secondary">
                         <QuillContentWrapper content={data.content} />
                     </div>
-                    <div className="px-4 mt-8 max-w-[500px] mx-auto">
+                    <div className="mt-8 flex justify-center">
+                        <Button onClick={() => openLineAtAccount()}>馬上預約體驗</Button>
+                    </div>
+                    {/* <div className="px-4 mt-8 max-w-[500px] mx-auto">
                         <div className="text-md bg-primary text-secondary text-center px-4 py-4">馬上預約體驗</div>
                         <Field className="mt-4">
                             <Label>
@@ -243,7 +247,7 @@ function Page({ swal, serverData }: any) {
                                 電話與您聯繫確認！感謝您！
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </RootLayout>
         </>
