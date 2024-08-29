@@ -13,7 +13,7 @@ import { motion, MotionConfig, useReducedMotion } from 'framer-motion'
 
 import { Button } from '@/components/client/Button'
 import { Footer } from '@/components/client/Footer'
-import { Logo, Logomark } from '@/components/client/Logo'
+import { Logo } from '@/components/client/Logo'
 import openLineAtAccount from '@/lib/utils/openLineAtAccount'
 import LineFloatButton from '../client/LineFloatButton'
 import useApi from '@/lib/hooks/useApi'
@@ -65,103 +65,94 @@ function Header({
   let { logoHovered, setLogoHovered } = useContext(RootLayoutContext)!
 
   return (
-    // <Container>
-      <div className="flex items-center justify-between max-w-7xl mx-auto px-4">
-        <div className='flex items-center gap-12'>
-          <Link
-            href="/"
-            aria-label="Home"
-            onMouseEnter={() => setLogoHovered(true)}
-            onMouseLeave={() => setLogoHovered(false)}
-          >
-            <Logomark
-              className="h-8 sm:hidden"
-              invert={invert}
-              filled={logoHovered}
-            />
-            <Logo
-              className="hidden h-8 sm:block"
-              invert={invert}
-              filled={logoHovered}
-            />
-          </Link>
-          <div className='hidden lg:flex h-full gap-x-8'>
-            <div className='relative group'>
-              <div className='cursor-pointer flex items-center hover:opacity-[0.75] py-4'>
-                <div className='text-sm text-secondary'>預約體驗課程</div>
-                <div>
-                  <ChevronDownIcon className='text-secondary w-[20px] h-[20px]' />
-                </div>
-              </div>
-              <div className='text-secondary text-xs opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-12 left-0 min-w-[200px] bg-white shadow-lg border border-gray-200 transition-opacity duration-200'>
-                  {trials.map((trial: any) => {
-                    return (
-                      <div
-                        key={trial.id}
-                        onClick={() => router.push(`/trial/${trial.slug}`)}
-                        className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
-                      >
-                        {trial.title_short}
-                      </div>
-                    )
-                  })}
+    <div className="flex items-center justify-between max-w-7xl mx-auto px-4">
+      <div className='flex items-center gap-12'>
+        <Link
+          href="/"
+          aria-label="首頁"
+          onMouseEnter={() => setLogoHovered(true)}
+          onMouseLeave={() => setLogoHovered(false)}
+        >
+          <Logo
+            className="hidden h-8 sm:block"
+            invert={invert}
+            filled={logoHovered}
+          />
+        </Link>
+        {/* navigation */}
+        <div className='hidden lg:flex h-full gap-x-8'>
+          <div className='relative group'>
+            <div className='cursor-pointer flex items-center hover:opacity-[0.75] py-4'>
+              <div className='text-sm text-secondary'>預約體驗課程</div>
+              <div>
+                <ChevronDownIcon className='text-secondary w-[20px] h-[20px]' />
               </div>
             </div>
-            <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/classes')}>
-              <div className='text-sm text-secondary'>課程介紹</div>
+            <div className='text-secondary text-xs opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-12 left-0 min-w-[200px] bg-white shadow-lg border border-gray-200 transition-opacity duration-200'>
+                {trials.map((trial: any) => {
+                  return (
+                    <div
+                      key={trial.id}
+                      onClick={() => router.push(`/trial/${trial.slug}`)}
+                      className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
+                    >
+                      {trial.title_short}
+                    </div>
+                  )
+                })}
             </div>
-            <div className='relative group'>
-              <div className='cursor-pointer flex items-center hover:opacity-[0.75] py-4'>
-                <div className='text-sm text-secondary'>產品介紹</div>
-                <div>
-                  <ChevronDownIcon className='text-secondary w-[20px] h-[20px]' />
-                </div>
+          </div>
+          <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/classes')}>
+            <div className='text-sm text-secondary'>課程介紹</div>
+          </div>
+          <div className='relative group'>
+            <div className='cursor-pointer flex items-center hover:opacity-[0.75] py-4'>
+              <div className='text-sm text-secondary'>產品介紹</div>
+              <div>
+                <ChevronDownIcon className='text-secondary w-[20px] h-[20px]' />
               </div>
-              <div className='text-secondary text-xs opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-12 left-0 min-w-[200px] bg-white shadow-lg border border-gray-200 transition-opacity duration-200'>
-                <div className='py-2 px-2 cursor-pointer hover:opacity-[0.75]' onClick={() => router.push('/products')}>全系列產品</div>
-                  {productTypes.map((productType: any) => {
-                    return (
-                      <div
-                        key={productType.id}
-                        onClick={() => router.push(`/product/series/${productType.id}`)}
-                        className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
-                      >
-                        {productType.name}
-                      </div>
-                    )
-                  })}
-              </div>
+            </div>
+            <div className='text-secondary text-xs opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-12 left-0 min-w-[200px] bg-white shadow-lg border border-gray-200 transition-opacity duration-200'>
+              <div className='py-2 px-2 cursor-pointer hover:opacity-[0.75]' onClick={() => router.push('/products')}>全系列產品</div>
+                {productTypes.map((productType: any) => {
+                  return (
+                    <div
+                      key={productType.id}
+                      onClick={() => router.push(`/product/series/${productType.id}`)}
+                      className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
+                    >
+                      {productType.name}
+                    </div>
+                  )
+                })}
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-x-8">
-          <Button onClick={() => openLineAtAccount()}>
-            預約諮詢
-          </Button>
-          <button
-            ref={toggleRef}
-            type="button"
-            onClick={onToggle}
-            aria-expanded={expanded ? 'true' : 'false'}
-            aria-controls={panelId}
-            className={clsx(
-              'lg:hidden group -m-2.5 rounded-full p-2.5 transition',
-              invert ? 'hover:bg-white/10' : 'hover:bg-neutral-950/10',
-            )}
-            aria-label="Toggle navigation"
-          >
-            <Icon
-              className={clsx(
-                'h-6 w-6',
-                invert
-                  ? 'fill-black group-hover:fill-neutral-200'
-                  : 'fill-neutral-950 group-hover:fill-neutral-700',
-              )}
-            />
-          </button>
-        </div>
       </div>
-    // </Container>
+      <div className="flex items-center gap-x-8">
+        <button
+          ref={toggleRef}
+          type="button"
+          onClick={onToggle}
+          aria-expanded={expanded ? 'true' : 'false'}
+          aria-controls={panelId}
+          className={clsx(
+            'lg:hidden group -m-2.5 rounded-full p-2.5 transition',
+            invert ? 'hover:bg-white/10' : 'hover:bg-neutral-950/10',
+          )}
+          aria-label="Toggle navigation"
+        >
+          <Icon
+            className={clsx(
+              'h-6 w-6',
+              invert
+                ? 'fill-black group-hover:fill-neutral-200'
+                : 'fill-neutral-950 group-hover:fill-neutral-700',
+            )}
+          />
+        </button>
+      </div>
+    </div>
   )
 }
 

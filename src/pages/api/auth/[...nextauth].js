@@ -16,20 +16,23 @@ export const authOptions = {
         // return '/unauthorized'
       }
     },
-    async session({ session, token, user }) {      
+    async session({ session, token, user }) {
       // Send properties to the client, like an access_token and user id from a provider.
       session.accessToken = token.accessToken
       // userId is token.sub when using CredentialsProvider
       session.user.id = token.sub
             
       const userFromDb = await db.selectFrom('admin')
-        .select('username')
+        .where('id', '=', token.sub)
+        .select(['username', 'permission'])
         .executeTakeFirst()
 
       if (userFromDb) {
         session.user.name = userFromDb.username
+        session.user.permission = userFromDb.permission
       } else {
         session.user.name = ''
+        session.user.permission = []
       }
       return session
     }

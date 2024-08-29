@@ -12,13 +12,11 @@ import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
 import { useAppDispatch } from '@/lib/store'
 import { openAlert } from '@/lib/store/features/global/globalSlice'
-import fileToBase64 from '@/lib/utils/fileToBase64'
-import { MinusIcon } from '@heroicons/react/16/solid'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ReactSortable } from "react-sortablejs";
+import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
 
 type Inputs = {
     name_zh: string,
@@ -39,7 +37,7 @@ export default function Page() {
     const router = useRouter()
     const { api } = useApi()
 
-    const [imagePreviewList, setImagePreviewList] = useState<any[]>([])
+    const multipleImageUploaderRef = useRef<any>(null)
 
     const {
         register,
@@ -64,7 +62,7 @@ export default function Page() {
         }
     })
 
-    const submitDisabled = !watch('name_zh') || !imagePreviewList.length
+    const submitDisabled = !watch('name_zh') || watch('image_list').length <= 0
 
     const update = async (data: any) => {    
         const res = await api({
@@ -75,32 +73,12 @@ export default function Page() {
         return res
     }
 
-    const uploadFile = async (file: any) => {
-        const formData = new FormData();
-        formData.append('file', file)
-        const res = await api({
-            method: 'POST',
-            url: `/admin/files`,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            data: formData,
-        })
-        return res
-    }
-
     const onSubmit: SubmitHandler<Inputs> = async (data) => {            
-      const imageUrlArr = []
-      
-      if (data.image_list) {
-          for (let i = 0; i < data.image_list.length; i++) {
-            if (!data.image_list[i].id) {
-              const uploadRes = await uploadFile(data.image_list[i])
-              imageUrlArr.push({ order: i, url: uploadRes.data.url })
-            } else {
-              imageUrlArr.push({ ...data.image_list[i], order: i })
-            }
-          }
+      let imageUrlArr: { order: number; url: string }[] = []
+
+      if (multipleImageUploaderRef.current) {
+          const list = await multipleImageUploaderRef.current.uploadFiles()
+          imageUrlArr = [...list]
       }
       
       const res = await update({
@@ -113,32 +91,6 @@ export default function Page() {
       } else {
           dispatch(openAlert({ title: `錯誤(${res.code})` }))
       }
-    }
-
-    const imageRef = useRef(null)
-
-    const handleRemoveImagePreview = (index: number) => {
-      setImagePreviewList((prev) => {
-          return prev.filter((v, i) => i !== index)
-      })
-      const formItem: any = getValues('image_list')
-      
-      if (formItem) {
-          setValue('image_list', [...formItem].filter((v, i) => i !== index) as any)
-      }
-    }
-
-    const handleSetImagePreview = async (files: FileList | null) => {
-        if (files) {
-            let arr: string[] = [...imagePreviewList]
-            for (let i = 0; i < files.length; i++) {
-                const base64 = await fileToBase64(files[i])
-                arr = [...arr, `data:image/png;base64,${base64}`]
-            }
-            setImagePreviewList(arr)
-        } else {
-            setImagePreviewList([])
-        }
     }
 
     const getData = async () => {
@@ -180,8 +132,8 @@ export default function Page() {
             setValue('features', data.features)
             setValue('product_type_id', data.product_type_id)
             setValue('hidden', data.hidden)
-            setImagePreviewList(data.images.map((v: any) => v.url))
-            setValue('image_list', data.images)
+
+            multipleImageUploaderRef.current.setList(data.images)
           }
         })
       }
@@ -207,39 +159,14 @@ export default function Page() {
                         </Subheading>
                     </div>
                     <div className='space-y-4'>
-                        <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
-                            {imagePreviewList.map((item, i) => (
-                                <div key={i} className='relative w-[148px]'>
-                                    <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
-                                        <Button className='w-[2rem] h-[2rem]'>
-                                            <MinusIcon />
-                                        </Button>
-                                    </div>
-                                    <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
-                                </div>
-                            ))}
-                        </ReactSortable>
-                        <Input
-                            ref={imageRef}
-                            type="file"
-                            multiple
-                            accept='image/*'
-                            aria-label="圖片"
-                            onClick={() => {
-                                if (imageRef.current) {
-                                    // @ts-ignore
-                                    imageRef.current.value = ''
-                                }
-                            }}
-                            onChange={(e) => {
-                                const image_list: any = getValues('image_list')                            
-                                if (image_list) {
-                                setValue('image_list', [...image_list, ...e.target.files as any] as any)
-                                } else {
-                                setValue('image_list', [...e.target.files as any] as any)
-                                }
-                                handleSetImagePreview(e.target.files)
-                            }}
+                        <MultipleImageUploader
+                            ref={multipleImageUploaderRef}
+                            getFormValues={getValues}
+                            setFormValue={setValue}
+                            formKey='image_list'
+                            imageSizeRecommended='方形(如: 500x500)'
+                            maxCount={6}
+                            hint="可拖曳進行排序，排列順序為第一張的圖片將顯示為該產品的封面圖"
                         />
                     </div>
                 </section>
@@ -313,13 +240,13 @@ export default function Page() {
 
                 <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="space-y-1">
-                    <Subheading>產品特點</Subheading>
+                        <Subheading>產品特點</Subheading>
                     </div>
                     <div>
-                    <WysiwygEditor
-                        value={watch('features')}
-                        onChange={(value) => setValue('features', value)}
-                    />
+                        <WysiwygEditor
+                            value={watch('features')}
+                            onChange={(value) => setValue('features', value)}
+                        />
                     </div>
                 </section>
 
@@ -327,13 +254,13 @@ export default function Page() {
 
                 <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="space-y-1">
-                    <Subheading>成份內容</Subheading>
+                        <Subheading>成份內容</Subheading>
                     </div>
                     <div>
-                    <WysiwygEditor
-                        value={watch('ingredients')}
-                        onChange={(value) => setValue('ingredients', value)}
-                    />
+                        <WysiwygEditor
+                            value={watch('ingredients')}
+                            onChange={(value) => setValue('ingredients', value)}
+                        />
                     </div>
                 </section>
 
@@ -355,13 +282,13 @@ export default function Page() {
 
                 <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="space-y-1">
-                    <Subheading>使用方法</Subheading>
+                        <Subheading>使用方法</Subheading>
                     </div>
                     <div>
-                    <WysiwygEditor
-                        value={watch('usage')}
-                        onChange={(value) => setValue('usage', value)}
-                    />
+                        <WysiwygEditor
+                            value={watch('usage')}
+                            onChange={(value) => setValue('usage', value)}
+                        />
                     </div>
                 </section>
 

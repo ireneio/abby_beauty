@@ -19,6 +19,7 @@ const config: Config = {
         'secondary-dark': '#484a49',
         danger: '#d95950',
         highlight: '#8f8472',
+        hint: 'blue',
       },
       listStyleType: {
         none: 'none',

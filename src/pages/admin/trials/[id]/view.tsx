@@ -5,15 +5,8 @@ import { Heading, Subheading } from '@/components/common/heading'
 import { Text } from '@/components/common/text'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
-import type { Metadata } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
-export const metadata: Metadata = {
-  title: '體驗課程',
-  description: '查看體驗課程',
-}
 
 export default function Page() {
     const router = useRouter()
@@ -24,6 +17,9 @@ export default function Page() {
       title_short: '',
       subtitle: '',
       content: '',
+      images: [],
+      price_discount: '',
+      price_original: '',
     })
 
     const getData = async () => {
@@ -40,7 +36,7 @@ export default function Page() {
 
   useEffect(() => {
     if (router.query.id) {
-        getData()
+      getData()
     }
   }, [router.query])
 
@@ -49,6 +45,23 @@ export default function Page() {
       <form className="mx-auto max-w-4xl">
         <Heading>查看體驗課程</Heading>
         <Divider className="my-10 mt-6" />
+
+        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div className="space-y-1">
+              <Subheading>圖片</Subheading>
+              </div>
+              <div className='space-y-4'>
+                <div className='flex flex-wrap gap-4'>
+                  {data.images.map((v: any, i: number) => {
+                    return (
+                      <img key={i} className="w-[148px] aspect-[1/1] rounded-lg shadow w-full object-contain" src={v.url} alt="" />
+                    )
+                  })}
+                </div>
+              </div>
+          </section>
+
+          <Divider className="my-10" soft />
 
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
@@ -78,6 +91,28 @@ export default function Page() {
             </div>
             <div>
               <Text>{data.subtitle}</Text>
+            </div>
+        </section>
+
+        <Divider className="my-10" soft />
+
+        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div className="space-y-1">
+              <Subheading>體驗價</Subheading>
+            </div>
+            <div>
+              <Text>{data.price_discount}</Text>
+            </div>
+        </section>
+
+        <Divider className="my-10" soft />
+
+        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div className="space-y-1">
+              <Subheading>原價</Subheading>
+            </div>
+            <div>
+              <Text>{data.price_original}</Text>
             </div>
         </section>
 

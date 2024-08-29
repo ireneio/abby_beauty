@@ -8,6 +8,7 @@ import { Input } from "@/components/common/input";
 import { Select } from "@/components/common/select";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
+import seoDefault from "@/lib/data/seoDefault";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import dayjs from "dayjs";
@@ -121,17 +122,17 @@ function Page({ swal, serverData }: any) {
         <>
             <Head>
                 <title>{serverData.title_short}</title>
-                <meta name="description" content={`立即預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
+                <meta name="description" content={serverData.subtitle} />
                 <meta property="og:title" content={serverData.title_short} />
-                <meta property="og:description" content={`立即預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
-                <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
+                <meta property="og:description" content={serverData.subtitle} />
+                <meta property="og:image" content={seoDefault.image} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/trial/${router.query.slug}`} />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="艾比美容工作室"/>
-                <meta property="twitter:card" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
+                <meta property="og:site_name" content={seoDefault.site_name} />
+                <meta property="twitter:card" content={seoDefault.image} />
                 <meta name="twitter:title" content={serverData.title_short} />
-                <meta name="twitter:description" content={`立即預約體驗課程 - ${serverData.title} | 艾比美容工作室`} />
-                <meta property="twitter:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
+                <meta name="twitter:description" content={serverData.subtitle} />
+                <meta property="twitter:image" content={seoDefault.image} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>

@@ -2,6 +2,7 @@ import { Button } from "@/components/client/Button";
 import CarouselBanner from "@/components/client/home/CarouselBanner";
 import CarouselComments from "@/components/client/home/CarouselComments";
 import { RootLayout } from "@/components/layout/RootLayout";
+import seoDefault from "@/lib/data/seoDefault";
 import openLineAtAccount, { lineAccountHandle } from "@/lib/utils/openLineAtAccount";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import Head from "next/head";
@@ -201,54 +202,52 @@ export default function Home() {
   return (
     <>
       <Head>
-          <title>艾比美容工作室 板橋做臉/板橋美容/預約體驗價$1700</title>
-          <meta name="description" content={`艾比美容工作室 | 克麗緹娜`} />
-          <meta property="og:title" content={"艾比美容工作室"} />
-          <meta property="og:description" content={`艾比美容工作室 | 克麗緹娜`} />
-          <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
+          <title>{seoDefault.title}</title>
+          <meta name="description" content={seoDefault.description} />
+          <meta property="og:title" content={seoDefault.title} />
+          <meta property="og:description" content={seoDefault.description} />
+          <meta property="og:image" content={seoDefault.image} />
           <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}`} />
           <meta property="og:type" content="website" />
-          <meta property="og:site_name" content="艾比美容工作室"/>
-          <meta property="twitter:card" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
-          <meta name="twitter:title" content={"艾比美容工作室"} />
-          <meta name="twitter:description" content={`艾比美容工作室 | 克麗緹娜`} />
-          <meta property="twitter:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
+          <meta property="og:site_name" content={seoDefault.site_name} />
+          <meta property="twitter:card" content={seoDefault.image} />
+          <meta name="twitter:title" content={seoDefault.title} />
+          <meta name="twitter:description" content={seoDefault.description} />
+          <meta property="twitter:image" content={seoDefault.image} />
           {/* <meta name="twitter:site" content="@yourtwitterhandle" />
           <meta name="twitter:creator" content="@creatorhandle" /> */}
       </Head>
       <RootLayout>
         <div className="px-4">
           <div className="md:hidden">
-            <div className="">
-              <CarouselBanner>
-                {banners.map((banner) => {
-                  return (
-                    <div key={banner.id} onClick={() => router.push(banner.url)}>
-                      <img
-                        src={banner.image_mobile}
-                        alt={banner.id}
-                      />
-                    </div>
-                  )
-                })}
-              </CarouselBanner>
-            </div>
+            <CarouselBanner>
+              {banners.map((banner) => {
+                return (
+                  <div key={banner.id} onClick={() => router.push(banner.url)}>
+                    <img
+                      src={banner.image_mobile}
+                      alt={banner.id}
+                      className="aspect-[9/12] object-contain"
+                    />
+                  </div>
+                )
+              })}
+            </CarouselBanner>
           </div>
           <div className="hidden md:block">
-            <div className="">
-              <CarouselBanner>
-                {banners.map((banner) => {
-                  return (
-                    <div key={banner.id} onClick={() => router.push(banner.url)}>
-                      <img
-                        src={banner.image}
-                        alt={banner.id}
-                      />
-                    </div>
-                  )
-                })}
-              </CarouselBanner>
-            </div>
+            <CarouselBanner>
+              {banners.map((banner) => {
+                return (
+                  <div key={banner.id} onClick={() => router.push(banner.url)}>
+                    <img
+                      src={banner.image}
+                      alt={banner.id}
+                      className="aspect-[2/1] object-contain"
+                    />
+                  </div>
+                )
+              })}
+            </CarouselBanner>
           </div>
           <div className="mt-4">
             <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
@@ -395,47 +394,6 @@ export default function Home() {
             </div>
             <div className="mt-12 md:mt-8">
               <div className="bg-primary px-8 py-8 shadow-md rounded-md">
-                
-                {/* <div className="grid grid-cols-2 gap-x-8 mt-8">
-                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
-                    <div>
-                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
-                    </div>
-                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
-                      專業講師系統化教學
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
-                    <Hand className="text-primary w-[48px] h-[48px]" />
-                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
-                      資深美容師一對一輔導手技
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
-                    <div>
-                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
-                    </div>
-                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
-                      圖文並茂的教學教材
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
-                    <div>
-                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
-                    </div>
-                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
-                      專屬的進貨管道
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-4 items-center justify-center rounded-md bg-secondary py-4 px-4">
-                    <div>
-                      <BookOpenIcon className="text-primary w-[48px] h-[48px]" />
-                    </div>
-                    <div className="text-primary tracking-[3px] text-sm md:text-md text-center">
-                      終身複訓資格
-                    </div>
-                  </div>
-                </div> */}
                 <div className="mt-0">
                   <div className="font-light text-sm text-secondary leading-[36px] tracking-[1.5px]">
                     我們誠摯邀請對美容充滿興趣與熱忱的零基礎學員，提供專業的教學課程和手技訓練，涵蓋初階與進階班，並提供終身免費複訓的權利。學員無需綁約，亦不需繳納任何形式的訂金。

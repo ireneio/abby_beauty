@@ -71,11 +71,35 @@ class TrialsController {
                 'slug',
                 'title_short',
             ])
-            .orderBy('order', 'asc')
             .execute()
 
+        const imagesQuery = db.selectFrom('trial_images')
+            .leftJoin('trials', 'trials.id', 'trial_images.trial_id')
+            .select([
+                'trials.id as trial_id',
+                'trial_images.id as id',
+                'trial_images.url',
+                'trial_images.order',
+            ])
+            .orderBy('trial_images.order', 'asc')
+
+        const images = await imagesQuery.execute()
+
         return {
-            trials: rows,
+            trials: rows.map((row) => {
+                return {
+                    ...row,
+                    images: images
+                        .filter((img) => img.trial_id === row.id)
+                        .map((img) => {
+                            return {
+                                id: img.id,
+                                url: img.url,
+                                order: img.order,
+                            }
+                        }),
+                }
+            }),
             total,
         }
     }
@@ -86,7 +110,30 @@ class TrialsController {
             .selectAll()
             .executeTakeFirst()
 
-        return row
+        if (row?.id) {
+            const imagesQuery = db.selectFrom('trial_images')
+                .leftJoin('trials', 'trials.id', 'trial_images.trial_id')
+                .where('trial_id', '=', row.id)
+                .select([
+                    'trials.id as trial_id',
+                    'trial_images.id as id',
+                    'trial_images.url',
+                    'trial_images.order',
+                ])
+                .orderBy('trial_images.order', 'asc')
+    
+            const images = await imagesQuery.execute()
+
+            return {
+                ...row,
+                images,
+            }
+        }
+
+        return {
+            ...row,
+            images: []
+        }
     }
     async getBySlug({ slug }: { slug: string }) {
         const row = await db.selectFrom('trials')
@@ -95,7 +142,30 @@ class TrialsController {
             .selectAll()
             .executeTakeFirst()
 
-        return row
+        if (row?.id) {
+            const imagesQuery = db.selectFrom('trial_images')
+                .leftJoin('trials', 'trials.id', 'trial_images.trial_id')
+                .where('trial_id', '=', row.id)
+                .select([
+                    'trials.id as trial_id',
+                    'trial_images.id as id',
+                    'trial_images.url',
+                    'trial_images.order',
+                ])
+                .orderBy('trial_images.order', 'asc')
+    
+            const images = await imagesQuery.execute()
+
+            return {
+                ...row,
+                images,
+            }
+        }
+
+        return {
+            ...row,
+            images: []
+        }
     }
     async getBySlugServerSide({ slug }: { slug: string }) {
         const row = await db.selectFrom('trials')
@@ -104,6 +174,7 @@ class TrialsController {
             .select([
                 'title',
                 'title_short',
+                'subtitle',
             ])
             .executeTakeFirst()
 
@@ -115,7 +186,10 @@ class TrialsController {
        slug,
        content,
        subtitle,
-       order = 0
+       order = 0,
+       images,
+       price_discount,
+       price_original,
     }: {
         title: string,
         title_short: string,
@@ -123,12 +197,17 @@ class TrialsController {
         content?: string
         subtitle?: string
         order?: number,
+        images: { url: string, order: number }[],
+        price_discount: number,
+        price_original: number,
     }) {
         const values: any = {
             title,
             title_short,
             slug,
             order,
+            price_discount,
+            price_original,
         }
         if (subtitle !== undefined) {
             values.subtitle = subtitle
@@ -140,6 +219,16 @@ class TrialsController {
             .values(values)
             .returning('id')
             .executeTakeFirst()
+
+        if (row?.id) {
+            await db.insertInto('trial_images')
+                .values(images.map((v) => ({
+                    trial_id: row.id,
+                    url: v.url,
+                    order: v.order,
+                })))
+                .execute()
+        }
         
         return row
     }
@@ -152,6 +241,9 @@ class TrialsController {
         slug,
         content,
         order = 0,
+        images,
+        price_discount,
+        price_original,
      }: {
         id: number
         title: string,
@@ -160,11 +252,16 @@ class TrialsController {
         subtitle?: string,
         content?: string,
         order?: number,
+        images: { url: string, order: number }[],
+        price_discount: number,
+        price_original: number,
      }) {
         const values: any = {
             title,
             title_short,
             order,
+            price_discount,
+            price_original,
         }
         if (slug !== undefined) {
             values.slug = slug
@@ -180,6 +277,22 @@ class TrialsController {
             .set(values)
             .returning('id')
             .executeTakeFirst()
+
+        if (row?.id && images) {
+            await db.deleteFrom('trial_images')
+                .where('trial_id', '=', id)
+                .execute()
+
+            if (images.length > 0) {
+                await db.insertInto('trial_images')
+                    .values(images.map((v) => ({
+                        trial_id: id,
+                        url: v.url,
+                        order: v.order,
+                    })))
+                    .execute()
+            }
+        }
          
          return row
      }

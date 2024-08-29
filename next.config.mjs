@@ -25,6 +25,12 @@ const nextConfig = {
           chunks: 'all',
           enforce: true,
         },
+        clientComponents: {
+          test: /[\\/]components[\\/]client[\\/]/,
+          name: 'client-components',
+          chunks: 'all',
+          enforce: true,
+        },
       }
     }
     return config

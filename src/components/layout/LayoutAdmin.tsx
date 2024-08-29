@@ -23,13 +23,15 @@ import { SidebarLayout } from '@/components/common/sidebar-layout'
 import { PropsWithChildren, useEffect } from 'react'
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from 'next/router'
-import { ArrowRightStartOnRectangleIcon, BookOpenIcon, ChevronUpIcon, CubeIcon, DocumentIcon, DocumentTextIcon, RectangleGroupIcon, TagIcon } from '@heroicons/react/16/solid'
+import { ArrowRightStartOnRectangleIcon, Bars2Icon, Bars4Icon, BookOpenIcon, ChevronUpIcon, CubeIcon, DocumentIcon, DocumentTextIcon, GlobeAltIcon, ListBulletIcon, NewspaperIcon, PhotoIcon, RectangleGroupIcon, Square2StackIcon, StarIcon, TagIcon, TrophyIcon, UserIcon, UserPlusIcon } from '@heroicons/react/16/solid'
 
 export default function LayoutAdmin({ children }: PropsWithChildren) {
   const router = useRouter()
   const { data: session, status } = useSession()
+  const user = session?.user as any
+  const permission = user?.permission ?? []
 
-  useEffect(() => {    
+  useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/admin/login')
     }
@@ -70,17 +72,53 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
         <Sidebar>
           <SidebarHeader>
             <SidebarItem>
-              <Avatar src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" />
+              {/* <Avatar src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" /> */}
               <SidebarLabel>美容後台管理</SidebarLabel>
             </SidebarItem>
           </SidebarHeader>
           <SidebarBody>
+          <SidebarSection>
+            <SidebarItem onClick={() => window.open(`${process.env.NEXT_PUBLIC_SITE_URL}`, '_blank')}>
+              <GlobeAltIcon />
+              <SidebarLabel>查看前台網站</SidebarLabel>
+            </SidebarItem>
+          </SidebarSection>
             <SidebarSection>
-              <SidebarHeading>課程管理</SidebarHeading>
+              <SidebarHeading>體驗課程管理</SidebarHeading>
               <SidebarItem href="/admin/trials">
                 <RectangleGroupIcon />
+                <SidebarLabel>體驗課程列表管理</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+            <SidebarSection>
+              <SidebarHeading>首頁管理</SidebarHeading>
+              <SidebarItem href="/admin/home/carousels">
+                <PhotoIcon />
+                <SidebarLabel>輪播圖片管理</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/admin/home/services">
+                <ListBulletIcon />
+                <SidebarLabel>服務項目管理</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/admin/home/sessions">
+                <Square2StackIcon />
                 <SidebarLabel>體驗課程管理</SidebarLabel>
               </SidebarItem>
+              <SidebarItem href="/admin/home/comments">
+                <StarIcon />
+                <SidebarLabel>客戶好評管理</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/admin/home/brand">
+                <TrophyIcon />
+                <SidebarLabel>品牌價值管理</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/admin/home/joinus">
+                <UserPlusIcon />
+                <SidebarLabel>加入我們管理</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+            <SidebarSection>
+              <SidebarHeading>課程介紹管理</SidebarHeading>
               <SidebarItem href="/admin/classes">
                 <BookOpenIcon />
                 <SidebarLabel>課程列表管理</SidebarLabel>
@@ -103,11 +141,29 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
             </SidebarSection>
             <SidebarSection>
               <SidebarHeading>網站資料管理</SidebarHeading>
+              <SidebarItem href="/admin/navbar">
+                <Bars2Icon />
+                <SidebarLabel>頁首/選單管理</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/admin/footer">
+                <Bars4Icon />
+                <SidebarLabel>頁尾管理</SidebarLabel>
+              </SidebarItem>
               <SidebarItem href="/admin/pages">
                 <DocumentTextIcon />
                 <SidebarLabel>自訂頁面管理</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
+            {permission.includes('root') ?
+              <SidebarSection>
+                <SidebarHeading>後台管理</SidebarHeading>
+                <SidebarItem href="/admin/accounts">
+                  <UserIcon />
+                  <SidebarLabel>後台帳號管理</SidebarLabel>
+                </SidebarItem>
+              </SidebarSection> :
+              null
+            }
             {/* <SidebarSection>
               <SidebarHeading>預約管理</SidebarHeading>
               <SidebarItem href="/admin/reservation/history">預約紀錄管理</SidebarItem>

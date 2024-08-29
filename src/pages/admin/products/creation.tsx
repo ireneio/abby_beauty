@@ -1,15 +1,11 @@
 import RequiredMark from '@/components/admin/RequiredMark'
 import { Button } from '@/components/common/button'
-import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/common/checkbox'
 import { Divider } from '@/components/common/divider'
-import { Label } from '@/components/common/fieldset'
 import { Heading, Subheading } from '@/components/common/heading'
 import { Input } from '@/components/common/input'
 import { Select } from '@/components/common/select'
 import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
-import { Textarea } from '@/components/common/textarea'
-
 import WysiwygEditor from '@/components/admin/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
@@ -18,13 +14,12 @@ import { useAppDispatch } from '@/lib/store'
 import { openAlert } from '@/lib/store/features/global/globalSlice'
 import fileToBase64 from '@/lib/utils/fileToBase64'
 import { MinusIcon } from '@heroicons/react/16/solid'
-import type { Metadata } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ReactSortable } from "react-sortablejs";
+import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
 
 type Inputs = {
     name_en: string,
@@ -44,6 +39,8 @@ export default function Page() {
     const dispatch = useAppDispatch()
     const router = useRouter()
     const { api } = useApi()
+
+    const multipleImageUploaderRef = useRef<any>(null)
 
     const [imagePreviewList, setImagePreviewList] = useState<any[]>([])
 
@@ -70,7 +67,7 @@ export default function Page() {
         }
     })
 
-    const submitDisabled = !watch('name_zh') || !imagePreviewList.length
+    const submitDisabled = !watch('name_zh') || watch('image_list').length <= 0
 
     const create = async (data: any) => {    
         const res = await api({
@@ -96,17 +93,11 @@ export default function Page() {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const imageUrlArr = []
+        let imageUrlArr: { order: number; url: string }[] = []
         
-        if (data.image_list) {
-            for (let i = 0; i < data.image_list.length; i++) {
-              if (!data.image_list[i].id) {
-                const uploadRes = await uploadFile(data.image_list[i])
-                imageUrlArr.push({ order: i, url: uploadRes.data.url })
-              } else {
-                imageUrlArr.push({ ...data.image_list[i], order: i })
-              }
-            }
+        if (multipleImageUploaderRef.current) {
+            const list = await multipleImageUploaderRef.current.uploadFiles()
+            imageUrlArr = [...list]
         }
 
         const res = await create({
@@ -184,39 +175,14 @@ export default function Page() {
                         </Subheading>
                     </div>
                     <div className='space-y-4'>
-                        <ReactSortable className='flex flex-wrap gap-4' list={imagePreviewList} setList={setImagePreviewList}>
-                            {imagePreviewList.map((item, i) => (
-                                <div key={i} className='relative w-[148px]'>
-                                    <div className='absolute top-2 left-2' onClick={() => handleRemoveImagePreview(i)}>
-                                        <Button className='w-[2rem] h-[2rem]'>
-                                            <MinusIcon />
-                                        </Button>
-                                    </div>
-                                    <img key={i} className="aspect-[1/1] rounded-lg shadow w-full object-contain" src={item} alt="" />
-                                </div>
-                            ))}
-                        </ReactSortable>
-                        <Input
-                            ref={imageRef}
-                            type="file"
-                            multiple
-                            accept='image/*'
-                            aria-label="圖片"
-                            onClick={() => {
-                                if (imageRef.current) {
-                                    // @ts-ignore
-                                    imageRef.current.value = ''
-                                }
-                            }}
-                            onChange={(e) => {                            
-                                const image_list: any = getValues('image_list')                            
-                                if (image_list) {
-                                setValue('image_list', [...image_list, ...e.target.files as any] as any)
-                                } else {
-                                setValue('image_list', [...e.target.files as any] as any)
-                                }
-                                handleSetImagePreview(e.target.files)
-                            }}
+                        <MultipleImageUploader
+                            ref={multipleImageUploaderRef}
+                            getFormValues={getValues}
+                            setFormValue={setValue}
+                            formKey='image_list'
+                            imageSizeRecommended='方形(如: 500x500)'
+                            maxCount={6}
+                            hint="可拖曳進行排序，排列順序為第一張的圖片將顯示為該產品的封面圖"
                         />
                     </div>
                 </section>

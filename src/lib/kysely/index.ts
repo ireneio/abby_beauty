@@ -13,6 +13,7 @@ import ClassType from './models/ClassType'
 import PagePrivate from './models/PagePrivate'
 import Trial from './models/Trial'
 import TrialReservation from './models/TrialReservation'
+import TrialImage from './models/TrialImage'
 
 // Keys of this interface are table names.
 export interface Database {
@@ -30,6 +31,7 @@ export interface Database {
   pages_private: PagePrivate,
   trials: Trial,
   trials_reservations: TrialReservation,
+  trial_images: TrialImage,
 }
 
 export const db = createKysely<Database>({
