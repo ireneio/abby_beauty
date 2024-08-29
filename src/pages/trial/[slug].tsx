@@ -128,16 +128,16 @@ function Page({ swal, serverData }: any) {
         <>
             <Head>
                 <title>{serverData.title_short}</title>
-                <meta name="description" content={serverData.subtitle} />
+                <meta name="description" content={serverData.title} />
                 <meta property="og:title" content={serverData.title_short} />
-                <meta property="og:description" content={serverData.subtitle} />
+                <meta property="og:description" content={serverData.title} />
                 <meta property="og:image" content={seoDefault.image} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/trial/${router.query.slug}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content={seoDefault.site_name} />
                 <meta property="twitter:card" content={seoDefault.image} />
                 <meta name="twitter:title" content={serverData.title_short} />
-                <meta name="twitter:description" content={serverData.subtitle} />
+                <meta name="twitter:description" content={serverData.title} />
                 <meta property="twitter:image" content={seoDefault.image} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
