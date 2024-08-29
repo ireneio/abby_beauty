@@ -2,6 +2,7 @@ import RequiredMark from "@/components/admin/RequiredMark";
 import Breadcrumb from "@/components/client/Breadcrumb";
 import { Button } from "@/components/client/Button";
 import QuillContentWrapper from "@/components/client/QuillContentWrapper";
+import CarouselTrialImage from "@/components/client/trial/CarouselTrialImage";
 import { Checkbox, CheckboxField, CheckboxGroup } from "@/components/common/checkbox";
 import { Field, Label } from "@/components/common/fieldset";
 import { Input } from "@/components/common/input";
@@ -10,10 +11,12 @@ import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import seoDefault from "@/lib/data/seoDefault";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
+import formatNumberToMoney from "@/lib/utils/formatNumberToMoney";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import dayjs from "dayjs";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -39,6 +42,9 @@ function Page({ swal, serverData }: any) {
         slug: '',
         subtitle: '',
         content: '',
+        images: [],
+        price_discount: '',
+        price_original: '',
     })
 
     const timeOfDayOptions = [
@@ -146,109 +152,126 @@ function Page({ swal, serverData }: any) {
                         ]}
                     />
                 </div>
-                <h2 className="mt-4 max-w-[720px] mx-auto text-highlight text-lg bg-primary px-4 py-4 font-semibold">{data.title}</h2>
-                <div className="max-w-[720px] mx-auto">
-                    {data.subtitle ? <div className="px-4 mt-4 text-sm font-light text-secondary">{data.subtitle}</div> : null}
-                    <div className="mt-4 h-[1px] w-full bg-[#ccc]"></div>
-                    <div className="px-4 mt-8 text-secondary">
-                        <QuillContentWrapper content={data.content} />
+                <div className="md:grid md:grid-cols-4 md:gap-x-8 mt-4">
+                    <div className="px-4 md:pr-0 md:col-span-2">
+                        <CarouselTrialImage images={data.images} />
                     </div>
-                    <div className="mt-8 flex justify-center">
-                        <Button onClick={() => openLineAtAccount()}>馬上預約體驗</Button>
-                    </div>
-                    {/* <div className="px-4 mt-8 max-w-[500px] mx-auto">
-                        <div className="text-md bg-primary text-secondary text-center px-4 py-4">馬上預約體驗</div>
-                        <Field className="mt-4">
-                            <Label>
-                                姓名
-                                <RequiredMark />
-                            </Label>
-                            <Input {...form.register('name', { required: true })} />
-                            {form.formState.errors.name ? <span className="text-danger text-xs">請輸入姓名</span> : null}
-                        </Field>
-                        <Field className="mt-4">
-                            <Label>
-                                Email
-                                <RequiredMark />
-                            </Label>
-                            <Input type="email" {...form.register('email', { required: true })} />
-                            {form.formState.errors.email ? <span className="text-danger text-xs">請輸入正確格式的 Email</span> : null}
-                        </Field>
-                        <Field className="mt-4">
-                            <Label>
-                                聯絡電話
-                                <RequiredMark />
-                            </Label>
-                            <Input type="tel" {...form.register('phone', { required: true })} />
-                            {form.formState.errors.name ? <span className="text-danger text-xs">請輸入聯絡電話</span> : null}
-                        </Field>
-                        <Field className="mt-4">
-                            <Label>
-                                LINE ID
-                            </Label>
-                            <Input {...form.register('line_id')} />
-                            <div className="mt-1 font-light text-sm">以利我們即時與您聯繫。</div>
-                        </Field>
-                        <Field className="mt-4">
-                            <Label>
-                                您想預約的日期
-                                <RequiredMark />
-                            </Label>
-                            <Input min={dayjs().format('YYYY-MM-DD')} type="date" {...form.register('date', { required: true })} />
-                            {form.formState.errors.date ? <span className="text-danger text-xs">請選擇您想預約的日期</span> : null}
-                        </Field>
-                        <Field className="mt-4">
-                            <Label>
-                                方便我們連繫您的時段
-                                <RequiredMark />
-                            </Label>
-                            <Select {...form.register('time_of_day', { required: true })}>
-                                {timeOfDayOptions.map((time, i) => {
-                                    return (
-                                        <option key={i} value={time.value}>{time.label}</option>
-                                    )
-                                })}
-                            </Select>
-                            {form.formState.errors.time_of_day ? <span className="text-danger text-xs">請選擇方便我們連繫您的時段</span> : null}
-                        </Field>
-                        <Field className="mt-4">
-                            <Label>
-                                您是從哪裡得知我們的網頁呢?
-                            </Label>
-                            <CheckboxGroup>
-                                {knowUsOptions.map((v, i) => {
-                                    return (
-                                    <CheckboxField key={i}>
-                                        <Checkbox
-                                            onChange={(checked) => {
-                                                if (checked) {
-                                                    form.setValue('know_us_list', [...form.getValues('know_us_list'), v.value])
-                                                } else {
-                                                    form.setValue('know_us_list', form.getValues('know_us_list').filter((value: any) => value !== v.value))
-                                                }
-                                            }}
-                                            checked={form.watch('know_us_list').includes(v.value)}
-                                        />
-                                        <Label>{v.label}</Label>
-                                    </CheckboxField>
-                                    )
-                                })}
-                                </CheckboxGroup>
-                        </Field>
-                        <div className="mt-8 flex justify-center">
-                            <Button
-                                loading={form.formState.isSubmitting}
-                                onClick={form.handleSubmit(onSubmit)}
-                            >立即預約</Button>
-                        </div>
-                        <div className="mt-8">
-                            <div className="text-md text-center text-secondary">
-                                表單送出後不代表預約成功，<br />
-                                我們將於2~3個工作天內<br />
-                                電話與您聯繫確認！感謝您！
+                    <section className="mt-4 md:pr-4 md:mt-0 md:col-span-2">
+                        <h2 className="text-highlight text-lg bg-primary px-4 py-4 font-semibold">{data.title}</h2>
+                        <div>
+                            {data.subtitle ? <div className="px-4 mt-4 text-sm font-light text-secondary">{data.subtitle}</div> : null}
+                            <div className="mt-4 h-[1px] w-full bg-[#ccc]"></div>
+                            <div className="mt-4 px-4">
+                                <div>體驗價</div>
+                                <div className="mt-2 flex gap-2 items-end">
+                                    <div className="text-danger text-3xl">NT${formatNumberToMoney(data.price_discount)}</div>
+                                    <div className="line-through text-gray-400">NT${formatNumberToMoney(data.price_original)}</div>
+                                </div>
                             </div>
+                            <div className="px-4 mt-8">
+                                <div>課程內容</div>
+                                <div className="mt-2">
+                                    <QuillContentWrapper content={data.content} />
+                                </div>
+                            </div>
+                            <div className="mt-8 flex justify-center">
+                                <Button onClick={() => openLineAtAccount()}>馬上預約體驗</Button>
+                            </div>
+                            {/* <div className="px-4 mt-8 max-w-[500px] mx-auto">
+                                <div className="text-md bg-primary text-secondary text-center px-4 py-4">馬上預約體驗</div>
+                                <Field className="mt-4">
+                                    <Label>
+                                        姓名
+                                        <RequiredMark />
+                                    </Label>
+                                    <Input {...form.register('name', { required: true })} />
+                                    {form.formState.errors.name ? <span className="text-danger text-xs">請輸入姓名</span> : null}
+                                </Field>
+                                <Field className="mt-4">
+                                    <Label>
+                                        Email
+                                        <RequiredMark />
+                                    </Label>
+                                    <Input type="email" {...form.register('email', { required: true })} />
+                                    {form.formState.errors.email ? <span className="text-danger text-xs">請輸入正確格式的 Email</span> : null}
+                                </Field>
+                                <Field className="mt-4">
+                                    <Label>
+                                        聯絡電話
+                                        <RequiredMark />
+                                    </Label>
+                                    <Input type="tel" {...form.register('phone', { required: true })} />
+                                    {form.formState.errors.name ? <span className="text-danger text-xs">請輸入聯絡電話</span> : null}
+                                </Field>
+                                <Field className="mt-4">
+                                    <Label>
+                                        LINE ID
+                                    </Label>
+                                    <Input {...form.register('line_id')} />
+                                    <div className="mt-1 font-light text-sm">以利我們即時與您聯繫。</div>
+                                </Field>
+                                <Field className="mt-4">
+                                    <Label>
+                                        您想預約的日期
+                                        <RequiredMark />
+                                    </Label>
+                                    <Input min={dayjs().format('YYYY-MM-DD')} type="date" {...form.register('date', { required: true })} />
+                                    {form.formState.errors.date ? <span className="text-danger text-xs">請選擇您想預約的日期</span> : null}
+                                </Field>
+                                <Field className="mt-4">
+                                    <Label>
+                                        方便我們連繫您的時段
+                                        <RequiredMark />
+                                    </Label>
+                                    <Select {...form.register('time_of_day', { required: true })}>
+                                        {timeOfDayOptions.map((time, i) => {
+                                            return (
+                                                <option key={i} value={time.value}>{time.label}</option>
+                                            )
+                                        })}
+                                    </Select>
+                                    {form.formState.errors.time_of_day ? <span className="text-danger text-xs">請選擇方便我們連繫您的時段</span> : null}
+                                </Field>
+                                <Field className="mt-4">
+                                    <Label>
+                                        您是從哪裡得知我們的網頁呢?
+                                    </Label>
+                                    <CheckboxGroup>
+                                        {knowUsOptions.map((v, i) => {
+                                            return (
+                                            <CheckboxField key={i}>
+                                                <Checkbox
+                                                    onChange={(checked) => {
+                                                        if (checked) {
+                                                            form.setValue('know_us_list', [...form.getValues('know_us_list'), v.value])
+                                                        } else {
+                                                            form.setValue('know_us_list', form.getValues('know_us_list').filter((value: any) => value !== v.value))
+                                                        }
+                                                    }}
+                                                    checked={form.watch('know_us_list').includes(v.value)}
+                                                />
+                                                <Label>{v.label}</Label>
+                                            </CheckboxField>
+                                            )
+                                        })}
+                                        </CheckboxGroup>
+                                </Field>
+                                <div className="mt-8 flex justify-center">
+                                    <Button
+                                        loading={form.formState.isSubmitting}
+                                        onClick={form.handleSubmit(onSubmit)}
+                                    >立即預約</Button>
+                                </div>
+                                <div className="mt-8">
+                                    <div className="text-md text-center text-secondary">
+                                        表單送出後不代表預約成功，<br />
+                                        我們將於2~3個工作天內<br />
+                                        電話與您聯繫確認！感謝您！
+                                    </div>
+                                </div>
+                            </div> */}
                         </div>
-                    </div> */}
+                    </section>
                 </div>
             </RootLayout>
         </>
