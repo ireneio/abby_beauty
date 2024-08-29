@@ -165,4 +165,6 @@ const MultipleImageUploader = forwardRef((
     )
 })
 
+MultipleImageUploader.displayName = 'MultipleImageUploader'
+
 export default withSwal(MultipleImageUploader)
