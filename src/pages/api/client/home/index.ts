@@ -2,14 +2,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import ErrorCode from "@/lib/api/errorCodes";
 import { createRouter } from "next-connect";
-import PagesController from "@/lib/kysely/controllers/pages";
+import HomeController from "@/lib/kysely/controllers/home";
 
-const controller = new PagesController()
+const controller = new HomeController()
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
 router.get(async (req, res) => {
-  const data = await controller.getAll()
+  const data = await controller.getData()
   return res.status(200).json({
     code: ErrorCode.SUCCESS,
     data,

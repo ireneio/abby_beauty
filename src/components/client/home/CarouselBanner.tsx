@@ -9,11 +9,11 @@ const responsive = {
     items: 1,
   },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1024, min: 640 },
     items: 1,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 640, min: 0 },
     items: 1,
     slidesToSlide: 1, // optional, default to 1.
   }
@@ -53,7 +53,7 @@ export default function CarouselBanner({ children }: Props) {
             autoPlay={true}
             autoPlaySpeed={5000}
             keyBoardControl={true}
-            customTransition="all .5"
+            customTransition="transform .5"
             transitionDuration={500}
             containerClass="pb-8"
             removeArrowOnDeviceType={["mobile"]}

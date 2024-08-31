@@ -7,11 +7,11 @@ const responsive = {
     items: 1,
   },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1024, min: 640 },
     items: 1,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 640, min: 0 },
     items: 1,
   }
 };
@@ -30,7 +30,7 @@ export default function CarouselProductImage({ children }: Props) {
             autoPlay={false}
             autoPlaySpeed={1000}
             keyBoardControl={true}
-            customTransition="all .5"
+            customTransition="transform .5"
             transitionDuration={500}
             containerClass="w-full pb-8"
             // removeArrowOnDeviceType={["tablet", "mobile"]}

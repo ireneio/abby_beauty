@@ -14,7 +14,6 @@ import { motion, MotionConfig, useReducedMotion } from 'framer-motion'
 import { Button } from '@/components/client/Button'
 import { Footer } from '@/components/client/Footer'
 import { Logo } from '@/components/client/Logo'
-import openLineAtAccount from '@/lib/utils/openLineAtAccount'
 import LineFloatButton from '../client/LineFloatButton'
 import useApi from '@/lib/hooks/useApi'
 import { useRouter } from 'next/router'
@@ -263,17 +262,13 @@ function Navigation({ productTypes, trials }: { productTypes: any[], trials: any
   )
 }
 
-function RootLayoutInner({ children }: { children: React.ReactNode }) {
+function RootLayoutInner({ children, data }: { children: React.ReactNode, data: any }) {
   let panelId = useId()
   let [expanded, setExpanded] = useState(false)
   let openRef = useRef<React.ElementRef<'button'>>(null)
   let closeRef = useRef<React.ElementRef<'button'>>(null)
   let navRef = useRef<React.ElementRef<'div'>>(null)
   let shouldReduceMotion = useReducedMotion()
-
-  const { api } = useApi()
-  const [productTypes, setProductTypes] = useState<any[]>([])
-  const [trials, setTrials] = useState<any[]>([])
 
   useEffect(() => {
     function onClick(event: MouseEvent) {
@@ -290,37 +285,6 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener('click', onClick)
     }
-  }, [])
-
-  const getProductTypes = async () => {
-    const res = await api({
-      method: 'GET',
-      url: '/client/product_types'
-    })
-    if (res.code === 0) {
-      setProductTypes(res.data)
-    } else {
-      setProductTypes([])
-    }
-  }
-
-  const getTrials = async () => {
-    const res = await api({
-      method: 'GET',
-      url: '/client/trials'
-    })
-    if (res.code === 0) {
-      setTrials(res.data)
-    } else {
-      setTrials([])
-    }
-  }
-
-  useEffect(() => {
-    Promise.all([
-      getProductTypes(),
-      getTrials()
-    ])
   }, [])
 
   return (
@@ -343,8 +307,8 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
                 closeRef.current?.focus({ preventScroll: true }),
               )
             }}
-            productTypes={productTypes}
-            trials={trials}
+            productTypes={data.productTypes}
+            trials={data.trials}
           />
         </div>
 
@@ -371,13 +335,13 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
                     openRef.current?.focus({ preventScroll: true }),
                   )
                 }}
-                productTypes={productTypes}
-                trials={trials}
+                productTypes={data.productTypes}
+                trials={data.trials}
               />
             </div>
             <Navigation
-              trials={trials}
-              productTypes={productTypes}
+              trials={data.trials}
+              productTypes={data.productTypes}
             />
           </motion.div>
         </motion.div>
@@ -403,13 +367,53 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
   )
 }
 
+let hasInitialized = false
+
 export function RootLayout({ children }: { children: React.ReactNode }) {
   let pathname = usePathname()
   let [logoHovered, setLogoHovered] = useState(false)
 
+  const { api } = useApi()
+  const [productTypes, setProductTypes] = useState<any[]>([])
+  const [trials, setTrials] = useState<any[]>([])
+
+  const getProductTypes = async () => {
+    const res = await api({
+      method: 'GET',
+      url: '/client/product_types'
+    })
+    if (res.code === 0) {
+      setProductTypes(res.data)
+    } else {
+      setProductTypes([])
+    }
+  }
+
+  const getTrials = async () => {
+    const res = await api({
+      method: 'GET',
+      url: '/client/trials'
+    })
+    if (res.code === 0) {
+      setTrials(res.data)
+    } else {
+      setTrials([])
+    }
+  }
+
+  useEffect(() => {
+    if (!hasInitialized) {
+      hasInitialized = true
+      Promise.all([
+        getProductTypes(),
+        getTrials()
+      ])
+    }
+  }, [])
+
   return (
     <RootLayoutContext.Provider value={{ logoHovered, setLogoHovered }}>
-      <RootLayoutInner key={pathname}>{children}</RootLayoutInner>
+      <RootLayoutInner key={pathname} data={{ trials, productTypes }}>{children}</RootLayoutInner>
     </RootLayoutContext.Provider>
   )
 }

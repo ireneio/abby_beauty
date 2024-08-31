@@ -5,6 +5,7 @@ import { Heading, Subheading } from '@/components/common/heading'
 import { Text } from '@/components/common/text'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
+import formatTextareaContent from '@/lib/store/formatTextareaContent'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -57,11 +58,11 @@ export default function Page() {
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
                 <Subheading>
-                    文案
+                  文案
                 </Subheading>
             </div>
             <div>
-                <Text dangerouslySetInnerHTML={{ __html: data.content.replaceAll('\n\n', '<br /><br />').replaceAll('\n', '<br />') }}></Text>
+                <Text dangerouslySetInnerHTML={{ __html: formatTextareaContent(data.content) }}></Text>
             </div>
         </section>
 
