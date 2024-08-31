@@ -55,6 +55,7 @@ class HomeController {
                 'avatar',
                 'customer_name',
                 'content',
+                'stars',
                 'order',
             ])
             .execute()
