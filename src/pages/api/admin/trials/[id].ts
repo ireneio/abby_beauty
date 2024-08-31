@@ -16,7 +16,7 @@ router.use(async (req, res, next) => {
     return res.status(200).json({
       code: ErrorCode.NOT_AUTHENTICATED,
     })
-  }  
+  }
   const userId = session.user?.id;
   if (!userId) {
     return res.status(200).json({
@@ -33,7 +33,7 @@ router.use(async (req, res, next) => {
     data,
   });
 }).post(async (req, res) => {
-  const id = Number(req.query.id)  
+  const id = Number(req.query.id)
   await controller.update({ id, ...req.body })
   return res.status(200).json({
     code: ErrorCode.SUCCESS,

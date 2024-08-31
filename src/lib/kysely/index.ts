@@ -14,6 +14,11 @@ import PagePrivate from './models/PagePrivate'
 import Trial from './models/Trial'
 import TrialReservation from './models/TrialReservation'
 import TrialImage from './models/TrialImage'
+import Banner from './models/Banner'
+import Service from './models/Service'
+import CustomerComment from './models/CustomerComment'
+import Brand from './models/Brand'
+import JoinUs from './models/JoinUs'
 
 // Keys of this interface are table names.
 export interface Database {
@@ -32,6 +37,11 @@ export interface Database {
   trials: Trial,
   trials_reservations: TrialReservation,
   trial_images: TrialImage,
+  banners: Banner,
+  services: Service,
+  customer_comments: CustomerComment,
+  brands: Brand,
+  joinus: JoinUs,
 }
 
 export const db = createKysely<Database>({

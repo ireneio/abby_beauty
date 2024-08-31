@@ -191,7 +191,7 @@ export default function Page({ user }: Props) {
           await fetchData()
           Swal.fire({
             icon: 'success',
-            title: '帳號已刪除',
+            title: '已刪除',
           });
         } else {
           Swal.fire({
@@ -221,7 +221,7 @@ export default function Page({ user }: Props) {
               </InputGroup>
             </div>
             <div className='w-full sm:w-auto'>
-              <Select onChange={(e) => handleSortBy(e.target.value)}>
+              <Select value={sortBy} onChange={(e) => handleSortBy(e.target.value)}>
                 {sortByList.map((v) => {
                     return (
                       <option key={v.value} value={v.value}>{v.label}</option>

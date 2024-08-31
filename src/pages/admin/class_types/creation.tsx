@@ -1,45 +1,21 @@
 import RequiredMark from '@/components/admin/RequiredMark'
 import { Button } from '@/components/common/button'
-import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/common/checkbox'
 import { Divider } from '@/components/common/divider'
-import { Label } from '@/components/common/fieldset'
 import { Heading, Subheading } from '@/components/common/heading'
 import { Input } from '@/components/common/input'
-import { Select } from '@/components/common/select'
-import { Switch, SwitchField } from '@/components/common/switch'
-import { Text } from '@/components/common/text'
-import { Textarea } from '@/components/common/textarea'
-
-import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
-import { useAppDispatch } from '@/lib/store'
-import { openAlert } from '@/lib/store/features/global/globalSlice'
-import fileToBase64 from '@/lib/utils/fileToBase64'
-import { MinusIcon } from '@heroicons/react/16/solid'
-import type { Metadata } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ReactSortable } from "react-sortablejs";
-
-export const metadata: Metadata = {
-  title: '課程系列',
-  description: '新增課程系列',
-}
+import Swal from 'sweetalert2'
 
 type Inputs = {
     name: string,
-    image_list: any,
 }
 
 export default function Page() {
-    const dispatch = useAppDispatch()
     const router = useRouter()
     const { api } = useApi()
-
-    const [imagePreviewList, setImagePreviewList] = useState<any[]>([])
 
     const {
         register,
@@ -51,7 +27,6 @@ export default function Page() {
     } = useForm<Inputs>({
         defaultValues: {
             name: '',
-            image_list: null,
         }
     })
 
@@ -66,74 +41,38 @@ export default function Page() {
         return res
     }
 
-    const uploadFile = async (file: any) => {
-        const formData = new FormData();
-        formData.append('file', file)
-        const res = await api({
-            method: 'POST',
-            url: `/admin/files`,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            data: formData,
-        })
-        return res
-    }
-
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const imageUrlArr = []
-        
-        if (data.image_list) {
-            for (let i = 0; i < data.image_list.length; i++) {
-              if (!data.image_list[i].id) {
-                const uploadRes = await uploadFile(data.image_list[i])
-                imageUrlArr.push({ order: i, url: uploadRes.data.url })
-              } else {
-                imageUrlArr.push({ ...data.image_list[i], order: i })
-              }
+        Swal.fire({
+            title: '加載中...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen() {
+                Swal.showLoading()
             }
-        }
+        })
 
         const res = await create({
             ...data,
-            image_cover: imageUrlArr.length > 0 ? imageUrlArr[0].url : '',
         })
 
         if (res.code === 0) {
             router.replace(`/admin/class_types/${res.data.id}/view`)
+            Swal.close()
+            Swal.fire({
+                title: `新增成功`,
+                icon: 'success',
+            })
         } else {
-            dispatch(openAlert({ title: `錯誤(${res.code})` }))
-        }
-    }
-
-    const imageRef = useRef(null)
-
-    const handleRemoveImagePreview = (index: number) => {
-        setImagePreviewList((prev) => {
-            return prev.filter((v, i) => i !== index)
-        })
-        const formItem: any = getValues('image_list')
-        if (formItem) {
-            setValue('image_list', [...formItem].filter((v, i) => i !== index) as any)
-        }
-    }
-
-    const handleSetImagePreview = async (files: FileList | null) => {
-        if (files) {
-            let arr: string[] = []
-            for (let i = 0; i < files.length; i++) {
-                const base64 = await fileToBase64(files[i])
-                arr = [...arr, `data:image/png;base64,${base64}`]
-            }
-            setImagePreviewList(arr)
-        } else {
-            setImagePreviewList([])
+            Swal.close()
+            Swal.fire({
+                title: `錯誤(${res.code})`,
+                icon: 'error',
+            })
         }
     }
 
   return (
     <LayoutAdmin>
-        <NotificationPopup />
         <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
             <Heading>新增課程系列</Heading>
             <Divider className="my-10 mt-6" />
@@ -154,7 +93,7 @@ export default function Page() {
 
             <div className="flex justify-end gap-4">
             <Button type="reset" plain onClick={() => router.push('/admin/products')}>
-                返回列表
+                取消
             </Button>
             <Button
                 loading={isSubmitting}

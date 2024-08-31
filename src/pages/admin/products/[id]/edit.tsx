@@ -7,16 +7,14 @@ import { Select } from '@/components/common/select'
 import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
 import WysiwygEditor from '@/components/admin/WysiwygEditor'
-import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
-import { useAppDispatch } from '@/lib/store'
-import { openAlert } from '@/lib/store/features/global/globalSlice'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
+import Swal from 'sweetalert2'
 
 type Inputs = {
     name_zh: string,
@@ -33,7 +31,6 @@ type Inputs = {
 }
 
 export default function Page() {
-    const dispatch = useAppDispatch()
     const router = useRouter()
     const { api } = useApi()
 
@@ -74,7 +71,16 @@ export default function Page() {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {            
-      let imageUrlArr: { order: number; url: string }[] = []
+        Swal.fire({
+            title: '加載中...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen() {
+                Swal.showLoading()
+            }
+        })
+
+        let imageUrlArr: { order: number; url: string }[] = []
 
       if (multipleImageUploaderRef.current) {
           const list = await multipleImageUploaderRef.current.uploadFiles()
@@ -87,9 +93,18 @@ export default function Page() {
       })
 
       if (res.code === 0) {
-          router.replace(`/admin/products/${router.query.id}/view`)
+            router.replace(`/admin/products/${router.query.id}/view`)
+            Swal.close()
+            Swal.fire({
+                title: `更新成功`,
+                icon: 'success',
+            })
       } else {
-          dispatch(openAlert({ title: `錯誤(${res.code})` }))
+            Swal.close()
+            Swal.fire({
+                title: `錯誤(${res.code})`,
+                icon: 'error',
+            })
       }
     }
 
@@ -146,7 +161,6 @@ export default function Page() {
             <meta name="description" content="編輯產品" />
         </Head>
         <LayoutAdmin>
-            <NotificationPopup />
             <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-4xl">
                 <Heading>編輯產品</Heading>
                 <Divider className="my-10 mt-6" />
@@ -315,7 +329,7 @@ export default function Page() {
 
                 <div className="flex justify-end gap-4">
                     <Button type="reset" plain href="/admin/products">
-                        返回列表
+                        取消
                     </Button>
                     <Button type="reset" plain href={`/admin/products/${router.query.id}/view`}>
                         查看

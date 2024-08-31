@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 export async function seed(db: Kysely<any>): Promise<void> {
 	// seed code goes here...
 	// note: this function is mandatory. you must implement this function.
-	const password = '1234'
+	const password = 'admin'
 	const hashedPassword = await bcrypt.hash(password, 10)
 
 	await db.insertInto('admin')
@@ -12,6 +12,7 @@ export async function seed(db: Kysely<any>): Promise<void> {
 		{
 			username: 'admin',
 			password: hashedPassword,
+			permission: ['root']
 		}
 	])
 	.execute()

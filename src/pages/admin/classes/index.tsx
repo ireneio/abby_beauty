@@ -14,6 +14,7 @@ import { debounce } from 'lodash'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 
 export default function Page() {
     const router = useRouter()
@@ -31,10 +32,6 @@ export default function Page() {
     })
     const [tableData, setTableData] = useState<any[]>([])
 
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-    const [deleteId, setDeleteId] = useState('')
-    const [deleteLoading, setDeleteLoading] = useState(false)
-
     const deleteClass = async (id: string) => {
       const res = await api({
       method: 'DELETE',
@@ -43,19 +40,39 @@ export default function Page() {
       return res
     }
 
-    const handleDelete = (id: string) => {
-      setDeleteId(id)
-      setShowDeleteConfirm(true)
-    }
+    const handleDelete = async (row: any) => {
+      const result = await Swal.fire({
+        icon: 'info',
+        title: '確認要刪除此課程項目嗎?',
+        showCancelButton: true,
+        confirmButtonText: '確認刪除',
+        cancelButtonText: '取消',
+      })
 
-    const handleDeleteConfirm = async () => {
-      setDeleteLoading(true)
-      const res = await deleteClass(deleteId)
-      if (res.code === 0 && res.success) {
-        await fetchData()
-        setShowDeleteConfirm(false)
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '加載中...',
+          showConfirmButton: false,
+          didOpen() {
+              Swal.showLoading()
+          }
+        })
+        const removeRes = await deleteClass(row.id)
+        Swal.close()
+        if (removeRes) {
+          await fetchData()
+          Swal.fire({
+            icon: 'success',
+            title: '已刪除',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '刪除失敗',
+            text: '請稍後再試。',
+          });
+        }
       }
-      setDeleteLoading(false)
     }
     
     const getTableData = async (params: any) => {
@@ -159,12 +176,6 @@ export default function Page() {
         <meta name="description" content="課程列表管理" />
       </Head>
       <LayoutAdmin>
-          <DialogDeleteConfirm
-            open={showDeleteConfirm}
-            onCancel={() => setShowDeleteConfirm(false)}
-            onConfirm={handleDeleteConfirm}
-            confirmLoading={deleteLoading}
-          />
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-sm:w-full sm:flex-1">
             <Heading>課程列表管理</Heading>
@@ -180,7 +191,7 @@ export default function Page() {
                 </InputGroup>
               </div>
               <div className='w-full sm:w-auto'>
-                <Select onChange={(e) => handleSortBy(e.target.value)}>
+                <Select value={sortBy} onChange={(e) => handleSortBy(e.target.value)}>
                   {sortByList.map((v) => {
                       return (
                         <option key={v.value} value={v.value}>{v.label}</option>

@@ -10,7 +10,9 @@ export default interface Trial {
   price_discount: number,
   price: number,
   order: ColumnType<number, number | undefined, number | undefined>,
-  hidden?: ColumnType<boolean, boolean | undefined, boolean | undefined>,
+  order_home_page: ColumnType<number, number | undefined, number | undefined>,
+  display_on_home_page: ColumnType<boolean, boolean | undefined, boolean | undefined>,
+  hidden: ColumnType<boolean, boolean | undefined, boolean | undefined>,
   created_at: ColumnType<Date, string | undefined, never>,
   updated_at: ColumnType<Date, string | undefined, string | undefined>,
 }

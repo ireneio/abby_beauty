@@ -1,21 +1,15 @@
-import DialogDeleteConfirm from '@/components/admin/DialogDeleteConfirm'
 import Paginator from '@/components/admin/Paginator'
 import SelectPerPage from '@/components/admin/SelectPerPage'
-import { Badge } from '@/components/common/badge'
 import { Button } from '@/components/common/button'
-import { Divider } from '@/components/common/divider'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '@/components/common/dropdown'
 import { Heading } from '@/components/common/heading'
 import { Input, InputGroup } from '@/components/common/input'
-import { Link } from '@/components/common/link'
 import { Select } from '@/components/common/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/common/table'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
 import { EllipsisVerticalIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid'
-import dayjs from 'dayjs'
 import { debounce } from 'lodash'
-import type { Metadata } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -23,9 +17,10 @@ import { useEffect, useMemo, useState } from 'react'
 export default function Page() {
     const router = useRouter()
     const { api } = useApi()
-    const [sortBy, setSortBy] = useState('default')
+    const [sortBy, setSortBy] = useState('order')
     const sortByList = [
-        { label: '按建立日期排序 (從新到舊)', value: 'default' },
+      { label: '按建立日期排序 (從新到舊)', value: 'default' },
+      { label: '按前台顯示順序排序', value: 'order' },
     ]
     const [search, setSearch] = useState('')
     const [pagination, setPagination] = useState({
@@ -69,8 +64,8 @@ export default function Page() {
         page: pagination.currentPage,
         perPage: pagination.perPage,
         search: search,
-        sortBy: 'created_at',
-        sortDirection: 'desc'
+        sortBy: sortBy,
+        sortDirection: sortBy === 'order' ? 'asc' : 'desc'
       })
     }
     
@@ -151,13 +146,14 @@ export default function Page() {
                 <InputGroup>
                   <MagnifyingGlassIcon />
                   <Input
+                      value={search}
                       onChange={(e) => handleSearch(e.target.value)}
                       placeholder="搜尋名稱..."
                   />
                 </InputGroup>
               </div>
               <div className='w-full sm:w-auto'>
-                <Select onChange={(e) => handleSortBy(e.target.value)}>
+                <Select value={sortBy} onChange={(e) => handleSortBy(e.target.value)}>
                   {sortByList.map((v) => {
                       return (
                         <option key={v.value} value={v.value}>{v.label}</option>

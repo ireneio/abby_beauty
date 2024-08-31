@@ -168,7 +168,7 @@ export default function Page() {
 
             <div className="flex justify-end gap-4">
                 <Button type="reset" plain onClick={() => router.push('/admin/products')}>
-                    返回列表
+                    取消
                 </Button>
                 <Button
                     loading={isSubmitting}

@@ -22,8 +22,9 @@ import { useEffect, useMemo, useState } from 'react'
 export default function Page() {
     const router = useRouter()
     const { api } = useApi()
-    const [sortBy, setSortBy] = useState('default')
+    const [sortBy, setSortBy] = useState('order')
     const sortByList = [
+      { label: '按前台顯示順序排序', value: 'order' },
       { label: '按建立日期排序 (從新到舊)', value: 'default' },
     ]
     const [search, setSearch] = useState('')
@@ -39,29 +40,6 @@ export default function Page() {
       { label: '名稱', value: 'name_zh' },
       { label: '操作', value: 'action' },
     ]
-
-    // const tableDataMapped = useMemo(() => {
-    //     let arr = [...tableData]
-
-    //     if (router.query.page && !isNaN(Number(router.query.page))) {
-    //         const page = parseInt(Number(router.query.page).toString())
-    //         arr = arr.slice((page - 1) * pagination.perPage, ((page - 1) * pagination.perPage) + pagination.perPage)
-    //     } else {
-    //         arr = arr.slice(0, pagination.perPage)
-    //     }
-
-    //     if (search !== '') {
-    //         arr = arr.filter((v) => v.name_zh.toLowerCase().includes(search.toLowerCase()))
-    //     }
-
-    //     switch (sortBy) {
-    //         case 'default':
-    //         default:
-    //             arr = arr.sort((a, b) => dayjs(a.created_at).isBefore(dayjs(b.created_at)) ? 1 : -1)
-    //             break
-    //     }
-    //     return arr
-    // }, [tableData, search, sortBy, router.query, pagination.perPage])
 
     const handlePreview = (row: any) => {
       window.open(`${process.env.NEXT_PUBLIC_SITE_URL}/product/series/${row.id}`)
@@ -170,7 +148,7 @@ export default function Page() {
       <LayoutAdmin>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-sm:w-full sm:flex-1">
-            <Heading>產品系列管理</Heading>
+            <Heading>產品管理/產品系列管理</Heading>
             <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
               <div className='w-full sm:w-auto'>
                 <InputGroup>
@@ -183,7 +161,7 @@ export default function Page() {
                 </InputGroup>
               </div>
               <div className='w-full sm:w-auto'>
-                <Select onChange={(e) => handleSortBy(e.target.value)}>
+                <Select value={sortBy} onChange={(e) => handleSortBy(e.target.value)}>
                   {sortByList.map((v) => {
                     return (
                       <option key={v.value} value={v.value}>{v.label}</option>

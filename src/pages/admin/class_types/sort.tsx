@@ -1,5 +1,6 @@
 import { Button } from "@/components/common/button";
 import { Heading, Subheading } from "@/components/common/heading";
+import { Text } from "@/components/common/text";
 import LayoutAdmin from "@/components/layout/LayoutAdmin";
 import useApi from "@/lib/hooks/useApi";
 import Head from "next/head";
@@ -77,7 +78,7 @@ function Page({ swal }: any) {
             <div className="flex flex-wrap items-end justify-between gap-4">
                 <div className="max-sm:w-full sm:flex-1">
                     <Heading>排序課程系列</Heading>
-                    <Subheading>拖曳以調整排序</Subheading>
+                    <Text>拖曳以調整排序</Text>
                 </div>
             </div>
             <div className="mt-4">
@@ -96,7 +97,7 @@ function Page({ swal }: any) {
             </div>
             <div className="mt-4 flex justify-end gap-4">
                 <Button type="reset" plain onClick={() => router.push('/admin/class_types')}>
-                    返回列表
+                    取消
                 </Button>
                 <Button loading={submitLoading} onClick={handleSubmit}>儲存</Button>
             </div>

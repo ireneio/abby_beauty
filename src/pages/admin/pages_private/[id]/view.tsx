@@ -88,7 +88,7 @@ export default function Page() {
 
           <div className="flex justify-end gap-4">
             <Button type="reset" plain onClick={() => router.push('/admin/pages_private')}>
-              返回列表
+              取消
             </Button>
             <Button type="reset" plain onClick={() => router.push(`/admin/pages_private/${router.query.id}/edit`)}>
               編輯

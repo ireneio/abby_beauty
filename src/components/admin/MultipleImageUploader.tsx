@@ -1,13 +1,12 @@
 import { ReactSortable } from "react-sortablejs"
 import { Input } from "../common/input"
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { forwardRef, useEffect, useId, useImperativeHandle, useRef, useState } from "react"
 import { Button } from "../common/button"
 import { CloudArrowUpIcon, MinusIcon } from "@heroicons/react/16/solid"
 import fileToBase64 from "@/lib/utils/fileToBase64"
 import useApi from "@/lib/hooks/useApi"
 import { withSwal } from "react-sweetalert2"
 import { Text } from "../common/text"
-import generateRandomAlphabetString from "@/lib/utils/generateRandomAlphabetString"
 
 type Props = {
     swal: any;
@@ -19,12 +18,13 @@ type Props = {
     hint?: string;
 };
 
-const labelKey = `multiple_image_uploader${generateRandomAlphabetString(10)}`
-
 const MultipleImageUploader = forwardRef((
     { swal, formKey, getFormValues, setFormValue, maxCount, imageSizeRecommended, hint }: Props,
     ref
 ) => {
+    const id = useId()
+    const labelKey = `multiple_image_uploader${id}`
+
     const { api } = useApi()
     const [imagePreviewList, setImagePreviewList] = useState<any[]>([])
 
@@ -53,8 +53,8 @@ const MultipleImageUploader = forwardRef((
             uploadFiles: async (): Promise<{ order: number, url: string }[]> => {
                 const res = []
                 const list = getFormValues(formKey)
-                for (let i = 0; i < list.length; i++) {
-                    if (!list[i].id) {
+                for (let i = 0; i < list.length; i++) {                    
+                    if (list[i] instanceof File) {
                       const uploadRes = await uploadFile(list[i])
                       res.push({
                         order: i,
@@ -134,7 +134,7 @@ const MultipleImageUploader = forwardRef((
             </ReactSortable>
             <label
                 htmlFor={labelKey}
-                className="flex items-center justify-center gap-2 border border-zinc-950/10 rounded-md px-8 py-8"
+                className="mt-4 flex items-center justify-center gap-2 border border-zinc-950/10 rounded-md px-8 py-8"
             >
                 <CloudArrowUpIcon className="text-zinc-500 w-[36px] h-[36px]" />
                 <Text>選擇圖片</Text>
@@ -155,7 +155,7 @@ const MultipleImageUploader = forwardRef((
                 }}
                 onChange={handleChange}
             />
-            <div>
+            <div className="mt-4">
                 <Text className="text-sm">1. 最多可上傳 {maxCount} 張照片</Text>
                 <Text className="text-sm mt-0">2. 圖片格式: jpg, jpeg, png</Text>
                 <Text className="text-sm mt-0">3. 建議圖片尺寸大小: {imageSizeRecommended}</Text>

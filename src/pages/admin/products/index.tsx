@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import debounce from 'lodash/debounce';
 import Head from 'next/head'
+import Swal from 'sweetalert2'
 
 export default function Page() {
     const router = useRouter()
@@ -68,37 +69,50 @@ export default function Page() {
         }
     }
 
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-    const [deleteObj, setHiddenObj] = useState({
-      id: '',
-      hidden: false,
-    })
-    const [deleteLoading, setDeleteLoading] = useState(false)
-
-    const hideProduct = async () => {
+    const toggleHideProduct = async (id: string, value: boolean) => {
       const res = await api({
         method: 'POST',
-        url: `/admin/products/${deleteObj.id}`,
+        url: `/admin/products/${id}`,
         data: {
-          hidden: !deleteObj.hidden
+          hidden: value,
         }
       })
       return res
     }
 
-    const handleToggleHidden = (obj: any) => {
-      setHiddenObj(obj)
-      setShowDeleteConfirm(true)
-    }
+    const handleToggleHidden = async (obj: any) => {
+      const result = await Swal.fire({
+        icon: 'info',
+        title: `確認要${obj.hidden ? '上架' : '下架'}此產品嗎?`,
+        showCancelButton: true,
+        confirmButtonText: '確認',
+        cancelButtonText: '取消',
+      })
 
-    const handleDeleteConfirm = async () => {
-        setDeleteLoading(true)
-        const res = await hideProduct()
-        if (res.code === 0 && res.success) {
-            await fetchData()
-            setShowDeleteConfirm(false)
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '加載中...',
+          showConfirmButton: false,
+          didOpen() {
+              Swal.showLoading()
+          }
+        })
+        const removeRes = await toggleHideProduct(obj.id, !obj.hidden)
+        Swal.close()
+        if (removeRes) {
+          await fetchData()
+          Swal.fire({
+            icon: 'success',
+            title: `已${obj.hidden ? '上架' : '下架'}`,
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '失敗',
+            text: '請稍後再試。',
+          });
         }
-        setDeleteLoading(false)
+      }
     }
 
     const fetchData = async () => {
@@ -178,17 +192,9 @@ export default function Page() {
         <meta name="description" content="產品列表管理" />
       </Head>
       <LayoutAdmin>
-        <DialogDeleteConfirm
-          open={showDeleteConfirm}
-          onCancel={() => setShowDeleteConfirm(false)}
-          onConfirm={handleDeleteConfirm}
-          confirmLoading={deleteLoading}
-        >
-          {deleteObj.hidden ? '確認上架?' : '確認下架?'}
-        </DialogDeleteConfirm>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-sm:w-full sm:flex-1">
-            <Heading>產品列表管理</Heading>
+            <Heading>產品管理/產品列表管理</Heading>
             <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
               <div className='w-full sm:w-auto'>
                 <InputGroup>

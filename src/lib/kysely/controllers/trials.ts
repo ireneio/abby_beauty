@@ -64,12 +64,17 @@ class TrialsController {
             query = query.orderBy('trials.order', sortDirection)
         }
 
+        if (sortBy === 'order_home_page') {
+            query = query.orderBy('trials.order_home_page', sortDirection)
+        }
+
         const rows = await query
             .where('hidden', '!=', true)
             .select([
                 'id',
                 'slug',
                 'title_short',
+                'display_on_home_page',
             ])
             .execute()
 
@@ -310,6 +315,23 @@ class TrialsController {
           db.updateTable('trials')
             .set({
               order: item.order,
+            })
+            .where('id', '=', item.id)
+            .execute()
+        ));
+    }
+    async updateDisplayOnHomePage({ id, display_on_home_page }: { id: number, display_on_home_page: boolean }) {        
+        const row = await db.updateTable('trials')
+            .set('display_on_home_page', display_on_home_page)
+            .where('id', '=', id)
+            .executeTakeFirst()
+        return true
+    }
+    async bulkUpdateOrdersHomePage({ items }: { items: { id: number; order: number }[] }) {
+        await Promise.all(items.map(item =>
+          db.updateTable('trials')
+            .set({
+              order_home_page: item.order,
             })
             .where('id', '=', item.id)
             .execute()

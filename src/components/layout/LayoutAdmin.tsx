@@ -100,7 +100,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
                 <ListBulletIcon />
                 <SidebarLabel>服務項目管理</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/admin/home/sessions">
+              <SidebarItem href="/admin/home/trials">
                 <Square2StackIcon />
                 <SidebarLabel>體驗課程管理</SidebarLabel>
               </SidebarItem>
@@ -108,7 +108,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
                 <StarIcon />
                 <SidebarLabel>客戶好評管理</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/admin/home/brand">
+              <SidebarItem href="/admin/home/brands">
                 <TrophyIcon />
                 <SidebarLabel>品牌價值管理</SidebarLabel>
               </SidebarItem>

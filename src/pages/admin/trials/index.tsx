@@ -19,17 +19,13 @@ import type { Metadata } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 
-export const metadata: Metadata = {
-  title: '體驗課程',
-  description: '體驗課程管理',
-}
-
 export default function Page() {
     const router = useRouter()
     const { api } = useApi()
-    const [sortBy, setSortBy] = useState('default')
+    const [sortBy, setSortBy] = useState('order')
     const sortByList = [
-        { label: '按建立日期排序 (從新到舊)', value: 'default' },
+      { label: '按前台顯示順序排序', value: 'order' },
+      { label: '按建立日期排序 (從新到舊)', value: 'default' },
     ]
     const [search, setSearch] = useState('')
     const [pagination, setPagination] = useState({
@@ -147,7 +143,7 @@ export default function Page() {
     <LayoutAdmin>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-sm:w-full sm:flex-1">
-          <Heading>體驗課程管理</Heading>
+          <Heading>體驗課程管理/體驗課程列表管理</Heading>
           <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
             <div className='w-full sm:w-auto'>
               <InputGroup>
@@ -160,7 +156,7 @@ export default function Page() {
               </InputGroup>
             </div>
             <div className='w-full sm:w-auto'>
-              <Select onChange={(e) => handleSortBy(e.target.value)}>
+              <Select value={sortBy} onChange={(e) => handleSortBy(e.target.value)}>
                 {sortByList.map((v) => {
                     return (
                       <option key={v.value} value={v.value}>{v.label}</option>

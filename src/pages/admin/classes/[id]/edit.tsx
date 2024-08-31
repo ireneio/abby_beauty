@@ -1,34 +1,19 @@
 import DialogDeleteConfirm from '@/components/admin/DialogDeleteConfirm'
 import { Button } from '@/components/common/button'
-import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/common/checkbox'
 import { Divider } from '@/components/common/divider'
-import { Label } from '@/components/common/fieldset'
 import { Heading, Subheading } from '@/components/common/heading'
 import { Input } from '@/components/common/input'
 import { Select } from '@/components/common/select'
-import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
-import { Textarea } from '@/components/common/textarea'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
-import generateTimeIntervals from '@/lib/data/generateTimeIntervals'
 import useApi from '@/lib/hooks/useApi'
-import { db } from '@/lib/kysely'
-import Classes from '@/lib/kysely/models/Classes'
 import { useAppDispatch } from '@/lib/store'
 import { openAlert } from '@/lib/store/features/global/globalSlice'
 import fileToBase64 from '@/lib/utils/fileToBase64'
-import { MinusIcon } from '@heroicons/react/16/solid'
-import type { Metadata } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-
-export const metadata: Metadata = {
-  title: '課程',
-  description: '編輯課程',
-}
 
 type Inputs = {
     name: string,
@@ -217,7 +202,7 @@ export default function Page() {
         <Heading>編輯課程</Heading>
         <Divider className="my-10 mt-6" />
 
-        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
             <Subheading>封面圖</Subheading>
             </div>
@@ -243,7 +228,7 @@ export default function Page() {
             </div>
         </section>
 
-        <Divider className="my-10" soft />
+        <Divider className="my-10" soft /> */}
 
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
@@ -322,11 +307,11 @@ export default function Page() {
         <Divider className="my-10" soft /> */}
 
         <div className="flex justify-end gap-4">
-          <Button className='mr-auto cursor-pointer' type="button" onClick={handleDelete}>
+          {/* <Button className='mr-auto cursor-pointer' type="button" onClick={handleDelete}>
             刪除
-          </Button>
+          </Button> */}
           <Button type="reset" plain onClick={() => router.push('/admin/classes')}>
-            返回列表
+            取消
           </Button>
           <Button type="reset" plain onClick={() => router.push(`/admin/classes/${router.query.id}/view`)}>
             查看

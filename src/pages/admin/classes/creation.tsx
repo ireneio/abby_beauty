@@ -1,30 +1,19 @@
 import { Button } from '@/components/common/button'
-import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/common/checkbox'
 import { Divider } from '@/components/common/divider'
-import { Label } from '@/components/common/fieldset'
 import { Heading, Subheading } from '@/components/common/heading'
 import { Input } from '@/components/common/input'
 import { Select } from '@/components/common/select'
-import { Switch, SwitchField } from '@/components/common/switch'
 import { Text } from '@/components/common/text'
-import { Textarea } from '@/components/common/textarea'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
 import { useAppDispatch } from '@/lib/store'
 import { openAlert } from '@/lib/store/features/global/globalSlice'
 import fileToBase64 from '@/lib/utils/fileToBase64'
-import { MinusIcon } from '@heroicons/react/16/solid'
-import type { Metadata } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-
-export const metadata: Metadata = {
-  title: '課程',
-  description: '新增課程',
-}
+import Swal from 'sweetalert2'
 
 type Inputs = {
     name: string,
@@ -90,6 +79,15 @@ export default function Page() {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        Swal.fire({
+            title: '加載中...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen() {
+                Swal.showLoading()
+            }
+        })
+
         const file = data.image_cover_selected && data.image_cover_selected.length > 0 ?
             data.image_cover_selected[0] :
             null
@@ -99,18 +97,40 @@ export default function Page() {
                 const updateRes = await createClass({ ...data, image_cover: uploadRes.data.url })
                 if (updateRes.success && updateRes.code === 0 && updateRes.data.length > 0) {
                     router.replace(`/admin/classes/${updateRes.data[0].id}/view`)
+                    Swal.close()
+                    Swal.fire({
+                        title: `新增成功`,
+                        icon: 'success',
+                    })
                 } else {
-                    dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))
+                    Swal.close()
+                    Swal.fire({
+                        title: `錯誤(${updateRes.code})`,
+                        icon: 'error',
+                    })
                 }
             } else {
-                dispatch(openAlert({ title: `錯誤(${uploadRes.code})` }))
+                Swal.close()
+                Swal.fire({
+                    title: `錯誤(${uploadRes.code})`,
+                    icon: 'error',
+                })
             }
         } else {
             const updateRes = await createClass({ ...data, image_cover: data.image_cover })
             if (updateRes.success && updateRes.code === 0 && updateRes.data.length > 0) {
                 router.replace(`/admin/classes/${updateRes.data[0].id}/view`)
+                Swal.close()
+                Swal.fire({
+                    title: `新增成功`,
+                    icon: 'success',
+                })
             } else {
-                dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))
+                Swal.close()
+                Swal.fire({
+                    title: `錯誤(${updateRes.code})`,
+                    icon: 'error',
+                })
             }
         }
     }
@@ -150,7 +170,7 @@ export default function Page() {
             <Heading>新增課程</Heading>
             <Divider className="my-10 mt-6" />
 
-            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
                 <Subheading>封面圖</Subheading>
                 </div>
@@ -185,14 +205,14 @@ export default function Page() {
                 </div>
             </section>
 
-            <Divider className="my-10" soft />
+            <Divider className="my-10" soft /> */}
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
-                <Subheading>名稱</Subheading>
+                    <Subheading>名稱</Subheading>
                 </div>
                 <div>
-                <Input {...register('name')} aria-label="名稱" />
+                    <Input {...register('name')} aria-label="名稱" />
                 </div>
             </section>
 
@@ -254,7 +274,7 @@ export default function Page() {
 
             <div className="flex justify-end gap-4">
                 <Button type="reset" plain onClick={() => router.push('/admin/classes')}>
-                    返回列表
+                    取消
                 </Button>
                 <Button
                     loading={isSubmitting}

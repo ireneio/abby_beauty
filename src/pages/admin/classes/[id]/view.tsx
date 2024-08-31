@@ -5,15 +5,8 @@ import { Heading, Subheading } from '@/components/common/heading'
 import { Text } from '@/components/common/text'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
-import type { Metadata } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
-export const metadata: Metadata = {
-  title: '課程',
-  description: '查看課程',
-}
 
 export default function Page() {
     const router = useRouter()
@@ -127,7 +120,7 @@ export default function Page() {
 
         <div className="flex justify-end gap-4">
           <Button type="reset" plain onClick={() => router.push('/admin/classes')}>
-            返回列表
+            取消
           </Button>
           <Button type="reset" plain onClick={() => router.push(`/admin/classes/${router.query.id}/edit`)}>
             編輯

@@ -10,16 +10,12 @@ import WysiwygEditor from '@/components/admin/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
-import { useAppDispatch } from '@/lib/store'
-import { openAlert } from '@/lib/store/features/global/globalSlice'
-import fileToBase64 from '@/lib/utils/fileToBase64'
-import { MinusIcon } from '@heroicons/react/16/solid'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ReactSortable } from "react-sortablejs";
 import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
+import Swal from 'sweetalert2'
 
 type Inputs = {
     name_en: string,
@@ -36,13 +32,10 @@ type Inputs = {
 }
 
 export default function Page() {
-    const dispatch = useAppDispatch()
     const router = useRouter()
     const { api } = useApi()
 
     const multipleImageUploaderRef = useRef<any>(null)
-
-    const [imagePreviewList, setImagePreviewList] = useState<any[]>([])
 
     const {
         register,
@@ -93,6 +86,14 @@ export default function Page() {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        Swal.fire({
+            title: '加載中...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen() {
+                Swal.showLoading()
+            }
+        })
         let imageUrlArr: { order: number; url: string }[] = []
         
         if (multipleImageUploaderRef.current) {
@@ -107,33 +108,17 @@ export default function Page() {
 
         if (res.code === 0) {
             router.replace(`/admin/products/${res.data.id}/view`)
+            Swal.close()
+            Swal.fire({
+                title: `新增成功`,
+                icon: 'success',
+            })
         } else {
-            dispatch(openAlert({ title: `錯誤(${res.code})` }))
-        }
-    }
-
-    const imageRef = useRef(null)
-
-    const handleRemoveImagePreview = (index: number) => {
-        setImagePreviewList((prev) => {
-            return prev.filter((v, i) => i !== index)
-        })
-        const formItem: any = getValues('image_list')
-        if (formItem) {
-            setValue('image_list', [...formItem].filter((v, i) => i !== index) as any)
-        }
-    }
-
-    const handleSetImagePreview = async (files: FileList | null) => {
-        if (files) {
-            let arr: string[] = [...imagePreviewList]
-            for (let i = 0; i < files.length; i++) {
-                const base64 = await fileToBase64(files[i])
-                arr = [...arr, `data:image/png;base64,${base64}`]
-            }
-            setImagePreviewList(arr)
-        } else {
-            setImagePreviewList([])
+            Swal.close()
+            Swal.fire({
+                title: `錯誤(${res.code})`,
+                icon: 'error',
+            })
         }
     }
 
@@ -331,7 +316,7 @@ export default function Page() {
 
                 <div className="flex justify-end gap-4">
                 <Button type="reset" plain href="/admin/products">
-                    返回列表
+                    取消
                 </Button>
                 <Button
                     loading={isSubmitting}

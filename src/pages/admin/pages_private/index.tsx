@@ -101,7 +101,7 @@ export default function Page() {
               </InputGroup>
             </div>
             <div className='w-full sm:w-auto'>
-              <Select onChange={(e) => setSortBy(e.target.value)}>
+              <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                 {sortByList.map((v) => {
                     return (
                         <option key={v.value} value={v.value}>{v.label}</option>
