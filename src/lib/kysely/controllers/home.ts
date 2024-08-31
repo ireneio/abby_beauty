@@ -19,6 +19,7 @@ class HomeController {
             .select([
                 'id',
                 'image',
+                'title',
                 'content',
                 'url',
                 'url_open_type',
