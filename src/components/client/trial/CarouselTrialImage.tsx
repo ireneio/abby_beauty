@@ -78,13 +78,14 @@ export default function CarouselTrialImage({ images }: Props) {
             >
                 {images.map((image: any) => {
                     return (
-                        <div className="aspect-[1/1] relative" key={image.id}>
+                        <div key={image.id}>
                             <Image
                                 src={image.url}
-                                // width={500}
-                                // height={500}
-                                objectFit="contain"
-                                layout="fill"
+                                width={500}
+                                height={500}
+                                // objectFit="contain"
+                                // layout="fill"
+                                className="object-contain aspect-[1/1]"
                                 alt={image.id}
                             />
                         </div>
