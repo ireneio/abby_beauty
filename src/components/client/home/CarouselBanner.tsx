@@ -53,7 +53,7 @@ export default function CarouselBanner({ children }: Props) {
             autoPlay={true}
             autoPlaySpeed={5000}
             keyBoardControl={true}
-            customTransition="transform .5"
+            customTransition="transform 300ms ease-in-out"
             transitionDuration={500}
             containerClass="pb-8"
             removeArrowOnDeviceType={["mobile"]}

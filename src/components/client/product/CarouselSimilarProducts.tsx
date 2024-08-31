@@ -5,10 +5,13 @@ const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
     items: 4,
+    slidesToSlide: 4,
+    partialVisibilityGutter: 24,
   },
   tablet: {
     breakpoint: { max: 1024, min: 640 },
     items: 4,
+    slidesToSlide: 4,
     partialVisibilityGutter: 24,
   },
   mobile: {
@@ -33,7 +36,7 @@ export default function CarouselSimilarProducts({ children }: Props) {
             autoPlay={false}
             autoPlaySpeed={1000}
             keyBoardControl={true}
-            customTransition="transform .5"
+            customTransition="transform 300ms ease-in-out"
             transitionDuration={500}
             containerClass="h-full relative"
             removeArrowOnDeviceType={["mobile"]}

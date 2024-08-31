@@ -73,7 +73,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
           <SidebarHeader>
             <SidebarItem>
               {/* <Avatar src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" /> */}
-              <SidebarLabel>美容後台管理</SidebarLabel>
+              <SidebarLabel>美容網站後台管理</SidebarLabel>
             </SidebarItem>
           </SidebarHeader>
           <SidebarBody>

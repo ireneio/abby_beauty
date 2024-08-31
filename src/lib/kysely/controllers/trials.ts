@@ -69,11 +69,11 @@ class TrialsController {
         }
 
         const rows = await query
-            .where('hidden', '!=', true)
             .select([
                 'id',
                 'slug',
                 'title_short',
+                'hidden',
                 'display_on_home_page',
             ])
             .execute()
@@ -110,7 +110,6 @@ class TrialsController {
     }
     async getById({ id }: { id: number }) {
         const row = await db.selectFrom('trials')
-            .where('hidden', '!=', true)
             .where('id', '=', id)
             .selectAll()
             .executeTakeFirst()
@@ -237,7 +236,6 @@ class TrialsController {
         
         return row
     }
-
     async update({
         id,
         title,
@@ -249,24 +247,35 @@ class TrialsController {
         images,
         price_discount,
         price_original,
+        hidden,
      }: {
         id: number
-        title: string,
-        title_short: string,
+        title?: string,
+        title_short?: string,
         slug?: string,
         subtitle?: string,
         content?: string,
         order?: number,
-        images: { url: string, order: number }[],
+        images?: { url: string, order: number }[],
         price_discount: number,
         price_original: number,
+        hidden?: number;
      }) {
-        const values: any = {
-            title,
-            title_short,
-            order,
-            price_discount,
-            price_original,
+        const values: any = {}
+        if (title !== undefined) {
+            values.title = title
+        }
+        if (title_short !== undefined) {
+            values.title_short = title_short
+        }
+        if (order !== undefined) {
+            values.order = order
+        }
+        if (price_discount !== undefined) {
+            values.price_discount = price_discount
+        }
+        if (price_original !== undefined) {
+            values.price_original = price_original
         }
         if (slug !== undefined) {
             values.slug = slug
@@ -276,6 +285,9 @@ class TrialsController {
         }
         if (content !== undefined) {
             values.content = content
+        }
+        if (hidden !== undefined) {
+            values.hidden = hidden
         }
          const row = await db.updateTable('trials')
             .where('id', '=', id)
@@ -302,13 +314,11 @@ class TrialsController {
          return row
      }
      async remove({ id }: { id: number }) {
-        const row = await db.updateTable('trials')
+        const row = await db.deleteFrom('trials')
             .where('id', '=', id)
-            .set('hidden',  true)
-            .returning('id')
             .executeTakeFirst()
         
-        return row
+        return true
     }
     async bulkUpdateOrders({ items }: { items: { id: number; order: number }[] }) {
         await Promise.all(items.map(item =>

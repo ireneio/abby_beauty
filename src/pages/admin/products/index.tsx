@@ -263,7 +263,7 @@ export default function Page() {
                             </TableCell>
                             <TableCell>
                               <Dropdown>
-                                <DropdownButton plain aria-label="More options">
+                                <DropdownButton plain aria-label="操作">
                                   <EllipsisVerticalIcon />
                                   操作
                                 </DropdownButton>

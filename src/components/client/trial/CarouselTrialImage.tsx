@@ -63,7 +63,7 @@ export default function CarouselTrialImage({ images }: Props) {
                 autoPlay={false}
                 autoPlaySpeed={1000}
                 keyBoardControl={true}
-                // customTransition="transform .5"
+                // customTransition="transform 300ms ease-in-out"
                 customTransition="transform 300ms ease-in-out"
                 transitionDuration={500}
                 containerClass="h-full relative"

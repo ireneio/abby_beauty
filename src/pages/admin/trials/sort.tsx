@@ -4,6 +4,7 @@ import { Text } from "@/components/common/text";
 import LayoutAdmin from "@/components/layout/LayoutAdmin";
 import useApi from "@/lib/hooks/useApi";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
@@ -56,7 +57,7 @@ function Page({ swal }: any) {
           params,
         })
         if (res.code === 0) {
-          setTableData(res.data.trials)
+          setTableData(res.data.trials.filter((row: any) => !row.hidden))
         } else {
           setTableData([])
         }
@@ -79,7 +80,7 @@ function Page({ swal }: any) {
             <div className="flex flex-wrap items-end justify-between gap-4">
                 <div className="max-sm:w-full sm:flex-1">
                     <Heading>排序體驗課程</Heading>
-                    <Text>拖曳以調整排序</Text>
+                    <Text>拖曳以調整排序 (只會顯示已上架課程)</Text>
                 </div>
             </div>
             <div className="mt-4">
@@ -88,9 +89,20 @@ function Page({ swal }: any) {
                         return (
                             <div
                                 key={row.id}
-                                className="px-4 py-4 border border-[#ccc] mb-4"
+                                className="px-4 py-4 border border-[#ccc] mb-4 flex gap-4"
                             >
-                                {row.title_short}
+                                {row.images && row.images.length > 0 ?
+                                    <Image
+                                        src={row.images[0].url}
+                                        alt={row.title_short}
+                                        width={147}
+                                        height={147}
+                                        className='w-[147px] aspect-[1/1] object-contain'
+                                    /> : null
+                                }
+                                <div>
+                                    {row.title_short}
+                                </div>
                             </div>
                         )
                     })}

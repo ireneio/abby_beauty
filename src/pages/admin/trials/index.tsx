@@ -1,23 +1,20 @@
-import DialogDeleteConfirm from '@/components/admin/DialogDeleteConfirm'
 import Paginator from '@/components/admin/Paginator'
 import SelectPerPage from '@/components/admin/SelectPerPage'
 import { Badge } from '@/components/common/badge'
 import { Button } from '@/components/common/button'
-import { Divider } from '@/components/common/divider'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '@/components/common/dropdown'
 import { Heading } from '@/components/common/heading'
 import { Input, InputGroup } from '@/components/common/input'
-import { Link } from '@/components/common/link'
 import { Select } from '@/components/common/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/common/table'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
 import { EllipsisVerticalIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid'
-import dayjs from 'dayjs'
 import { debounce } from 'lodash'
-import type { Metadata } from 'next'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 
 export default function Page() {
     const router = useRouter()
@@ -36,7 +33,9 @@ export default function Page() {
     const [tableData, setTableData] = useState<any[]>([])
 
     const tableHeaders = [
+      { label: '縮圖', value: 'image' },
       { label: '縮寫標題', value: 'title_short' },
+      { label: '上架狀態', value: 'hidden' },
       { label: '操作', value: 'action' },
     ]
 
@@ -67,14 +66,60 @@ export default function Page() {
         })
       }
     }
+
+    const toggleHideTrial = async (id: string, value: boolean) => {
+      const res = await api({
+        method: 'POST',
+        url: `/admin/trials/${id}`,
+        data: {
+          hidden: value,
+        }
+      })
+      return res
+    }
+
+    const handleToggleHidden = async (obj: any) => {
+      const result = await Swal.fire({
+        icon: 'info',
+        title: `確認要${obj.hidden ? '上架' : '下架'}此課程嗎?`,
+        showCancelButton: true,
+        confirmButtonText: '確認',
+        cancelButtonText: '取消',
+      })
+
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '加載中...',
+          showConfirmButton: false,
+          didOpen() {
+            Swal.showLoading()
+          }
+        })
+        const removeRes = await toggleHideTrial(obj.id, !obj.hidden)
+        Swal.close()
+        if (removeRes) {
+          await fetchData()
+          Swal.fire({
+            icon: 'success',
+            title: `已${obj.hidden ? '上架' : '下架'}`,
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '失敗',
+            text: '請稍後再試。',
+          });
+        }
+      }
+    }
     
     const fetchData = async () => {
       await getTableData({
         page: pagination.currentPage,
         perPage: pagination.perPage,
         search: search,
-        sortBy: 'created_at',
-        sortDirection: 'desc'
+        sortBy: sortBy,
+        sortDirection: sortBy === 'order' ? 'asc' : 'desc'
       })
     }
     
@@ -195,10 +240,26 @@ export default function Page() {
                 {tableData.map((row) => {
                     return (
                       <TableRow key={row.id}>
+                          <TableCell>
+                            {row.images && row.images.length > 0 ?
+                              <Image
+                                src={row.images[0].url}
+                                alt={row.title_short}
+                                width={147}
+                                height={147}
+                                className='w-[147px] aspect-[1/1] object-contain'
+                              /> : null
+                            }
+                          </TableCell>
                           <TableCell>{row.title_short}</TableCell>
                           <TableCell>
+                              <Badge color={row.hidden ? 'zinc' : 'lime'}>
+                                {row.hidden ? '已下架' : '已上架'}
+                              </Badge>
+                            </TableCell>
+                          <TableCell>
                             <Dropdown>
-                              <DropdownButton plain aria-label="More options">
+                              <DropdownButton plain aria-label="操作">
                                 <EllipsisVerticalIcon />
                                 操作
                               </DropdownButton>
@@ -206,6 +267,9 @@ export default function Page() {
                                   <DropdownItem onClick={() => handlePreview(row)}>預覽</DropdownItem>
                                   <DropdownItem href={`/admin/trials/${row.id}/view`}>查看</DropdownItem>
                                   <DropdownItem href={`/admin/trials/${row.id}/edit`}>編輯</DropdownItem>
+                                  <DropdownItem onClick={() => handleToggleHidden(row)}>
+                                    {row.hidden ? '上架' : '下架'}
+                                  </DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
                           </TableCell>

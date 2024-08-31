@@ -3,18 +3,10 @@ import { Button } from "@/components/client/Button"
 import CarouselProduct from "@/components/client/products/CarouselProduct"
 import { RootLayout } from "@/components/layout/RootLayout"
 import useApi from "@/lib/hooks/useApi"
-import { Metadata } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-
-export async function generateMetadata() {
-    return {
-        title: '艾比美容工作室',
-        description: '產品介紹',
-    }
-}
 
 export default function Page() {
     const router = useRouter()

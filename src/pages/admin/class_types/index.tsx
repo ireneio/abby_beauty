@@ -134,13 +134,13 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>課程系列管理</title>
+        <title>課程管理/課程系列管理</title>
         <meta name="description" content="課程系列管理" />
       </Head>
       <LayoutAdmin>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-sm:w-full sm:flex-1">
-            <Heading>課程系列管理</Heading>
+            <Heading>課程管理/課程系列管理</Heading>
             <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
               <div className='w-full sm:w-auto'>
                 <InputGroup>
@@ -195,7 +195,7 @@ export default function Page() {
                             <TableCell>{row.name}</TableCell>
                             <TableCell>
                               <Dropdown>
-                                <DropdownButton plain aria-label="More options">
+                                <DropdownButton plain aria-label="操作">
                                   <EllipsisVerticalIcon />
                                   操作
                                 </DropdownButton>

@@ -35,7 +35,7 @@ export default function CarouselComments({ children }: Props) {
             autoPlay={false}
             autoPlaySpeed={5000}
             keyBoardControl={true}
-            customTransition="transform .5"
+            customTransition="transform 300ms ease-in-out"
             transitionDuration={500}
             containerClass="py-4"
             removeArrowOnDeviceType={["mobile"]}
