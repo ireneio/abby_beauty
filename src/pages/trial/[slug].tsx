@@ -174,7 +174,7 @@ function Page({ swal, serverData }: any) {
                                     <QuillContentWrapper content={data.content} />
                                 </div>
                             </div>
-                            <div className="mt-8 flex justify-center">
+                            <div className="mt-8 flex justify-center md:justify-start md:px-4">
                                 <Button onClick={() => openLineAtAccount()}>馬上預約體驗</Button>
                             </div>
                             {/* <div className="px-4 mt-8 max-w-[500px] mx-auto">
