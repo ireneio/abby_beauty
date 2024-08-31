@@ -44,6 +44,7 @@ export default function Page() {
         })
         Swal.close()
         if (res.code === 0) {
+            router.push('/admin/home/services')
             Swal.fire({
                 title: '更新成功',
                 icon: 'success'

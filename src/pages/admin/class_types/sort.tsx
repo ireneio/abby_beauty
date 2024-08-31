@@ -39,6 +39,7 @@ function Page({ swal }: any) {
                 title: '更新成功',
                 icon: 'success'
             })
+            router.push('/admin/class_types')
         } else {
             swal.fire({
                 title: '更新失敗',
