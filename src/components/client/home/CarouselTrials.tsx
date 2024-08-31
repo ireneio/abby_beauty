@@ -35,7 +35,7 @@ export default function CarouselTrials({ children }: Props) {
             responsive={responsive}
             ssr={true} // means to render carousel on server-side.
             infinite={false}
-            autoPlay={true}
+            autoPlay={false}
             autoPlaySpeed={5000}
             keyBoardControl={true}
             customTransition="transform .5"
