@@ -178,6 +178,7 @@ export default function Home(props: Props) {
                     height={1200}
                     // layout="responsive"
                     className="object-contain"
+                    priority={true}
                   />
                 </div>
               )
@@ -204,6 +205,7 @@ export default function Home(props: Props) {
                       width={1920}
                       height={800}
                       className="aspect-[2/1] object-contain"
+                      priority={true}
                     />
                   </div>
                 )
