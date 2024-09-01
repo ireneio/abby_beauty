@@ -367,8 +367,10 @@ export default function Home(props: Props) {
                           </div>
                         </div>
                       </div>
-                      <div className="mt-4 text-sm text-secondary tracking-[1.5px] leading-[24px]">
-                        {formatTextareaContent(comment.content)}
+                      <div
+                        className="mt-4 text-sm text-secondary tracking-[1.5px] leading-[24px]"
+                        dangerouslySetInnerHTML={{ __html: formatTextareaContent(comment.content) }}
+                      >
                       </div>
                     </div>
                   )
