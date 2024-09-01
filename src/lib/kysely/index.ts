@@ -21,6 +21,7 @@ import Brand from './models/Brand'
 import JoinUs from './models/JoinUs'
 import Article from './models/Article'
 import { ArticleTag } from './models/ArticleTag'
+import { WebSetting } from './models/WebSetting'
 
 // Keys of this interface are table names.
 export interface Database {
@@ -46,6 +47,7 @@ export interface Database {
   joinus: JoinUs,
   articles: Article,
   article_tags: ArticleTag,
+  web_settings: WebSetting,
 }
 
 export const db = createKysely<Database>({
