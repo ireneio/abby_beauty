@@ -1,10 +1,8 @@
 import { ColumnType, Generated } from "kysely";
 
-export default interface Admin {
+export interface ArticleTag {
     id: Generated<number>;
-    username: string;
-    password: string;
-    permission: ColumnType<string[], string[] | undefined, string[] | undefined>,
+    name: ColumnType<string, string, string | undefined>,
     created_at: ColumnType<Date, string | undefined, never>,
     updated_at: ColumnType<Date, string | undefined, string | undefined>,
 }

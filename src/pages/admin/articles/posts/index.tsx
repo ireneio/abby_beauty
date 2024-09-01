@@ -1,56 +1,33 @@
-import DialogDeleteConfirm from '@/components/admin/DialogDeleteConfirm'
 import Paginator from '@/components/admin/Paginator'
 import SelectPerPage from '@/components/admin/SelectPerPage'
-import { Badge } from '@/components/common/badge'
 import { Button } from '@/components/common/button'
-import { Divider } from '@/components/common/divider'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '@/components/common/dropdown'
 import { Heading } from '@/components/common/heading'
 import { Input, InputGroup } from '@/components/common/input'
-import { Link } from '@/components/common/link'
 import { Select } from '@/components/common/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/common/table'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
 import { EllipsisVerticalIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid'
+import dayjs from 'dayjs'
 import { debounce } from 'lodash'
-import type { GetServerSideProps } from 'next'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-  const user = session?.user as any
-  const permission = user?.permission ?? []
-
-  if (!session || !user || !permission.includes("root")) {
-    return {
-      redirect: {
-        destination: "/admin/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      user: session.user,
-    },
-  };
-};
-
-type Props = any
-
-export default function Page({ user }: Props) {
+export default function Page() {
     const router = useRouter()
     const { api } = useApi()
-    const [sortBy, setSortBy] = useState('default')
+    const [sortBy, setSortBy] = useState('publish_date')
     const sortByList = [
-      { label: '按建立日期排序 (從新到舊)', value: 'default' },
+      { label: '按發佈日期排序 (從新到舊)', value: 'publish_date' },
+      { label: '按建立日期排序 (從新到舊)', value: 'created_at' },
     ]
     const [search, setSearch] = useState('')
+    const [searchDates, setSearchDates] = useState({
+      startDate: '',
+      endDate: '',
+    })
     const [pagination, setPagination] = useState({
       total: 0,
       perPage: 10,
@@ -59,14 +36,15 @@ export default function Page({ user }: Props) {
     const [tableData, setTableData] = useState<any[]>([])
 
     const tableHeaders = [
-      { label: '帳號', value: 'username' },
+      { label: '發佈日期', value: 'publish_date' },
+      { label: '標題', value: 'title' },
       { label: '操作', value: 'action' },
     ]
 
     const getTableData = async (params: any) => {
       const res = await api({
         method: 'GET',
-        url: '/admin/accounts',
+        url: '/admin/articles',
         params,
       })
       if (res.code === 0) {
@@ -92,8 +70,10 @@ export default function Page({ user }: Props) {
         page: pagination.currentPage,
         perPage: pagination.perPage,
         search: search,
-        sortBy: 'created_at',
-        sortDirection: 'desc'
+        sortBy: sortBy,
+        sortDirection: 'desc',
+        startDate: searchDates.startDate,
+        endDate: searchDates.endDate,
       })
     }
     
@@ -103,7 +83,7 @@ export default function Page({ user }: Props) {
       debouncedFetchData()
       
       return () => debouncedFetchData.cancel()
-    }, [pagination.currentPage, pagination.perPage, search, sortBy])
+    }, [pagination.currentPage, pagination.perPage, search, sortBy, searchDates.startDate, searchDates.endDate])
 
     useEffect(() => {
       if (router.query.page) {
@@ -121,6 +101,24 @@ export default function Page({ user }: Props) {
         query: { ...router.query, page: 1, search: _value },
       })
       setSearch(_value)
+    }
+
+    const handleSearchStartDate = (value: string) => {
+      const _value = value.trim()
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, start_date: _value },
+      })
+      setSearchDates((prev) => ({ ...prev, startDate: _value }))
+    }
+
+    const handleSearchEndDate = (value: string) => {
+      const _value = value.trim()
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1, end_date: _value },
+      })
+      setSearchDates((prev) => ({ ...prev, endDate: _value }))
     }
 
     const handleSortBy = (value: string) => {
@@ -146,6 +144,18 @@ export default function Page({ user }: Props) {
     }, [router.query.search])
 
     useEffect(() => {
+      if (router.query.start_date) {
+        setSearchDates((prev) => ({ ...prev, startDate: router.query.start_date as string }))
+      }
+    }, [router.query.start_date])
+
+    useEffect(() => {
+      if (router.query.end_date) {
+        setSearchDates((prev) => ({ ...prev, endDate: router.query.end_date as string }))
+      }
+    }, [router.query.end_date])
+
+    useEffect(() => {
       if (router.query.sortBy) {
         setSortBy(router.query.sortBy as string)
       }
@@ -157,10 +167,10 @@ export default function Page({ user }: Props) {
       }
     }, [router.query.perPage])
 
-    const removeAccount  = async (id: string) => {
+    const handleDeleteAction  = async (id: string) => {
       const res = await api({
         method: 'DELETE',
-        url: `/admin/accounts/${id}`
+        url: `/admin/articles/${id}`
       })
       if (res.code === 0) {
         return true
@@ -171,7 +181,7 @@ export default function Page({ user }: Props) {
     const handleDeleteConfirm = async (row: any) => {
       const result = await Swal.fire({
         icon: 'info',
-        title: '確認要刪除此帳號嗎?',
+        title: '確認要刪除此文章嗎?',
         showCancelButton: true,
         confirmButtonText: '確認刪除',
         cancelButtonText: '取消',
@@ -185,7 +195,7 @@ export default function Page({ user }: Props) {
               Swal.showLoading()
           }
         })
-        const removeRes = await removeAccount(row.id)
+        const removeRes = await handleDeleteAction(row.id)
         Swal.close()
         if (removeRes) {
           await fetchData()
@@ -207,7 +217,7 @@ export default function Page({ user }: Props) {
     <LayoutAdmin>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-sm:w-full sm:flex-1">
-          <Heading>後台管理/後台帳號管理</Heading>
+          <Heading>文章管理/文章列表管理</Heading>
           <div className="mt-4 max-w-4xl gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
             <div className='w-full sm:w-auto'>
               <span className='text-sm'>搜尋</span>
@@ -216,7 +226,7 @@ export default function Page({ user }: Props) {
                 <Input
                   value={search}
                   onChange={(e) => handleSearch(e.target.value)}
-                  placeholder="搜尋帳號..."
+                  placeholder="搜尋標題..."
                 />
               </InputGroup>
             </div>
@@ -230,9 +240,29 @@ export default function Page({ user }: Props) {
                 })}
               </Select>
             </div>
+            <div className='w-full sm:w-auto'>
+              <span className='text-sm'>發佈日期(起始)</span>
+              <InputGroup>
+                <Input
+                  type="date"
+                  value={searchDates.startDate}
+                  onChange={(e) => handleSearchStartDate(e.target.value)}
+                />
+              </InputGroup>
+            </div>
+            <div className='w-full sm:w-auto'>
+              <span className='text-sm'>發佈日期(結束)</span>
+              <InputGroup>
+                <Input
+                  type="date"
+                  value={searchDates.endDate}
+                  onChange={(e) => handleSearchEndDate(e.target.value)}
+                />
+              </InputGroup>
+            </div>
           </div>
         </div>
-        <Button onClick={() => router.push('/admin/accounts/creation')}>
+        <Button onClick={() => router.push('/admin/articles/posts/creation')}>
           建立
         </Button>
       </div>
@@ -258,7 +288,12 @@ export default function Page({ user }: Props) {
                 {tableData.map((row) => {
                     return (
                       <TableRow key={row.id}>
-                          <TableCell>{row.username}</TableCell>
+                          <TableCell>
+                            {dayjs(row.publish_date).format('YYYY-MM-DD')}
+                          </TableCell>
+                          <TableCell>
+                            <div className='truncate max-w-[200px] md:max-w-[300px]'>{row.title}</div>
+                          </TableCell>
                           <TableCell>
                             <Dropdown>
                               <DropdownButton plain aria-label="操作">
@@ -266,16 +301,13 @@ export default function Page({ user }: Props) {
                                 操作
                               </DropdownButton>
                               <DropdownMenu anchor="bottom end">
-                                  <DropdownItem href={`/admin/accounts/${row.id}/view`}>查看</DropdownItem>
-                                  <DropdownItem href={`/admin/accounts/${row.id}/edit`}>編輯</DropdownItem>
-                                  {!row.permission || !row.permission.includes('root') ?
-                                    <DropdownItem onClick={() => handleDeleteConfirm(row)}>
-                                      <span className='text-danger'>
-                                        刪除
-                                      </span>
-                                    </DropdownItem> :
-                                    null
-                                  }
+                                  <DropdownItem href={`/admin/articles/posts/${row.id}/view`}>查看</DropdownItem>
+                                  <DropdownItem href={`/admin/articles/posts/${row.id}/edit`}>編輯</DropdownItem>
+                                  <DropdownItem onClick={() => handleDeleteConfirm(row)}>
+                                    <span className='text-danger'>
+                                      刪除
+                                    </span>
+                                  </DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
                           </TableCell>

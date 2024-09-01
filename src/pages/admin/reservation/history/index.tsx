@@ -131,7 +131,7 @@ export default function Page() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-sm:w-full sm:flex-1">
           <Heading>預約記錄管理</Heading>
-          <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
+          <div className="mt-4 max-w-4xl gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
             <div className='w-full sm:w-auto'>
                 <Field>
                     <Label>起始日期</Label>

@@ -23,7 +23,7 @@ import { SidebarLayout } from '@/components/common/sidebar-layout'
 import { PropsWithChildren, useEffect } from 'react'
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from 'next/router'
-import { ArrowRightStartOnRectangleIcon, Bars2Icon, Bars4Icon, BookOpenIcon, ChevronUpIcon, CubeIcon, DocumentIcon, DocumentTextIcon, GlobeAltIcon, ListBulletIcon, NewspaperIcon, PhotoIcon, RectangleGroupIcon, Square2StackIcon, StarIcon, TagIcon, TrophyIcon, UserIcon, UserPlusIcon } from '@heroicons/react/16/solid'
+import { ArrowRightStartOnRectangleIcon, Bars2Icon, Bars4Icon, BookOpenIcon, ChevronUpIcon, Cog8ToothIcon, CubeIcon, DocumentIcon, DocumentTextIcon, GlobeAltIcon, ListBulletIcon, MegaphoneIcon, NewspaperIcon, PhotoIcon, RectangleGroupIcon, Square2StackIcon, StarIcon, TagIcon, TrophyIcon, UserIcon, UserPlusIcon } from '@heroicons/react/16/solid'
 
 export default function LayoutAdmin({ children }: PropsWithChildren) {
   const router = useRouter()
@@ -77,12 +77,23 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
             </SidebarItem>
           </SidebarHeader>
           <SidebarBody>
-          <SidebarSection>
-            <SidebarItem onClick={() => window.open(`${process.env.NEXT_PUBLIC_SITE_URL}`, '_blank')}>
-              <GlobeAltIcon />
-              <SidebarLabel>查看前台網站</SidebarLabel>
-            </SidebarItem>
-          </SidebarSection>
+            <SidebarSection>
+              <SidebarItem onClick={() => window.open(`${process.env.NEXT_PUBLIC_SITE_URL}`, '_blank')}>
+                <GlobeAltIcon />
+                <SidebarLabel>查看前台網站</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+            <SidebarSection>
+              <SidebarHeading>文章管理</SidebarHeading>
+              <SidebarItem href="/admin/articles/posts">
+                <MegaphoneIcon />
+                <SidebarLabel>文章列表管理</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/admin/articles/tags">
+                <TagIcon />
+                <SidebarLabel>文章分類管理</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
             <SidebarSection>
               <SidebarHeading>體驗課程管理</SidebarHeading>
               <SidebarItem href="/admin/trials">
@@ -118,7 +129,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
               </SidebarItem>
             </SidebarSection>
             <SidebarSection>
-              <SidebarHeading>課程介紹管理</SidebarHeading>
+              <SidebarHeading>課程介紹列表管理</SidebarHeading>
               <SidebarItem href="/admin/classes">
                 <BookOpenIcon />
                 <SidebarLabel>課程列表管理</SidebarLabel>
@@ -152,6 +163,13 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
               <SidebarItem href="/admin/pages">
                 <DocumentTextIcon />
                 <SidebarLabel>自訂頁面管理</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+            <SidebarSection>
+              <SidebarHeading>網站設定管理</SidebarHeading>
+              <SidebarItem href="/admin/websettings">
+                <Cog8ToothIcon />
+                <SidebarLabel>網站資料設定管理</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
             {permission.includes('root') ?

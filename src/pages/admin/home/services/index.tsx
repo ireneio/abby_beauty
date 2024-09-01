@@ -183,8 +183,9 @@ export default function Page() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-sm:w-full sm:flex-1">
           <Heading>首頁管理/服務項目管理</Heading>
-          <div className="mt-4 flex max-w-xl gap-4 flex-wrap">
+          <div className="mt-4 max-w-4xl gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
             <div className='w-full sm:w-auto'>
+              <span className='text-sm'>搜尋</span>
               <InputGroup>
                 <MagnifyingGlassIcon />
                 <Input
@@ -195,6 +196,7 @@ export default function Page() {
               </InputGroup>
             </div>
             <div className='w-full sm:w-auto'>
+              <span className='text-sm'>排序</span>
               <Select value={sortBy} onChange={(e) => handleSortBy(e.target.value)}>
                 {sortByList.map((v) => {
                     return (

@@ -1,49 +1,21 @@
-import DialogDeleteConfirm from '@/components/admin/DialogDeleteConfirm'
 import Paginator from '@/components/admin/Paginator'
 import SelectPerPage from '@/components/admin/SelectPerPage'
-import { Badge } from '@/components/common/badge'
 import { Button } from '@/components/common/button'
-import { Divider } from '@/components/common/divider'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '@/components/common/dropdown'
 import { Heading } from '@/components/common/heading'
 import { Input, InputGroup } from '@/components/common/input'
-import { Link } from '@/components/common/link'
 import { Select } from '@/components/common/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/common/table'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
 import { EllipsisVerticalIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid'
 import { debounce } from 'lodash'
-import type { GetServerSideProps } from 'next'
-import { getSession } from 'next-auth/react'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-  const user = session?.user as any
-  const permission = user?.permission ?? []
-
-  if (!session || !user || !permission.includes("root")) {
-    return {
-      redirect: {
-        destination: "/admin/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      user: session.user,
-    },
-  };
-};
-
-type Props = any
-
-export default function Page({ user }: Props) {
+export default function Page() {
     const router = useRouter()
     const { api } = useApi()
     const [sortBy, setSortBy] = useState('default')
@@ -59,14 +31,14 @@ export default function Page({ user }: Props) {
     const [tableData, setTableData] = useState<any[]>([])
 
     const tableHeaders = [
-      { label: '帳號', value: 'username' },
+      { label: '名稱', value: 'name' },
       { label: '操作', value: 'action' },
     ]
 
     const getTableData = async (params: any) => {
       const res = await api({
         method: 'GET',
-        url: '/admin/accounts',
+        url: '/admin/article_tags',
         params,
       })
       if (res.code === 0) {
@@ -92,8 +64,8 @@ export default function Page({ user }: Props) {
         page: pagination.currentPage,
         perPage: pagination.perPage,
         search: search,
-        sortBy: 'created_at',
-        sortDirection: 'desc'
+        sortBy: sortBy,
+        sortDirection: 'desc',
       })
     }
     
@@ -157,57 +129,57 @@ export default function Page({ user }: Props) {
       }
     }, [router.query.perPage])
 
-    const removeAccount  = async (id: string) => {
-      const res = await api({
-        method: 'DELETE',
-        url: `/admin/accounts/${id}`
-      })
-      if (res.code === 0) {
-        return true
-      }
-      return false
-    }
+    // const handleDeleteAction  = async (id: string) => {
+    //   const res = await api({
+    //     method: 'DELETE',
+    //     url: `/admin/brands/${id}`
+    //   })
+    //   if (res.code === 0) {
+    //     return true
+    //   }
+    //   return false
+    // }
 
-    const handleDeleteConfirm = async (row: any) => {
-      const result = await Swal.fire({
-        icon: 'info',
-        title: '確認要刪除此帳號嗎?',
-        showCancelButton: true,
-        confirmButtonText: '確認刪除',
-        cancelButtonText: '取消',
-      })
+    // const handleDeleteConfirm = async (row: any) => {
+    //   const result = await Swal.fire({
+    //     icon: 'info',
+    //     title: '確認要刪除此品牌價值項目嗎?',
+    //     showCancelButton: true,
+    //     confirmButtonText: '確認刪除',
+    //     cancelButtonText: '取消',
+    //   })
 
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: '加載中...',
-          showConfirmButton: false,
-          didOpen() {
-              Swal.showLoading()
-          }
-        })
-        const removeRes = await removeAccount(row.id)
-        Swal.close()
-        if (removeRes) {
-          await fetchData()
-          Swal.fire({
-            icon: 'success',
-            title: '已刪除',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: '刪除失敗',
-            text: '請稍後再試。',
-          });
-        }
-      }
-    }
+    //   if (result.isConfirmed) {
+    //     Swal.fire({
+    //       title: '加載中...',
+    //       showConfirmButton: false,
+    //       didOpen() {
+    //           Swal.showLoading()
+    //       }
+    //     })
+    //     const removeRes = await handleDeleteAction(row.id)
+    //     Swal.close()
+    //     if (removeRes) {
+    //       await fetchData()
+    //       Swal.fire({
+    //         icon: 'success',
+    //         title: '已刪除',
+    //       });
+    //     } else {
+    //       Swal.fire({
+    //         icon: 'error',
+    //         title: '刪除失敗',
+    //         text: '請稍後再試。',
+    //       });
+    //     }
+    //   }
+    // }
 
   return (
     <LayoutAdmin>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-sm:w-full sm:flex-1">
-          <Heading>後台管理/後台帳號管理</Heading>
+          <Heading>文章管理/文章分類管理</Heading>
           <div className="mt-4 max-w-4xl gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
             <div className='w-full sm:w-auto'>
               <span className='text-sm'>搜尋</span>
@@ -216,7 +188,7 @@ export default function Page({ user }: Props) {
                 <Input
                   value={search}
                   onChange={(e) => handleSearch(e.target.value)}
-                  placeholder="搜尋帳號..."
+                  placeholder="搜尋名稱..."
                 />
               </InputGroup>
             </div>
@@ -232,7 +204,7 @@ export default function Page({ user }: Props) {
             </div>
           </div>
         </div>
-        <Button onClick={() => router.push('/admin/accounts/creation')}>
+        <Button onClick={() => router.push('/admin/articles/tags/creation')}>
           建立
         </Button>
       </div>
@@ -258,7 +230,9 @@ export default function Page({ user }: Props) {
                 {tableData.map((row) => {
                     return (
                       <TableRow key={row.id}>
-                          <TableCell>{row.username}</TableCell>
+                          <TableCell>
+                            {row.name}
+                          </TableCell>
                           <TableCell>
                             <Dropdown>
                               <DropdownButton plain aria-label="操作">
@@ -266,16 +240,13 @@ export default function Page({ user }: Props) {
                                 操作
                               </DropdownButton>
                               <DropdownMenu anchor="bottom end">
-                                  <DropdownItem href={`/admin/accounts/${row.id}/view`}>查看</DropdownItem>
-                                  <DropdownItem href={`/admin/accounts/${row.id}/edit`}>編輯</DropdownItem>
-                                  {!row.permission || !row.permission.includes('root') ?
-                                    <DropdownItem onClick={() => handleDeleteConfirm(row)}>
-                                      <span className='text-danger'>
-                                        刪除
-                                      </span>
-                                    </DropdownItem> :
-                                    null
-                                  }
+                                  <DropdownItem href={`/admin/articles/tags/${row.id}/view`}>查看</DropdownItem>
+                                  <DropdownItem href={`/admin/articles/tags/${row.id}/edit`}>編輯</DropdownItem>
+                                  {/* <DropdownItem onClick={() => handleDeleteConfirm(row)}>
+                                    <span className='text-danger'>
+                                      刪除
+                                    </span>
+                                  </DropdownItem> */}
                               </DropdownMenu>
                             </Dropdown>
                           </TableCell>
