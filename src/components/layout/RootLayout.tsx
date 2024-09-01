@@ -19,6 +19,8 @@ import useApi from '@/lib/hooks/useApi'
 import { useRouter } from 'next/router'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid'
 
+import "react-multi-carousel/lib/styles.css";
+
 const RootLayoutContext = createContext<{
   logoHovered: boolean
   setLogoHovered: React.Dispatch<React.SetStateAction<boolean>>

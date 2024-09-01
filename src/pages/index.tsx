@@ -54,7 +54,7 @@ type Props = any
 
 export default function Home(props: Props) {
   const { banners, services, trials, customer_comments, brands, joinus } = props
-  const router = useRouter()
+  const router = useRouter()  
 
   // const [features] = useState<any[]>([
   //   {

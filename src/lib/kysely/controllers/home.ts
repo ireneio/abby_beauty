@@ -63,6 +63,7 @@ class HomeController {
         const brands = await db.selectFrom('brands')
             .orderBy('order', 'asc')
             .select([
+                'id',
                 'title',
                 'image',
                 'order'

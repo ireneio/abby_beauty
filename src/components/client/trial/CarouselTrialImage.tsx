@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+
 
 const responsive = {
   desktop: {
