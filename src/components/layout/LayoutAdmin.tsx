@@ -150,7 +150,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
                 <SidebarLabel>產品系列管理</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
-            <SidebarSection>
+            {/* <SidebarSection>
               <SidebarHeading>網站資料管理</SidebarHeading>
               <SidebarItem href="/admin/navbar">
                 <Bars2Icon />
@@ -171,7 +171,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
                 <Cog8ToothIcon />
                 <SidebarLabel>網站資料設定管理</SidebarLabel>
               </SidebarItem>
-            </SidebarSection>
+            </SidebarSection> */}
             {permission.includes('root') ?
               <SidebarSection>
                 <SidebarHeading>後台管理</SidebarHeading>
