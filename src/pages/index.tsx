@@ -176,7 +176,7 @@ export default function Home(props: Props) {
                     alt={banner.id}
                     width={900}
                     height={1200}
-                    layout="responsive"
+                    // layout="responsive"
                     className="object-contain"
                   />
                 </div>
@@ -200,7 +200,7 @@ export default function Home(props: Props) {
                     <Image
                       src={banner.image_desktop}
                       alt={banner.id}
-                      layout="responsive"
+                      // layout="responsive"
                       width={1920}
                       height={800}
                       className="aspect-[2/1] object-contain"
