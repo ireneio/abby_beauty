@@ -367,7 +367,7 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
   )
 }
 
-let hasInitialized = false
+// let hasInitialized = false
 
 export function RootLayout({ children }: { children: React.ReactNode }) {
   let pathname = usePathname()
@@ -402,13 +402,13 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    if (!hasInitialized) {
-      hasInitialized = true
+    // if (!hasInitialized) {
+      // hasInitialized = true
       Promise.all([
         getProductTypes(),
         getTrials()
       ])
-    }
+    // }
   }, [])
 
   return (
