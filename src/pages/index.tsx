@@ -368,7 +368,7 @@ export default function Home(props: Props) {
                         </div>
                       </div>
                       <div className="mt-4 text-sm text-secondary tracking-[1.5px] leading-[24px]">
-                        {comment.content}
+                        {formatTextareaContent(comment.content)}
                       </div>
                     </div>
                   )
