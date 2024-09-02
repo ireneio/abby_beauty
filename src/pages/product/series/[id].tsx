@@ -146,7 +146,7 @@ export default function Page({ data, products }: Props) {
                     <QuillContentWrapper content={data.description} />
                     <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
                     <div className="mt-4">
-                        <div className="grid grid-cols-2 md:grid-cols-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4">
                             {productsMemo.map((product) => {
                                 return (
                                     <div key={product.id} className="cursor-pointer" onClick={() => router.push(`/products/${product.id}`)}>
