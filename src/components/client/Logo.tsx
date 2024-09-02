@@ -12,6 +12,10 @@ export function Logo({
   return (
     <div className='flex gap-4 items-center'>
       <img
+        src='/images/CHLITINA 艾比美容中心.png'
+        className="h-[72px] object-contain"
+      />
+      {/* <img
         src='/images/logo.png'
         alt="logo"
         className='w-[72px] h-[72px] object-contain'
@@ -20,7 +24,7 @@ export function Logo({
         克麗緹娜
         <br/>
         艾比美容工作室
-      </h1>
+      </h1> */}
     </div>
   )
 }
