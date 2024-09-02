@@ -8,15 +8,13 @@ import seoDefault from "@/lib/data/seoDefault";
 import { defaultInstance } from "@/lib/hooks/useApi";
 import formatTextareaContent from "@/lib/store/formatTextareaContent";
 import formatNumberToMoney from "@/lib/utils/formatNumberToMoney";
-import openLineAtAccount, { lineAccountHandle } from "@/lib/utils/openLineAtAccount";
-import { XMarkIcon } from "@heroicons/react/16/solid";
-import { GetServerSideProps } from "next";
+import openLineAtAccount from "@/lib/utils/openLineAtAccount";
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const res = await api(defaultInstance, {
     method: 'GET',
     url: '/client/home'
@@ -30,7 +28,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
         brands: res.data.brands,
         customer_comments: res.data.customer_comments,
         joinus: res.data.joinus,
-      }
+      },
+      revalidate: 10,
     }
   }
   
