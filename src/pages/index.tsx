@@ -15,27 +15,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await api(defaultInstance, {
-    method: 'GET',
-    url: '/client/home'
-  })
-  if (res.code === 0) {
-    return {
-      props: {
-        banners: res.data.banners,
-        services: res.data.services,
-        trials: res.data.trials,
-        brands: res.data.brands,
-        customer_comments: res.data.customer_comments,
-        joinus: res.data.joinus,
-      },
-      revalidate: 10,
-    }
-  }
-  
-  return {
-    props: {
-      banners: [],
+  let props = {
+    banners: [],
       services: [],
       trials: [],
       brands: [],
@@ -45,7 +26,25 @@ export const getStaticProps: GetStaticProps = async () => {
         image: '',
         content: '',
       },
+  }
+  const res = await api(defaultInstance, {
+    method: 'GET',
+    url: '/client/home'
+  })
+  if (res.code === 0) {
+    props = {
+      banners: res.data.banners,
+      services: res.data.services,
+      trials: res.data.trials,
+      brands: res.data.brands,
+      customer_comments: res.data.customer_comments,
+      joinus: res.data.joinus,
     }
+  }
+  
+  return {
+    props,
+    revalidate: 10,
   }
 };
 
