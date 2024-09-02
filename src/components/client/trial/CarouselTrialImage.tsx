@@ -83,10 +83,9 @@ export default function CarouselTrialImage({ images }: Props) {
                                 src={image.url}
                                 width={500}
                                 height={500}
-                                // objectFit="contain"
-                                // layout="fill"
                                 className="object-contain aspect-[1/1]"
                                 alt={image.id}
+                                priority
                             />
                         </div>
                     )
@@ -101,11 +100,12 @@ export default function CarouselTrialImage({ images }: Props) {
                                 className={clsx('relative shrink-0 border p-2 w-[64px] h-[64px]', currentSlide === i ? 'border-[#000]' : 'border-[#ccc]')}
                                 onClick={() => goToSlide(i)}
                             >
-                                <div className="relative aspect-[1/1]">
+                                <div className="flex items-center">
                                     <Image
                                         src={image.url}
-                                        layout="fill"
-                                        objectFit="cover"
+                                        width={62}
+                                        height={62}
+                                        className="aspect-[1/1] object-contain"
                                         alt={image.id}
                                     />
                                 </div>

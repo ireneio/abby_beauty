@@ -103,6 +103,9 @@ function Header({
                 })}
             </div>
           </div>
+          {/* <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/articles')}>
+            <div className='text-sm text-secondary'>最新消息</div>
+          </div> */}
           <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/classes')}>
             <div className='text-sm text-secondary'>課程介紹</div>
           </div>
@@ -230,6 +233,9 @@ function Navigation({ productTypes, trials }: { productTypes: any[], trials: any
           )
         })}
       </div>
+      {/* <NavigationRow>
+        <NavigationItem href="/articles">最新消息</NavigationItem>
+      </NavigationRow> */}
       <NavigationRow>
         <NavigationItem href="/classes">課程介紹</NavigationItem>
       </NavigationRow>

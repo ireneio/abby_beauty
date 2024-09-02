@@ -1,69 +1,83 @@
 import Breadcrumb from "@/components/client/Breadcrumb"
-import { Button } from "@/components/client/Button"
 import CarouselProduct from "@/components/client/products/CarouselProduct"
 import { RootLayout } from "@/components/layout/RootLayout"
-import useApi from "@/lib/hooks/useApi"
+import { api } from "@/lib/api/connector"
+import seoDefault from "@/lib/data/seoDefault"
+import { defaultInstance } from "@/lib/hooks/useApi"
+import { GetStaticProps } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
 
-export default function Page() {
-    const router = useRouter()
-    const { api } = useApi()
-    const [products, setProducts] = useState<any[]>([])
-    const [productTypes, setProductTypes] = useState<any[]>([])
-
+export const getStaticProps: GetStaticProps = async () => {  
     const getProducts = async () => {
-        const res = await api({
+        const res = await api(defaultInstance, {
             method: 'GET',
-            url: '/client/products'
+            url: '/client/products',
         })
         if (res.code === 0) {
-            setProducts(res.data.map((data: any) => {
+            return res.data.map((data: any) => {
                 return {
                     ...data,
                     image: data.images.length > 0 ? data.images.find((image: any) => image.order === 0) : { url: '' }
                 }
-            }))
+            })
         } else {
-            setProducts([])
+            return []
         }
     }
 
     const getProductTypes = async () => {
-        const res = await api({
+        const res = await api(defaultInstance, {
             method: 'GET',
-            url: '/client/product_types'
+            url: `/client/product_types/`,
         })
         if (res.code === 0) {
-            setProductTypes(res.data)
+            return res.data
         } else {
-            setProductTypes([])
+            return []
         }
     }
 
-    useEffect(() => {
-        Promise.all([
-            getProducts(),
-            getProductTypes()
-        ])
-    }, [])
+    const [products, productTypes] = await Promise.all([
+        getProducts(),
+        getProductTypes()
+    ])
+
+    const props = {
+        products,
+        productTypes,
+    }
+  
+    return {
+      props,
+      revalidate: 10,
+    };
+};
+
+type Props = {
+    products: any[],
+    productTypes: any[]
+}
+
+export default function Page(props: Props) {
+    const { products, productTypes } = props
+    const router = useRouter()
 
     return (
         <>
             <Head>
                 <title>產品介紹</title>
-                <meta name="description" content={`產品介紹 | 艾比美容工作室`} />
+                <meta name="description" content={`產品介紹 | ${seoDefault.title}`} />
                 <meta property="og:title" content={"產品介紹"} />
-                <meta property="og:description" content={`產品介紹 | 艾比美容工作室`} />
+                <meta property="og:description" content={`產品介紹 | ${seoDefault.title}`} />
                 <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/products`} />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="艾比美容工作室"/>
+                <meta property="og:site_name" content={seoDefault.site_name} />
                 <meta property="twitter:card" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 <meta name="twitter:title" content={"產品介紹"} />
-                <meta name="twitter:description" content={`產品介紹 | 艾比美容工作室`} />
+                <meta name="twitter:description" content={`產品介紹 | ${seoDefault.title}`} />
                 <meta property="twitter:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
@@ -79,7 +93,7 @@ export default function Page() {
                         />
                     </div>
                     <div className="px-4 mt-4">
-                        {productTypes.map((productType) => {
+                        {productTypes.map((productType, index) => {
                             return (
                                 <div key={productType.id} className="md:grid md:grid-cols-6 mb-4">
                                     <div
@@ -89,10 +103,13 @@ export default function Page() {
                                         <div className="text-sm md:text-md bg-primary text-secondary px-4 py-4">
                                             {productType.name}
                                         </div>
-                                        <img
+                                        <Image
                                             src={productType.image_cover}
-                                            alt=""
-                                            className="object-contain w-full"
+                                            alt={productType.name}
+                                            width={900}
+                                            height={1200}
+                                            className="object-contain w-full h-auto"
+                                            priority={index === 0 || index === 1}
                                         />
                                     </div>
                                     <div className="md:col-span-4 mt-4 md:mt-0">
@@ -105,12 +122,12 @@ export default function Page() {
                                                     return (
                                                         <div key={product.id} className="relative pb-4" onClick={() => router.push(`/products/${product.id}`)}>
                                                             <div className="px-4">
-                                                                <div className="min-h-[140px] flex items-center justify-center">
+                                                                <div className="min-h-[140px] w-[140px] flex items-center justify-center">
                                                                     {product.image.url ?
                                                                         <Image
                                                                             src={product.image.url}
                                                                             alt={product.name_zh}
-                                                                            objectFit="contain"
+                                                                            className="object-contain w-[140px] h-[140px] aspect-[1/1]"
                                                                             width={140}
                                                                             height={140}
                                                                         /> :

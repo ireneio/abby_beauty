@@ -1,143 +1,174 @@
-import RequiredMark from "@/components/admin/RequiredMark";
+// import RequiredMark from "@/components/admin/RequiredMark";
 import Breadcrumb from "@/components/client/Breadcrumb";
 import { Button } from "@/components/client/Button";
 import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import CarouselTrialImage from "@/components/client/trial/CarouselTrialImage";
-import { Checkbox, CheckboxField, CheckboxGroup } from "@/components/common/checkbox";
-import { Field, Label } from "@/components/common/fieldset";
-import { Input } from "@/components/common/input";
-import { Select } from "@/components/common/select";
+// import { Checkbox, CheckboxField, CheckboxGroup } from "@/components/common/checkbox";
+// import { Field, Label } from "@/components/common/fieldset";
+// import { Input } from "@/components/common/input";
+// import { Select } from "@/components/common/select";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import seoDefault from "@/lib/data/seoDefault";
-import useApi, { defaultInstance } from "@/lib/hooks/useApi";
+import { defaultInstance } from "@/lib/hooks/useApi";
 import formatNumberToMoney from "@/lib/utils/formatNumberToMoney";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
-import dayjs from "dayjs";
-import { GetServerSideProps } from "next";
+// import dayjs from "dayjs";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
+// import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { withSwal } from 'react-sweetalert2';
 
-type FormInputs = {
-    name: string
-    email: string
-    phone: string
-    line_id: string
-    date: string
-    time_of_day: string
-    know_us_list: string[]
+// type FormInputs = {
+//     name: string
+//     email: string
+//     phone: string
+//     line_id: string
+//     date: string
+//     time_of_day: string
+//     know_us_list: string[]
+// }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const getAllTrials = async () => {
+        const res = await api(defaultInstance, {
+            method: 'GET',
+            url: '/client/trials',
+        })
+        if (res.code === 0) {
+            return res.data
+        }
+        return []
+    }
+
+    const list = await getAllTrials()
+
+    const paths = list.map((trial: { slug: string }) => ({
+        params: { slug: trial.slug },
+    }));
+
+    return {
+        paths,
+        fallback: 'blocking',
+    }
 }
 
-function Page({ swal, serverData }: any) {
-    const router = useRouter()
-    const { api } = useApi()
-    const [data, setData] = useState({
-        id: '',
-        title_short: '',
-        title: '',
-        slug: '',
-        subtitle: '',
-        content: '',
-        images: [],
-        price_discount: '',
-        price_original: '',
-    })
-
-    const timeOfDayOptions = [
-        { label: '上午 (10:00-12:00)', value: '上午 (10:00-12:00)' },
-        { label: '下午 (12:00-17:00)', value: '下午 (12:00-17:00)' },
-        { label: '晚間 (17:00-20:00)', value: '晚間 (17:00-20:00)' },
-    ]
-
-    const knowUsOptions = [
-        { label: 'Google廣告', value: 'Google廣告' },
-        { label: 'Instagram', value: 'Instagram' },
-        { label: 'LINE', value: 'LINE' },
-        { label: '親友分享連結點擊進入', value: '親友分享連結點擊進入' },
-    ]
-
-    const form = useForm<FormInputs>({
-        defaultValues: {
-            name: '',
-            email: '',
-            phone: '',
-            line_id: '',
-            date: '',
-            time_of_day: '',
-            know_us_list: [],
-        }
-    })
-
-    const createTrialReservation = async (data: any) => {
-        const res = await api({
-            method: 'POST',
-            url: '/client/trial_reservations',
-            data
-        })
-        if (res.code === 0) {
-            swal.fire({
-                title: '成功',
-                text: '您的體驗預約申請已送出，請靜待專員電話聯繫！',
-                icon: 'success',
-            })
-            form.resetField('name')
-            form.resetField('email')
-            form.resetField('phone')
-            form.resetField('line_id')
-            form.resetField('date')
-            form.resetField('time_of_day')
-            form.resetField('know_us_list')
-            form.setValue('know_us_list', [])
-        } else {
-            swal.fire({
-                title: `失敗 (${res.code})`,
-                text: '請稍後再試',
-                icon: 'error',
-            })
-        }
-    }
-
-    const onSubmit = async (formData: any) => {
-        await createTrialReservation({
-            ...formData,
-            trial_name: data.title_short,
-        })
-    }
-
-    const getData = async (slug: string) => {
-        const res = await api({
+export const getStaticProps: GetStaticProps = async (context) => {
+    const { slug } = context.params!; // 'id' is the dynamic parameter
+  
+    const getData = async () => {
+        const res = await api(defaultInstance, {
             method: 'GET',
-            url: `/client/trials/${slug}`
+            url: `/client/trials/${slug}`,
         })
         if (res.code === 0) {
-            setData(res.data)
+            return res.data
+        }
+        return {
+            id: '',
+            title_short: '',
+            title: '',
+            slug: '',
+            subtitle: '',
+            content: '',
+            images: [],
+            price_discount: '',
+            price_original: '',
         }
     }
+    const data = await getData()
+    const props = {
+        data,
+    }
+  
+    return {
+      props,
+      revalidate: 10,
+    };
+};
 
-    useEffect(() => {
-        if (router.query.slug) {
-            getData(router.query.slug as string)
-        }
-    }, [router.query.slug])
+type Props = any
+
+function Page({ swal, data }: Props) {
+    const router = useRouter()
+
+    // const timeOfDayOptions = [
+    //     { label: '上午 (10:00-12:00)', value: '上午 (10:00-12:00)' },
+    //     { label: '下午 (12:00-17:00)', value: '下午 (12:00-17:00)' },
+    //     { label: '晚間 (17:00-20:00)', value: '晚間 (17:00-20:00)' },
+    // ]
+
+    // const knowUsOptions = [
+    //     { label: 'Google廣告', value: 'Google廣告' },
+    //     { label: 'Instagram', value: 'Instagram' },
+    //     { label: 'LINE', value: 'LINE' },
+    //     { label: '親友分享連結點擊進入', value: '親友分享連結點擊進入' },
+    // ]
+
+    // const form = useForm<FormInputs>({
+    //     defaultValues: {
+    //         name: '',
+    //         email: '',
+    //         phone: '',
+    //         line_id: '',
+    //         date: '',
+    //         time_of_day: '',
+    //         know_us_list: [],
+    //     }
+    // })
+
+    // const createTrialReservation = async (data: any) => {
+    //     const res = await api({
+    //         method: 'POST',
+    //         url: '/client/trial_reservations',
+    //         data
+    //     })
+    //     if (res.code === 0) {
+    //         swal.fire({
+    //             title: '成功',
+    //             text: '您的體驗預約申請已送出，請靜待專員電話聯繫！',
+    //             icon: 'success',
+    //         })
+    //         form.resetField('name')
+    //         form.resetField('email')
+    //         form.resetField('phone')
+    //         form.resetField('line_id')
+    //         form.resetField('date')
+    //         form.resetField('time_of_day')
+    //         form.resetField('know_us_list')
+    //         form.setValue('know_us_list', [])
+    //     } else {
+    //         swal.fire({
+    //             title: `失敗 (${res.code})`,
+    //             text: '請稍後再試',
+    //             icon: 'error',
+    //         })
+    //     }
+    // }
+
+    // const onSubmit = async (formData: any) => {
+    //     await createTrialReservation({
+    //         ...formData,
+    //         trial_name: data.title_short,
+    //     })
+    // }
 
     return (
         <>
             <Head>
-                <title>{serverData.title_short}</title>
-                <meta name="description" content={serverData.title} />
-                <meta property="og:title" content={serverData.title_short} />
-                <meta property="og:description" content={serverData.title} />
+                <title>{data.title_short}</title>
+                <meta name="description" content={data.title} />
+                <meta property="og:title" content={data.title_short} />
+                <meta property="og:description" content={data.title} />
                 <meta property="og:image" content={seoDefault.image} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/trial/${router.query.slug}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content={seoDefault.site_name} />
                 <meta property="twitter:card" content={seoDefault.image} />
-                <meta name="twitter:title" content={serverData.title_short} />
-                <meta name="twitter:description" content={serverData.title} />
+                <meta name="twitter:title" content={data.title_short} />
+                <meta name="twitter:description" content={data.title} />
                 <meta property="twitter:image" content={seoDefault.image} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
@@ -277,20 +308,5 @@ function Page({ swal, serverData }: any) {
         </>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-    if (params) {
-        const { slug } = params
-        const res = await api(defaultInstance, {
-            method: 'GET',
-            url: `/client/trials/${slug}/server`,
-        })
-        if (res.code === 0) {
-            return { props: { serverData: res.data } }
-        }
-        return { props: { serverData: null }}
-    }
-    return { props: { serverData: null }}
-};
 
 export default withSwal(Page)

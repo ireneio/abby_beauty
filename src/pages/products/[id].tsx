@@ -5,44 +5,59 @@ import CarouselSimilarProducts from "@/components/client/product/CarouselSimilar
 import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
+import seoDefault from "@/lib/data/seoDefault";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import clsx from "clsx";
-import { GetServerSideProps, Metadata, ResolvingMetadata } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
-export default function Page({ serverData }: any) {
-    const { api } = useApi() 
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    const props = {
+        data: {
+            name_zh: '',
+            name_en: '',
+            features: '',
+            size: '',
+            sku: '',
+            target_users: '',
+            usage: '',
+            ingredients: '',
+            images: [],
+            product_type_name: '',
+            product_type_id: null,
+        }
+    }
+    if (params) {
+        const { id } = params
+        const res = await api(defaultInstance, {
+            method: 'GET',
+            url: `/client/products/${id}`,
+        })
+        if (res.code === 0 && Array.isArray(res.data) && res.data.length > 0) {
+            props.data = res.data[0]
+        }
+    }
+    return {
+        props
+    }
+};
+
+type Props = {
+    data: any
+}
+
+export default function Page(props: Props) {
+    const { data } = props
+    const { api } = useApi()
     const router = useRouter()
-    const [data, setData] = useState<any>({
-        name_zh: '',
-        name_en: '',
-        features: '',
-        size: '',
-        sku: '',
-        target_users: '',
-        usage: '',
-        ingredients: '',
-        images: [],
-        product_type_name: '',
-        product_type_id: null,
-    })
     const [currentTab, setCurrentTab] = useState(0)
 
     const handleLearnMore = () => {
         openLineAtAccount()
-    }
-
-    const getData = async (id: string) => {
-        const res = await api({
-            method: 'GET',
-            url: `/client/products/${id}`
-        })
-        if (res.code === 0 && res.data && res.data.length > 0) {
-            setData(res.data[0])
-        }
     }
 
     const [similarProducts, setSimilarProducts] = useState<any[]>([])
@@ -75,12 +90,6 @@ export default function Page({ serverData }: any) {
         }
     }, [data.product_type_id])
 
-    useEffect(() => {
-        if (router.query.id) {
-            getData(router.query.id as string)
-        }
-    }, [router.query.id])
-
     const breadcrumbList = useMemo(() => {
         if (data.product_type_id) {
             return [
@@ -100,22 +109,22 @@ export default function Page({ serverData }: any) {
     return (
         <>
             <Head>
-                <title>{serverData.name_zh}</title>
-                <meta name="description" content={`${serverData.product_type_name} - ${serverData.name_zh} | 艾比美容工作室`} />
-                <meta property="og:title" content={serverData.name_zh} />
-                <meta property="og:description" content={`${serverData.product_type_name} - ${serverData.name_zh} | 艾比美容工作室`} />
-                {serverData.images.map((image: any, i: number) => {
+                <title>{data.name_zh}</title>
+                <meta name="description" content={`${data.product_type_name} | ${seoDefault.title}`} />
+                <meta property="og:title" content={data.name_zh} />
+                <meta property="og:description" content={`${data.product_type_name} | ${seoDefault.title}`} />
+                {data.images.map((image: any, i: number) => {
                     return(
                         <meta key={i} property="og:image" content={image.url} />
                     )
                 })}
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/products/${router.query.id}`} />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="艾比美容工作室"/>
-                <meta name="twitter:card" content={serverData.images && serverData.images.length ? serverData.images[0].url : ''} />
-                <meta name="twitter:title" content={serverData.name_zh} />
-                <meta name="twitter:description" content={`${serverData.product_type_name} - ${serverData.name_zh} | 艾比美容工作室`} />
-                <meta name="twitter:image" content={serverData.images && serverData.images.length ? serverData.images[0].url : ''} />
+                <meta property="og:site_name" content={seoDefault.site_name} />
+                <meta name="twitter:card" content={data.images && data.images.length ? data.images[0].url : ''} />
+                <meta name="twitter:title" content={data.name_zh} />
+                <meta name="twitter:description" content={`${data.product_type_name} | ${seoDefault.title}`} />
+                <meta name="twitter:image" content={data.images && data.images.length ? data.images[0].url : ''} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
@@ -130,13 +139,16 @@ export default function Page({ serverData }: any) {
                             <div className="md:col-span-2">
                                 <CarouselProductImage>
                                     {data.images.length ?
-                                        data.images.map((image: any) => {
+                                        data.images.map((image: any, index: number) => {
                                             return (
                                                 <div key={image.id}>
-                                                    <img
+                                                    <Image
                                                         src={image.url}
-                                                        alt=""
-                                                        className="object-contain aspect-[1/1]"
+                                                        alt={data.name_zh}
+                                                        width={500}
+                                                        height={500}
+                                                        className="object-contain aspect-[1/1] w-full h-auto"
+                                                        priority={index === 0}
                                                     />
                                                 </div>
                                             )
@@ -219,12 +231,12 @@ export default function Page({ serverData }: any) {
                                                     onClick={() => router.push(`/products/${product.id}`)}
                                                 >
                                                     <div className="px-4">
-                                                        <div className="min-h-[140px] flex items-center justify-center">
+                                                        <div className="min-h-[140px] w-full flex items-center justify-center">
                                                             {product.image.url ?
-                                                                <img
+                                                                <Image
                                                                     src={product.image.url}
                                                                     alt={product.name_zh}
-                                                                    className="object-contain"
+                                                                    className="object-contain w-[140px] h-[140px] aspect-[1/1]"
                                                                     width={140}
                                                                     height={140}
                                                                 /> :
@@ -245,18 +257,3 @@ export default function Page({ serverData }: any) {
         </>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-    if (params) {
-        const { id } = params
-        const res = await api(defaultInstance, {
-            method: 'GET',
-            url: `/client/products/${id}`,
-        })
-        if (res.code === 0 && Array.isArray(res.data) && res.data.length > 0) {
-            return { props: { serverData: res.data[0] } }
-        }
-        return { props: { serverData: null }}
-    }
-    return { props: { serverData: null }}
-};

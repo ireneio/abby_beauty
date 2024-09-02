@@ -4,11 +4,12 @@ class TrialsController {
     async getAllClient() {
         const rows = await db.selectFrom('trials')
             .where('hidden', '!=', true)
-            .select([
-                'id',
-                'slug',
-                'title_short',
-            ])
+            .selectAll()
+            // .select([
+            //     'id',
+            //     'slug',
+            //     'title_short',
+            // ])
             .orderBy('order', 'asc')
             .execute()
 

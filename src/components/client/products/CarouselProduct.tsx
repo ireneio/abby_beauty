@@ -5,18 +5,18 @@ const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
     items: 4,
-    // slidesToSlide: 3 // optional, default to 1.
+    slidesToSlide: 4,
   },
   tablet: {
     breakpoint: { max: 1024, min: 640 },
     items: 2,
+    slidesToSlide: 2,
     partialVisibilityGutter: 24,
-    // slidesToSlide: 2 // optional, default to 1.
   },
   mobile: {
     breakpoint: { max: 640, min: 0 },
     items: 2,
-    slidesToSlide: 1, // optional, default to 1.
+    slidesToSlide: 2, // optional, default to 1.
     partialVisibilityGutter: 24,
   }
 };

@@ -1,21 +1,45 @@
 import Breadcrumb from "@/components/client/Breadcrumb"
 import { Button } from "@/components/client/Button"
 import { RootLayout } from "@/components/layout/RootLayout"
-import useApi from "@/lib/hooks/useApi"
+import { api } from "@/lib/api/connector"
+import seoDefault from "@/lib/data/seoDefault"
+import { defaultInstance } from "@/lib/hooks/useApi"
 import openLineAtAccount from "@/lib/utils/openLineAtAccount"
+import { GetStaticProps } from "next"
 import Head from "next/head"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 
-export async function generateMetadata() {
+export const getStaticProps: GetStaticProps = async () => {
+    const props = {
+        classes: []
+    }
+
+    const getClasses = async () => {
+        const res = await api(defaultInstance, {
+            method: 'GET',
+            url: '/client/classes'
+        })
+        if (res.code === 0) {
+            return res.data
+        } else {
+            return []
+        }
+    }
+
+    props.classes = await getClasses()
+
     return {
-        title: '艾比美容工作室',
-        description: '產品介紹',
+        props,
+        revalidate: 30,
     }
 }
 
-export default function Page() {
-    const { api } = useApi()
-    const [classes, setClasses] = useState<any[]>([])
+type Props = {
+    classes: any[]
+}
+
+export default function Page(props: Props) {
+    const { classes } = props
 
     const classesMemo = useMemo(() => {
         return classes.reduce((a, c) => {
@@ -44,37 +68,21 @@ export default function Page() {
         }, [])
     }, [classes])
 
-    const getClasses = async () => {
-        const res = await api({
-            method: 'GET',
-            url: '/client/classes'
-        })
-        if (res.code === 0) {
-            setClasses(res.data)
-        } else {
-            setClasses([])
-        }
-    }
-
-    useEffect(() => {
-        getClasses()
-    }, [])
-
     return (
         <>
             <Head>
                 <title>課程介紹</title>
-                <meta name="description" content={`課程介紹 | 艾比美容工作室`} />
+                <meta name="description" content={`課程介紹 | ${seoDefault.title}`} />
                 <meta property="og:title" content={"課程介紹"} />
-                <meta property="og:description" content={`課程介紹 | 艾比美容工作室`} />
-                {/* <meta property="og:image" content={data.image_cover} /> */}
+                <meta property="og:description" content={`課程介紹 | ${seoDefault.title}`} />
+                <meta property="og:image" content={seoDefault.image} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/classes`} />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="艾比美容工作室"/>
-                {/* <meta name="twitter:card" content={data.image_cover} /> */}
+                <meta property="og:site_name" content={seoDefault.site_name} />
+                <meta name="twitter:card" content={seoDefault.image} />
                 <meta name="twitter:title" content={"課程介紹"} />
-                <meta name="twitter:description" content={`課程介紹 | 艾比美容工作室`} />
-                {/* <meta name="twitter:image" content={data.image_cover} /> */}
+                <meta name="twitter:description" content={`課程介紹 | ${seoDefault.title}`} />
+                <meta name="twitter:image" content={seoDefault.image} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
