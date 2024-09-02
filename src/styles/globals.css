@@ -25,13 +25,13 @@
 }
 
 @layer base {
-  @font-face {
+  /* @font-face {
     font-family: 'BakudaiMedium';
     font-display: block;
     font-style: normal;
     font-weight: 400;
     src: url('../fonts/Bakudai-Medium.woff') format('woff');
-  }
+  } */
   .ql-editor {
     .ql-video {
       display: block;

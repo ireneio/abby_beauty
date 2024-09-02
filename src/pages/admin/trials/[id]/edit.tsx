@@ -7,12 +7,11 @@ import WysiwygEditor from '@/components/admin/WysiwygEditor'
 import NotificationPopup from '@/components/global/NotificationPopup'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
-import { useAppDispatch } from '@/lib/store'
-import { openAlert } from '@/lib/store/features/global/globalSlice'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
+import Swal from 'sweetalert2'
 
 type Inputs = {
     title: string,
@@ -25,7 +24,6 @@ type Inputs = {
 }
 
 export default function Page() {
-    const dispatch = useAppDispatch()
     const router = useRouter()
     const { api } = useApi()
 
@@ -62,6 +60,15 @@ export default function Page() {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        Swal.fire({
+            title: '加載中...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen() {
+                Swal.showLoading()
+            }
+        })
+
         let imageUrlArr: { order: number; url: string }[] = []
 
         if (multipleImageUploaderRef.current) {
@@ -76,8 +83,17 @@ export default function Page() {
 
         if (res.code === 0) {
             router.replace(`/admin/trials/${router.query.id}/view`)
+            Swal.close()
+            Swal.fire({
+                title: `新增成功`,
+                icon: 'success',
+            })
         } else {
-            dispatch(openAlert({ title: `錯誤(${res.code})` }))
+            Swal.close()
+            Swal.fire({
+                title: `錯誤(${res.code})`,
+                icon: 'error',
+            })
         }
     }
 

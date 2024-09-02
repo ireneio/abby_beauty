@@ -54,90 +54,6 @@ export default function Home(props: Props) {
   const { banners, services, trials, customer_comments, brands, joinus } = props
   const router = useRouter()  
 
-  // const [features] = useState<any[]>([
-  //   {
-  //     id: '1',
-  //     name: '意猶未盡~沉浸式木質深層精油舒壓+客製化課程四選一',
-  //     time: '80分鐘',
-  //     text: '背部掌壓放鬆 + 精油純手技深層肌肉平衡釋壓按摩 60分 (使用森活木質調植物精油) (以下 4 選 1)',
-  //     options: [
-  //       {
-  //         id: 'a',
-  //         name: '九微米能量輕盈曲線 (臀部/手臂/大小腿 三選二) 20分',
-  //       },
-  //       {
-  //         id: 'b',
-  //         name: '溫和杏仁上背嫩白角質按摩 20分',
-  //       },
-  //       {
-  //         id: 'c',
-  //         name: '背部肌肉加強深層熱感放鬆 20分',
-  //       },
-  //       {
-  //         id: 'd',
-  //         name: '腹部暖宮SPA 10分 + 海藻美白曲線敷泥搭配專業P膜 10分',
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: '2',
-  //     name: '誰做誰美~痘痘肌掃油、肌膚乾燥缺水必選！頂級植萃臉部急救呵護課程',
-  //     time: '90分鐘 (手技80分鐘)',
-  //     text: '背部掌壓放鬆 + 精油純手技深層肌肉平衡釋壓按摩 60分 (使用森活木質調植物精油)',
-  //     options: [
-  //       {
-  //         id: 'a',
-  //         name: '課程說明',
-  //       },
-  //       {
-  //         id: 'b',
-  //         name: '天然胺基酸弱酸溫和卸妝',
-  //       },
-  //       {
-  //         id: 'c',
-  //         name: '甘草精萃深層潔顏',
-  //       },
-  //       {
-  //         id: 'd',
-  //         name: '甦活新肌去角質',
-  //       },
-  //       {
-  //         id: 'e',
-  //         name: '奈米小分子熱蒸',
-  //       },
-  //       {
-  //         id: 'f',
-  //         name: '專業美容師粉刺痘痘技術淨化處理',
-  //       },
-  //       {
-  //         id: 'g',
-  //         name: '植萃掃油平衡精華/特研植物性保濕 二選一',
-  //       },
-  //       {
-  //         id: 'h',
-  //         name: '冰晶肌底導入 (依膚況由專業美容師挑選)',
-  //       },
-  //       {
-  //         id: 'i',
-  //         name: '臉部SPA賦活按摩',
-  //       },
-  //       {
-  //         id: 'j',
-  //         name: '頂級松藻精粹光透白保濕面膜 (同時進行頭部舒刮 10分)',
-  //       },
-  //       {
-  //         id: 'k',
-  //         name: '肌底保養',
-  //       },
-  //       {
-  //         id: 'l',
-  //         name: '課後休憩熱茶',
-  //       },
-  //     ]
-  //   }
-  // ])
-  
-  
   return (
     <>
       <Head>
@@ -212,10 +128,8 @@ export default function Home(props: Props) {
           </div>
           <div className="mt-4">
             <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
-              <div className="font-['BakudaiMedium']">
-                艾比美容工作室
-              </div>
-              <div className="mt-2 text-xs tracking-[3px] font-light uppercase">about ab</div>
+              服務項目
+              <div className="mt-2 text-xs tracking-[3px] font-light uppercase">our services</div>
             </div>
             <div className="mt-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
@@ -300,25 +214,6 @@ export default function Home(props: Props) {
                     </div>
                   )
                 })}
-                {/* {features.map((feature) => {
-                  return (
-                    <div key={feature.id} className="shadow-md rounded-md">
-                      <div className="min-h-[80px] px-4 pt-4 bg-secondary font-medium text-primary text-md pb-4 rounded-tl-md rounded-tr-md">{feature.name}</div>
-                      <div className="px-4 font-light mt-4 text-sm text-secondary">{feature.time}</div>
-                      <div className="px-4 mt-4 font-semibold text-md leading-[24px] text-secondary">{feature.text}</div>
-                      <div className="border-t border-t-[#ccc] mx-4 pt-4 pb-4 mt-4 space-y-4 text-secondary">
-                        {feature.options.map((option: any) => {
-                          return (
-                            <div key={option.id} className="flex gap-1 text-sm">
-                              <div>•</div>
-                              <div>{option.name}</div>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )
-                })} */}
               </div>
             </div>
             <div className="mt-8 flex justify-center">
@@ -338,10 +233,12 @@ export default function Home(props: Props) {
                   return (
                     <div key={comment.id} className="px-4 py-4 shadow-md rounded-md h-full mr-4">
                       <div className="flex gap-4 items-center">
-                        <img
+                        <Image
                           className="rounded-full w-[48px] h-[48px] object-cover"
                           src={comment.avatar}
                           alt={comment.customer_name}
+                          width={48}
+                          height={48}
                         />
                         <div>
                           <div className="text-xs text-secondary">{comment.customer_name}</div>
