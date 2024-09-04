@@ -73,7 +73,7 @@ export default function Home(props: Props) {
           <meta name="twitter:creator" content="@creatorhandle" /> */}
       </Head>
       <RootLayout>
-        <div className="md:hidden">
+        <div className="md:hidden mt-[-1rem]">
           <CarouselBanner>
             {banners.map((banner: any) => {
               return (
@@ -99,33 +99,32 @@ export default function Home(props: Props) {
             })}
           </CarouselBanner>
         </div>
+        <div className="hidden md:block mt-[-1rem]">
+          <CarouselBanner>
+            {banners.map((banner: any) => {
+              return (
+                <div
+                  key={banner.id}
+                  onClick={() => {
+                    if (banner.url) {
+                      window.open(banner.url, banner.url_open_type)
+                    }
+                  }}
+                >
+                  <Image
+                    src={banner.image_desktop}
+                    alt={banner.id}
+                    width={1900}
+                    height={800}
+                    className="aspect-[19/8] object-contain"
+                    priority={true}
+                  />
+                </div>
+              )
+            })}
+          </CarouselBanner>
+        </div>
         <div className="px-4">
-          <div className="hidden md:block">
-            <CarouselBanner>
-              {banners.map((banner: any) => {
-                return (
-                  <div
-                    key={banner.id}
-                    onClick={() => {
-                      if (banner.url) {
-                        window.open(banner.url, banner.url_open_type)
-                      }
-                    }}
-                  >
-                    <Image
-                      src={banner.image_desktop}
-                      alt={banner.id}
-                      // layout="responsive"
-                      width={1920}
-                      height={800}
-                      className="aspect-[2/1] object-contain"
-                      priority={true}
-                    />
-                  </div>
-                )
-              })}
-            </CarouselBanner>
-          </div>
           <div className="mt-4">
             <div className="text-center text-lg text-secondary font-semibold tracking-[1.5px] bg-primary py-2">
               服務項目

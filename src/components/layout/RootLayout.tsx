@@ -299,7 +299,7 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
     <MotionConfig transition={shouldReduceMotion ? { duration: 0 } : undefined}>
       <header className='fixed top-0 left-0 z-[2] w-full'>
         <div
-          className="bg-white absolute left-0 right-0 top-2 lg:top-0 z-40 pt-4 pb-4"
+          className="bg-white absolute left-0 right-0 top-0 lg:top-0 z-40 pt-0 pb-0 shadow-md"
           aria-hidden={expanded ? 'true' : undefined}
           // @ts-ignore (https://github.com/facebook/react/issues/17157)
           inert={expanded ? '' : undefined}
@@ -323,14 +323,14 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
         <motion.div
           layout
           id={panelId}
-          style={{ height: expanded ? 'auto' : '0.5rem' }}
-          className="lg:hidden relative z-50 overflow-hidden bg-primary pt-2"
+          style={{ height: expanded ? 'auto' : '1px' }}
+          className={clsx("lg:hidden relative z-50 overflow-hidden", expanded ? 'bg-primary' : 'bg-white')}
           aria-hidden={expanded ? undefined : 'true'}
           // @ts-ignore (https://github.com/facebook/react/issues/17157)
           inert={expanded ? undefined : ''}
         >
           <motion.div layout>
-            <div ref={navRef} className="bg-primary pb-4 pt-4">
+            <div ref={navRef} className="bg-primary">
               <Header
                 invert
                 panelId={panelId}
@@ -357,14 +357,13 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
 
       <motion.div
         layout
-        style={{ borderTopLeftRadius: 40, borderTopRightRadius: 40 }}
-        className="relative flex flex-auto overflow-hidden bg-white pt-[calc(112px)] lg:pt-[calc(112px - 8px)]"
+        className="relative flex flex-auto overflow-hidden bg-white pt-[72px] lg:pt-[72px]"
       >
         <motion.div
           layout
           className="relative isolate flex w-full flex-col pt-0"
         >
-          <main className="w-full flex-auto max-w-7xl mx-auto">
+          <main className="w-full flex-auto max-w-7xl mx-auto mt-4">
             {children}
           </main>
           <Footer />

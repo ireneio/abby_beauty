@@ -23,7 +23,12 @@ import { SidebarLayout } from '@/components/common/sidebar-layout'
 import { PropsWithChildren, useEffect } from 'react'
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from 'next/router'
-import { ArrowRightStartOnRectangleIcon, Bars2Icon, Bars4Icon, BookOpenIcon, ChevronUpIcon, Cog8ToothIcon, CubeIcon, DocumentIcon, DocumentTextIcon, GlobeAltIcon, ListBulletIcon, MegaphoneIcon, NewspaperIcon, PhotoIcon, RectangleGroupIcon, Square2StackIcon, StarIcon, TagIcon, TrophyIcon, UserIcon, UserPlusIcon } from '@heroicons/react/16/solid'
+import { ArrowRightStartOnRectangleIcon, BookOpenIcon, ChevronUpIcon, CubeIcon, GlobeAltIcon, KeyIcon, ListBulletIcon, MegaphoneIcon, PhotoIcon, RectangleGroupIcon, Square2StackIcon, StarIcon, TagIcon, TrophyIcon, UserIcon, UserPlusIcon } from '@heroicons/react/16/solid'
+import Swal from 'sweetalert2'
+import { createRoot } from 'react-dom/client';
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Input } from '../common/input'
+import { Button } from '../common/button'
 
 export default function LayoutAdmin({ children }: PropsWithChildren) {
   const router = useRouter()
@@ -36,6 +41,57 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
       router.replace('/admin/login')
     }
   }, [status])
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm()
+
+  const handleUpdatePassword = () => {
+    const wrapper = document.createElement('div');
+    const root = createRoot(wrapper);
+
+    const onSubmit = (data: any) => {
+      console.log(data);
+      
+    }
+
+    // Render the React component into the wrapper
+    root.render(
+      <>
+        <form className="space-y-6">
+          <Input type="password" {...register("old_password", { required: true })} placeholder="舊密碼" />
+          {errors.old_password ? <span className="text-danger text-xs">請輸入舊密碼</span> : null}
+          <Input type="password" {...register("password")} placeholder="新密碼" />
+          {errors.password ? <span className="text-danger text-xs">請輸入新密碼</span> : null}
+        </form>
+      </>
+    );
+
+    Swal.fire({
+      title: 'React Component in SweetAlert2',
+      html: wrapper,
+      showCancelButton: true,
+      preConfirm: () => {
+        if (errors) {
+          return null
+        }
+        return {
+          old_passwrd: getValues('old_password'),
+          password: getValues('password')
+        }
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleSubmit(onSubmit)
+        Swal.fire(`Hello, ${result.value?.firstName} ${result.value?.lastName}`);
+      }
+    });
+  }
 
   const handleSignOut = () => {
     signOut()
@@ -129,7 +185,7 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
               </SidebarItem>
             </SidebarSection>
             <SidebarSection>
-              <SidebarHeading>課程介紹列表管理</SidebarHeading>
+              <SidebarHeading>課程介紹管理</SidebarHeading>
               <SidebarItem href="/admin/classes">
                 <BookOpenIcon />
                 <SidebarLabel>課程列表管理</SidebarLabel>
@@ -200,14 +256,15 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
                     <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
                       {session?.user?.name}
                     </span>
-                    {/* <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
-                      erica@example.com
-                    </span> */}
                   </span>
                 </span>
                 <ChevronUpIcon />
               </DropdownButton>
               <DropdownMenu className="min-w-64" anchor="top start">
+                {/* <DropdownItem onClick={() => handleUpdatePassword()}>
+                  <KeyIcon />
+                  <DropdownLabel>修改密碼</DropdownLabel>
+                </DropdownItem> */}
                 <DropdownItem onClick={() => handleSignOut()}>
                   <ArrowRightStartOnRectangleIcon />
                   <DropdownLabel>登出</DropdownLabel>

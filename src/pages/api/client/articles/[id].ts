@@ -1,10 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import ErrorCode from "@/lib/api/errorCodes";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { createRouter } from "next-connect";
-import ArticlesController from "@/lib/kysely/controllers/articles";
+import ProductsController from "@/lib/kysely/controllers/products";
 
-const controller = new ArticlesController()
+const controller = new ProductsController()
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 

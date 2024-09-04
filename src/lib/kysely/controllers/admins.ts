@@ -113,13 +113,12 @@ class AdminsController {
         return row
     }
 
-    async update({
+    async updatePassword({
         id,
         old_password,
         password,
     }: {
         id: number,
-        username: string,
         old_password: string,
         password: string,
     }) {

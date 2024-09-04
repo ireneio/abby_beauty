@@ -9,6 +9,7 @@ import { signIn } from "next-auth/react"
 import { Checkbox, CheckboxField } from "@/components/common/checkbox";
 import { Label } from "@/components/common/fieldset";
 import { useEffect, useState } from "react";
+import Swal from 'sweetalert2'
 
 type Inputs = {
   username: string
@@ -31,14 +32,18 @@ export default function Page() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res = await signIn('credentials', { redirect: false }, {
-        username: data.username,
-        password: data.password
+      username: data.username,
+      password: data.password
     })
     if (res && res.ok && res.status === 200) {
       // dispatch(openAlert({ title: '登入成功', showConfirmButton: false }))
-      router.push('/admin/classes')
+      router.push('/admin')
     } else {
-      dispatch(openAlert({ title: `錯誤`, content: '帳號或密碼錯誤' }))
+      Swal.fire({
+        title: `錯誤${res?.status ? `(${res.status})` : ''})`,
+        text: '帳號或密碼錯誤',
+        icon: 'error',
+      })
     }
   }
 
