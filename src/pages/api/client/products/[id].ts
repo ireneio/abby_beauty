@@ -2,9 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import ErrorCode from "@/lib/api/errorCodes";
 import { createRouter } from "next-connect";
-import ArticlesController from "@/lib/kysely/controllers/articles";
+import ProductsController from "@/lib/kysely/controllers/products";
 
-const controller = new ArticlesController()
+const controller = new ProductsController()
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 

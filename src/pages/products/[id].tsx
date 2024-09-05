@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         const res = await api(defaultInstance, {
             method: 'GET',
             url: `/client/products/${id}`,
-        })
+        })        
         if (res.code === 0 && Array.isArray(res.data) && res.data.length > 0) {
             props.data = res.data[0]
         }
@@ -51,7 +51,7 @@ type Props = {
 }
 
 export default function Page(props: Props) {
-    const { data } = props
+    const { data } = props    
     const { api } = useApi()
     const router = useRouter()
     const [currentTab, setCurrentTab] = useState(0)
