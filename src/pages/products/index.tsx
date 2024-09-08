@@ -83,7 +83,7 @@ export default function Page(props: Props) {
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
             <RootLayout>
-                <div>
+                <div className="max-w-7xl mx-auto">
                     <div className="px-4">
                         <Breadcrumb
                             list={[

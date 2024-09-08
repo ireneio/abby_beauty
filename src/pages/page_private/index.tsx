@@ -24,16 +24,18 @@ export default function Page() {
 
     return (
         <>
-            <div className="mt-4 mb-4 px-4 space-y-4">
-                {data.map((page) => {
-                    return (
-                        <div
-                            key={page.id}
-                            onClick={() => router.push(`/page_private/${page.slug}`)}
-                            className="underline"
-                        >{page.title}</div>
-                    )
-                })}
+            <div className="max-w-7xl mx-auto">
+                <div className="mt-4 mb-4 px-4 space-y-4">
+                    {data.map((page) => {
+                        return (
+                            <div
+                                key={page.id}
+                                onClick={() => router.push(`/page_private/${page.slug}`)}
+                                className="underline"
+                            >{page.title}</div>
+                        )
+                    })}
+                </div>
             </div>
         </>
     )

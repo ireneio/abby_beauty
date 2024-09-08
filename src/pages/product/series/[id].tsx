@@ -133,44 +133,46 @@ export default function Page({ data, products }: Props) {
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
             <RootLayout>
-                <div className="px-4">
-                    <Breadcrumb
-                        list={[
-                            { text: '首頁', url: '/' },
-                            { text: '產品介紹', url: '/products' },
-                            { text: data.name },
-                        ]}
-                    />
-                </div>
-                <div className="px-4 mt-4">
-                    <QuillContentWrapper content={data.description} />
-                    <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
-                    <div className="mt-4">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4">
-                            {productsMemo.map((product) => {
-                                return (
-                                    <div key={product.id} className="cursor-pointer" onClick={() => router.push(`/products/${product.id}`)}>
-                                        <div>
-                                            <div className="min-h-[140px] w-full flex items-center justify-center">
-                                                {product.image.url ?
-                                                    <Image
-                                                        src={product.image.url}
-                                                        alt={product.name_zh}
-                                                        className="object-contain aspect-[1/1] h-[140px] w-[140px]"
-                                                        width={140}
-                                                        height={140}
-                                                    /> :
-                                                    <div className="w-[140px] h-[140px]"></div>}
-                                            </div>
-                                            <div className="text-sm md:text-md pb-4 pt-2">
-                                                <div className="text-secondary">{product.name_zh}</div>
+                <div className="max-w-7xl mx-auto">
+                    <div className="px-4">
+                        <Breadcrumb
+                            list={[
+                                { text: '首頁', url: '/' },
+                                { text: '產品介紹', url: '/products' },
+                                { text: data.name },
+                            ]}
+                        />
+                    </div>
+                    <div className="px-4 mt-4">
+                        <QuillContentWrapper content={data.description} />
+                        <div className="md:hidden mt-4 px-4 w-full h-[1px] bg-[#ccc]"></div>
+                        <div className="mt-4">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4">
+                                {productsMemo.map((product) => {
+                                    return (
+                                        <div key={product.id} className="cursor-pointer" onClick={() => router.push(`/products/${product.id}`)}>
+                                            <div>
+                                                <div className="min-h-[140px] w-full flex items-center justify-center">
+                                                    {product.image.url ?
+                                                        <Image
+                                                            src={product.image.url}
+                                                            alt={product.name_zh}
+                                                            className="object-contain aspect-[1/1] h-[140px] w-[140px]"
+                                                            width={140}
+                                                            height={140}
+                                                        /> :
+                                                        <div className="w-[140px] h-[140px]"></div>}
+                                                </div>
+                                                <div className="text-sm md:text-md pb-4 pt-2">
+                                                    <div className="text-secondary">{product.name_zh}</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
+                                    )
+                                })}
+                            </div>
+                            <div ref={ref}></div>
                         </div>
-                        <div ref={ref}></div>
                     </div>
                 </div>
             </RootLayout>

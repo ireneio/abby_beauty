@@ -363,7 +363,7 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
           layout
           className="relative isolate flex w-full flex-col pt-0"
         >
-          <main className="w-full flex-auto max-w-7xl mx-auto mt-4">
+          <main className="w-full flex-auto mt-4">
             {children}
           </main>
           <Footer />

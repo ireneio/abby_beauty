@@ -87,40 +87,42 @@ export default function Page(props: Props) {
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
             <RootLayout>
-                <div className="px-4">
-                    <Breadcrumb
-                        list={[
-                            { text: '首頁', url: '/' },
-                            { text: '課程介紹' },
-                        ]}
-                    />
-                </div>
-                <div className="mt-4 px-4">
-                    <div className="max-w-sm mx-auto bg-primary p-4">
-                        <div className="space-y-4">
-                            {classesMemo.map((value: any) => {
-                                return (
-                                    <div key={value.class_type_id} className="flex w-full gap-4">
-                                        <h2 className="pt-[4px] md:pt-0 font-semibold text-sm md:text-lg mb-2 text-secondary basis-[33%] flex-shrink-0">{value.class_type_name}</h2>
-                                        <ul className="space-y-2 md:space-y-4 flex-1 list-square">
-                                            {value.list.map((vvalue: any) => {
-                                                return (
-                                                    <li key={vvalue.id} className="text-left border-b border-b-[#ccc] pb-1 md:pb-2">
-                                                        <span className="text-sm md:text-md text-secondary">{vvalue.name}</span>
-                                                    </li>
-                                                )
-                                            })}
-                                        </ul>
-                                    </div>
-                                )
-                            })}
+                <div className="max-w-7xl mx-auto">
+                    <div className="px-4">
+                        <Breadcrumb
+                            list={[
+                                { text: '首頁', url: '/' },
+                                { text: '課程介紹' },
+                            ]}
+                        />
+                    </div>
+                    <div className="mt-4 px-4">
+                        <div className="max-w-sm mx-auto bg-primary p-4">
+                            <div className="space-y-4">
+                                {classesMemo.map((value: any) => {
+                                    return (
+                                        <div key={value.class_type_id} className="flex w-full gap-4">
+                                            <h2 className="pt-[4px] md:pt-0 font-semibold text-sm md:text-lg mb-2 text-secondary basis-[33%] flex-shrink-0">{value.class_type_name}</h2>
+                                            <ul className="space-y-2 md:space-y-4 flex-1 list-square">
+                                                {value.list.map((vvalue: any) => {
+                                                    return (
+                                                        <li key={vvalue.id} className="text-left border-b border-b-[#ccc] pb-1 md:pb-2">
+                                                            <span className="text-sm md:text-md text-secondary">{vvalue.name}</span>
+                                                        </li>
+                                                    )
+                                                })}
+                                            </ul>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="mt-4 px-4 flex justify-center">
-                    <Button onClick={() => openLineAtAccount()}>
-                        預約諮詢
-                    </Button>
+                    <div className="mt-4 px-4 flex justify-center">
+                        <Button onClick={() => openLineAtAccount()}>
+                            預約諮詢
+                        </Button>
+                    </div>
                 </div>
             </RootLayout>
         </>

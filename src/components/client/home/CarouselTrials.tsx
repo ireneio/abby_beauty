@@ -4,9 +4,9 @@ import Carousel from "react-multi-carousel";
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 6,
-    slidesToSlide: 6,
-    partialVisibilityGutter: 24,
+    items: 5,
+    slidesToSlide: 5,
+    // partialVisibilityGutter: 24,
     // slidesToSlide: 3 // optional, default to 1.
   },
   tablet: {
@@ -44,7 +44,7 @@ export default function CarouselTrials({ children }: Props) {
             removeArrowOnDeviceType={["mobile"]}
             // deviceType={"mobile"}
             dotListClass="custom-dot-list-style"
-            itemClass="mr-8"
+            // itemClass="mr-8"
             renderButtonGroupOutside
             // renderDotsOutside
             partialVisible={true}

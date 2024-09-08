@@ -95,35 +95,37 @@ export default function Page(props: Props) {
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
             </Head>
             <RootLayout>
-                <div className="px-4">
-                    <Breadcrumb
-                        list={[
-                            { text: '首頁', url: '/' },
-                            { text: '文章列表' },
-                        ]}
-                    />
-                </div>
-                <div className="mt-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                        {[...initialArticles, ...articles].map((article) => {
-                            return (
-                                <div key={article.id} className="px-4">
-                                    <div className="text-md truncate">{article.title}</div>
-                                    <div className="text-sm">{article.subtitle}</div>
-                                    <div className="flex">
-                                        <TagIcon className="w-[16px]" />
-                                        {article.tags.map((tag: any, i: number, arr: any[]) => {
-                                            return (
-                                                <div key={tag.id} className="text-sm">
-                                                    <span>{tag.name}</span>
-                                                    {i !== arr.length - 1 ? <span className="mr-[2px]">,</span> : ''}
-                                                </div>
-                                            )
-                                        })}
+                <div className="max-w-7xl mx-auto">
+                    <div className="px-4">
+                        <Breadcrumb
+                            list={[
+                                { text: '首頁', url: '/' },
+                                { text: '文章列表' },
+                            ]}
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                            {[...initialArticles, ...articles].map((article) => {
+                                return (
+                                    <div key={article.id} className="px-4">
+                                        <div className="text-md truncate">{article.title}</div>
+                                        <div className="text-sm">{article.subtitle}</div>
+                                        <div className="flex">
+                                            <TagIcon className="w-[16px]" />
+                                            {article.tags.map((tag: any, i: number, arr: any[]) => {
+                                                return (
+                                                    <div key={tag.id} className="text-sm">
+                                                        <span>{tag.name}</span>
+                                                        {i !== arr.length - 1 ? <span className="mr-[2px]">,</span> : ''}
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </RootLayout>

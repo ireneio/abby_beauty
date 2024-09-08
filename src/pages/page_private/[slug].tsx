@@ -36,15 +36,17 @@ export default function Page() {
 
     return (
         <>
-            <div className="mt-4 px-4 pb-4 flex items-center gap-4 border-b border-b-[#ccc]">
-                <div onClick={() => router.push('/page_private')}>
-                    <ArrowLeftIcon className="w-[24px] h-[24px]" />
+            <div className="max-w-7xl mx-auto">
+                <div className="mt-4 px-4 pb-4 flex items-center gap-4 border-b border-b-[#ccc]">
+                    <div onClick={() => router.push('/page_private')}>
+                        <ArrowLeftIcon className="w-[24px] h-[24px]" />
+                    </div>
+                    <span>{data.title}</span>
                 </div>
-                <span>{data.title}</span>
-            </div>
-            <div className="mt-4 mb-4 px-4">
-                <div className="overflow-auto">
-                    <QuillContentWrapper content={data.content} />
+                <div className="mt-4 mb-4 px-4">
+                    <div className="overflow-auto">
+                        <QuillContentWrapper content={data.content} />
+                    </div>
                 </div>
             </div>
         </>
