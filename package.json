@@ -19,6 +19,7 @@
     "@react-email/components": "^0.0.23",
     "@react-email/tailwind": "^0.1.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tiptap/pm": "^2.6.4",
     "@tiptap/react": "^2.6.4",
     "@tiptap/starter-kit": "^2.6.4",

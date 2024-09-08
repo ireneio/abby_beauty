@@ -37,13 +37,13 @@ export function Footer() {
               </div>
             </div>
           </div>
-          <p className="pt-4 text-sm text-secondary border-t border-neutral-950/10 mb-4 font-normal">
+          <div className="pt-4 text-sm text-secondary border-t border-neutral-950/10 mb-4 font-normal">
             <div className='max-w-7xl mx-auto'>
               <div className='px-8'>
                 © Abby Beauty. {new Date().getFullYear()}
               </div>
             </div>
-          </p>
+          </div>
         </div>
       {/* </FadeIn> */}
     </footer>

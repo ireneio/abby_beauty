@@ -37,7 +37,7 @@ function Page({ swal }: any) {
         if (res.code === 0) {
             router.push('/admin/product_types')
             swal.fire({
-                title: '更新成功',
+                title: '儲存成功',
                 icon: 'success'
             })
         } else {

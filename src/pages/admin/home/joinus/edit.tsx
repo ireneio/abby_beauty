@@ -84,7 +84,7 @@ export default function Page() {
             router.replace(`/admin/home/joinus`)
             Swal.close()
             Swal.fire({
-                title: `更新成功`,
+                title: `儲存成功`,
                 icon: 'success',
             })
         } else {

@@ -99,7 +99,7 @@ export default function Page() {
                     router.replace(`/admin/classes/${updateRes.data[0].id}/view`)
                     Swal.close()
                     Swal.fire({
-                        title: `新增成功`,
+                        title: `儲存成功`,
                         icon: 'success',
                     })
                 } else {
@@ -122,7 +122,7 @@ export default function Page() {
                 router.replace(`/admin/classes/${updateRes.data[0].id}/view`)
                 Swal.close()
                 Swal.fire({
-                    title: `新增成功`,
+                    title: `儲存成功`,
                     icon: 'success',
                 })
             } else {

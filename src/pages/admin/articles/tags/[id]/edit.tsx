@@ -65,7 +65,7 @@ export default function Page() {
             router.replace(`/admin/articles/tags/${router.query.id}/view`)
             Swal.close()
             Swal.fire({
-                title: `更新成功`,
+                title: `儲存成功`,
                 icon: 'success',
             })
         } else {

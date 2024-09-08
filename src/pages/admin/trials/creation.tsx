@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useRef } from 'react'
 import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
+import Swal from 'sweetalert2'
 
 type Inputs = {
     title: string,
@@ -60,6 +61,15 @@ export default function Page() {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        Swal.fire({
+            title: '加載中...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen() {
+                Swal.showLoading()
+            }
+        })
+
         let imageUrlArr: { order: number; url: string }[] = []
 
         if (multipleImageUploaderRef.current) {
@@ -75,8 +85,17 @@ export default function Page() {
 
         if (res.code === 0) {
             router.replace(`/admin/trials/${res.data.id}/view`)
+            Swal.close()
+            Swal.fire({
+                title: `儲存成功`,
+                icon: 'success',
+            })
         } else {
-            dispatch(openAlert({ title: `錯誤(${res.code})` }))
+            Swal.close()
+            Swal.fire({
+                title: `錯誤(${res.code})`,
+                icon: 'error',
+            })
         }
     }
 

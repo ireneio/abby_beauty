@@ -87,7 +87,7 @@ export default function Page() {
             const updateRes = await updateClass({ ...data, image_cover: uploadRes.data.url })
             if (updateRes.success && updateRes.code === 0) {
                 await getClass()
-                // dispatch(openAlert({ title: '更新成功' }))
+                // dispatch(openAlert({ title: '儲存成功' }))
                 router.replace(`/admin/classes/${router.query.id}/view`)
             } else {
                 dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))
@@ -99,7 +99,7 @@ export default function Page() {
         const updateRes = await updateClass({ ...data })
         if (updateRes.success && updateRes.code === 0) {
             await getClass()
-            // dispatch(openAlert({ title: '更新成功' }))
+            // dispatch(openAlert({ title: '儲存成功' }))
             router.replace(`/admin/classes/${router.query.id}/view`)
         } else {
             dispatch(openAlert({ title: `錯誤(${updateRes.code})` }))

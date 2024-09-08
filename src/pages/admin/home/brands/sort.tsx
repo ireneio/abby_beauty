@@ -46,7 +46,7 @@ export default function Page() {
         if (res.code === 0) {
             router.push('/admin/home/brands')
             Swal.fire({
-                title: '更新成功',
+                title: '儲存成功',
                 icon: 'success'
             })
         } else {

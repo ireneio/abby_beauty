@@ -144,15 +144,21 @@ export default function Home(props: Props) {
           </CarouselBanner>
         </div>
         <div
-          className="bg-primary py-8 bg-[url(/images/about_us_bg.jpg)] bg-cover bg-no-repeat bg-center"
-          style={{ backgroundSize: '130%' }}
+          className="relative bg-primary py-8"
         >
-          <div className="max-w-7xl mx-auto md:grid md:grid-cols-6">
+          <Image
+            src="/images/about_us_bg.png"
+            alt="關於我們"
+            width={1920}
+            height={1080}
+            className="absolute w-full h-full top-0 right-0 left-0 bottom-0"
+          />
+          <div className="relative z-[2] max-w-7xl mx-auto md:grid md:grid-cols-6">
             <div className="md:col-span-4">
               <div className="flex items-end gap-4 px-8">
                 <div className="text-primary-darkest text-3xl font-normal">關於我們</div>
                 <div className="w-[4px] h-[28px] bg-primary-darker mb-[4px]"></div>
-                <div className="mt-2 text-primary-darkest text-xl font-normal uppercase flex items-center">
+                <div className="cormorant-normal tracking-[3px] mt-2 text-primary-darkest text-xl font-normal uppercase flex items-center">
                   about us
                 </div>
               </div>
@@ -166,7 +172,7 @@ export default function Home(props: Props) {
                 alt="關於我們"
                 width={1000}
                 height={1000}
-                className="w-full aspect-[1/1] object-cover rounded-tl-[64px] rounded-br-[64px]"
+                className="w-full aspect-[1/1] object-cover rounded-tl-[64px] rounded-br-[64px] shadow-md"
               />
             </div>
           </div>
@@ -174,7 +180,7 @@ export default function Home(props: Props) {
         <div className="py-8 bg-primary-darker">
           <div className="text-center px-4 xl:px-0 max-w-7xl mx-auto text-2xl text-primary font-normal tracking-[1.5px] pb-8">
             服務項目
-            <div className="mt-2 text-xl tracking-[3px] font-normal uppercase">our services</div>
+            <div className="cormorant-normal tracking-[3px] mt-2 text-xl font-normal uppercase">our services</div>
           </div>
           <div>
             <div className="px-4 xl:px-0 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
@@ -214,7 +220,7 @@ export default function Home(props: Props) {
                         {service.content}
                         {service.url ?
                           <div
-                            className="px-4 py-2 bg-primary-darker text-primary rounded-full cursor-pointer"
+                            className="px-4 bg-primary-darker text-primary rounded-full cursor-pointer"
                             onClick={() => {
                               if (service.url) {
                                 window.open(service.url, service.url_open_type)
@@ -239,7 +245,7 @@ export default function Home(props: Props) {
         <div className="pt-8 pb-8 bg-primary-dark">
           <div className="text-2xl text-center text-primary-darkest font-semibold tracking-[1.5px]">
             體驗課程
-            <div className="text-xl mt-2 tracking-[3px] font-light uppercase">featured sessions</div>
+            <div className="cormorant-normal tracking-[3px] text-xl mt-2 font-light uppercase">featured sessions</div>
           </div>
           <div className="mt-8 max-w-7xl mx-auto">
             <div className="px-4 hidden md:block bg-primary-dark">
@@ -256,7 +262,7 @@ export default function Home(props: Props) {
                             className="object-contain w-full aspect-[1/1]"
                           />
                         </div>
-                        <h4 className="mt-4">{trial.title_short}</h4>
+                        <h4 className="mt-4 line-clamp-2 h-[48px]">{trial.title_short}</h4>
                         <div>
                           <div className="text-danger text-xl">NT${formatNumberToMoney(trial.price_discount)}</div>
                           <div className="line-through text-gray-400">NT${formatNumberToMoney(trial.price_original)}</div>
@@ -279,8 +285,8 @@ export default function Home(props: Props) {
                         className="object-contain w-full aspect-[1/1]"
                       />
                     </div>
-                    <div className="pt-4 pb-8 absolute left-[50%] translate-x-[-50%] bottom-[48px] bg-primary-darker bg-opacity-[0.9] px-4">
-                      <h4 className="text-nowrap text-lg font-normal text-white">{trial.title_short}</h4>
+                    <div className="w-[240px] pt-4 pb-8 absolute left-[50%] translate-x-[-50%] bottom-[48px] bg-primary-darker bg-opacity-[0.9] px-4">
+                      <h4 className="text-lg font-normal text-white tracking-[1.5px]">{trial.title_short}</h4>
                       <div className="flex items-end justify-end gap-1 mt-1">
                         <div className="text-primary text-md font-normal">體驗價 NT${formatNumberToMoney(trial.price_discount)}</div>
                         {/* <div className="mb-[3px] line-through text-gray-400 text-xs">NT${formatNumberToMoney(trial.price_original)}</div> */}
@@ -307,10 +313,10 @@ export default function Home(props: Props) {
             </Button>
           </div> */}
         </div>
-        <div className="py-8 bg-primary">
-          <div className="text-2xl text-center text-secondary font-semibold tracking-[1.5px]">
+        <div className="py-8 bg-primary bg-[url(/images/customer_comments_bg.jpg)] bg-cover bg-no-repeat bg-center">
+          <div className="text-2xl text-center text-secondary font-semibold tracking-[1.5px] bg-primary shadow-md py-4">
             客戶好評
-            <div className="text-xl mt-2 tracking-[3px] font-light uppercase">customer comments</div>
+            <div className="cormorant-normal text-xl mt-2 tracking-[3px] font-light uppercase">customer comments</div>
           </div>
           <div className="max-w-7xl mx-auto mt-8 px-4">
             <CarouselComments>
@@ -361,7 +367,7 @@ export default function Home(props: Props) {
         <div className="py-8">
           <div className="text-center text-2xl text-primary-darker font-semibold tracking-[1.5px]">
             品牌價值
-            <div className="mt-2 text-xl tracking-[3px] font-light uppercase">branding</div>
+            <div className="cormorant-normal mt-2 text-xl tracking-[3px] font-light uppercase">branding</div>
           </div>
           <div className="max-w-7xl mx-auto mt-8">
             <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-3 gap-4 px-4">
@@ -384,7 +390,7 @@ export default function Home(props: Props) {
         <div className="hidden lg:block pt-8 pb-8 bg-primary/30">
           <div className="text-center text-2xl text-primary-darker font-semibold tracking-[1.5px]">
             加入我們
-            <div className="mt-2 text-xl tracking-[3px] font-light uppercase">join us</div>
+            <div className="cormorant-normal mt-2 text-xl tracking-[3px] font-light uppercase">join us</div>
           </div>
           <div className="lg:flex lg:gap-12 px-4 max-w-7xl mx-auto">
             <div className="mt-12">
@@ -426,7 +432,7 @@ export default function Home(props: Props) {
                 className="absolute top-0 left-0 right-0 bottom-0 object-cover max-h-[100%] opacity-[0.33]"
               />
               加入我們
-              <div className="mt-2 text-xl tracking-[3px] font-light uppercase">join us</div>
+              <div className="cormorant-normal mt-2 text-xl tracking-[3px] font-light uppercase">join us</div>
           </div>
           {/* <div className="mt-12 md:hidden w-full h-[1px] bg-[#ccc]"></div> */}
           <div className="lg:flex lg:gap-12">

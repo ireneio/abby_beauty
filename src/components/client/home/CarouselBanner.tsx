@@ -30,10 +30,10 @@ const CustomDot = ({ carouselItems, onClick, ...rest }: any) => {
   // active is provided by this lib for checking if the item is active or not.
   return (
     <button
-      className={clsx("rounded-full bg-secondary border shadow-lg p-[2px]")}
+      className={clsx("rounded-full shadow-lg p-[2px]", active ? 'bg-primary-dark' : 'bg-primary')}
       onClick={() => onClick()}
     >
-      <div className={clsx("w-[8px] h-[8px] rounded-full", active ? 'border border-primary' : '')}></div>
+      <div className={clsx("w-[8px] h-[8px]")}></div>
     </button>
   );
 };

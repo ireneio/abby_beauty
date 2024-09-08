@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @import url('./react-tags.css');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital@0;1&display=swap');
+
+.cormorant-normal {
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -74,6 +82,7 @@
     transform: rotateY(180deg);
     transform-origin: center;
     backface-visibility: hidden;
+    z-index: 2;
   }
 }
 

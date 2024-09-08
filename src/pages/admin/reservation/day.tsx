@@ -169,7 +169,7 @@ export default function Page() {
     await getData({
         date: data.date
     })
-    dispatch(openAlert({ title: '更新成功' }))
+    dispatch(openAlert({ title: '儲存成功' }))
   }
 
   const watchDate = watch('date')

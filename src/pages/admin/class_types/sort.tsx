@@ -36,7 +36,7 @@ function Page({ swal }: any) {
         })
         if (res.code === 0) {
             swal.fire({
-                title: '更新成功',
+                title: '儲存成功',
                 icon: 'success'
             })
             router.push('/admin/class_types')
