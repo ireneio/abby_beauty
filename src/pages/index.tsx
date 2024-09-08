@@ -147,14 +147,20 @@ export default function Home(props: Props) {
           className="bg-primary py-8 bg-[url(/images/about_us_bg.jpg)] bg-cover bg-no-repeat bg-center"
           style={{ backgroundSize: '130%' }}
         >
-          <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-6">
-            <div className="lg:col-span-4">
-              <div className="px-8 text-primary-darkest text-3xl font-normal">關於我們</div>
+          <div className="max-w-7xl mx-auto md:grid md:grid-cols-6">
+            <div className="md:col-span-4">
+              <div className="flex items-end gap-4 px-8">
+                <div className="text-primary-darkest text-3xl font-normal">關於我們</div>
+                <div className="w-[4px] h-[28px] bg-primary-darker mb-[4px]"></div>
+                <div className="mt-2 text-primary-darkest text-xl font-normal uppercase flex items-center">
+                  about us
+                </div>
+              </div>
               <div className="mt-8 max-w-7xl mx-auto px-8 text-primary-darker leading-[36px]">
                 我們使用克麗緹娜產品提供專業級的臉部護理、身體護理、臉部撥筋等服務。在課程中，我們會根據您的膚況調配最適合、有效的配方，且絕對不進行產品與課程的推銷。
               </div>
             </div>
-            <div className="mt-8 px-8 lg:mt-0 lg:col-span-2">
+            <div className="mt-8 px-8 md:mt-0 md:col-span-2">
               <Image
                 src={"/images/about_us_1.jpg"}
                 alt="關於我們"
