@@ -103,7 +103,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    fill: transparent;
+    fill: none;
     stroke: #fff;
     stroke-dasharray: 150 480;
     
