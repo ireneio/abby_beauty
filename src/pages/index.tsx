@@ -180,7 +180,7 @@ export default function Home(props: Props) {
                   >
                     <div className="card w-full aspect-[1/1]">
                       <div
-                        className="front flex justify-center"
+                        className="front absolute flex justify-center"
                         onClick={() => handleFlipService(index)}
                       >
                         <div>
@@ -202,7 +202,7 @@ export default function Home(props: Props) {
                         </div>
                       </div>
                       <div
-                        className="back cursor-pointer flex flex-col gap-y-4 bg-primary-darkest px-4 rounded-xl text-sm text-primary leading-[36px] font-normal tracking-[1.5px]"
+                        className="back absolute cursor-pointer flex flex-col gap-y-4 bg-primary-darkest px-4 rounded-xl text-sm text-primary leading-[36px] font-normal tracking-[1.5px]"
                         onClick={() => handleFlipService(index)}
                       >
                         {service.content}
@@ -283,7 +283,7 @@ export default function Home(props: Props) {
                     <div
                       className="w-[120px] h-[40px] border-aniamated-button shadow-md flex items-center justify-center gap-[2px] absolute left-[50%] bottom-[32px] translate-x-[-50%] bg-primary-darkest text-primary"
                     >
-                      <svg width="120px" height="40px" viewBox="0 0 180 60" className="border">
+                      <svg width="120px" height="40px" viewBox="0 0 180 60" className="border absolute">
                         <polyline points="179,1 179,59 1,59 1,1 179,1" className="bg-line" />
                         <polyline points="179,1 179,59 1,59 1,1 179,1" className="hl-line" />
                       </svg>
