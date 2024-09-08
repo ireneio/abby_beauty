@@ -202,12 +202,16 @@ export default function Home(props: Props) {
                             className="object-cover aspect-[1/1] rounded-xl opacity-[0.75]"
                           />
                         </div>
-                        <div className="text-nowrap flex gap-2 items-center text-primary-darker backdrop-blur-sm bg-white/70 px-4 py-2 rounded-md absolute bottom-4 left-4 text-center text-lg font-medium tracking-[3px]">
+                        <div className={clsx("text-nowrap flex gap-2 items-center text-primary-darker backdrop-blur-sm bg-white/70 px-4 py-2 rounded-md absolute bottom-4 left-4 text-center text-lg font-medium tracking-[3px]",
+                          flippedServices.includes(index) ? 'hidden' : 'block'
+                        )}>
                           <div className="h-[18px] w-[6px] bg-primary-dark"></div>
                           {service.title}
                         </div>
                         <div
-                          className="opacity-[0.75] cursor-pointer text-primary-darkest flex items-center gap-1 px-4 py-2 absolute bg-primary bottom-0 right-0 rounded-tl-xl rounded-br-xl"
+                          className={clsx("opacity-[0.75] cursor-pointer text-primary-darkest flex items-center gap-1 px-4 py-2 absolute bg-primary bottom-0 right-0 rounded-tl-xl rounded-br-xl",
+                            flippedServices.includes(index) ? 'hidden' : 'block'
+                          )}
                         >
                           服務介紹
                           <ArrowRightIcon className="w-[14px] h-[14px]" />
