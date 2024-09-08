@@ -143,7 +143,10 @@ export default function Home(props: Props) {
             })}
           </CarouselBanner>
         </div>
-        <div className="bg-primary py-8">
+        <div
+          className="bg-primary py-8 bg-[url(/images/about_us_bg.jpg)] bg-cover bg-no-repeat bg-center"
+          style={{ backgroundSize: '130%' }}
+        >
           <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-6">
             <div className="lg:col-span-4">
               <div className="px-8 text-primary-darkest text-3xl font-normal">關於我們</div>
