@@ -6,7 +6,7 @@ import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import seoDefault from "@/lib/data/seoDefault";
 import { defaultInstance } from "@/lib/hooks/useApi";
-import formatTextareaContent from "@/lib/store/formatTextareaContent";
+import formatTextareaContent from "@/lib/utils/formatTextareaContent";
 import formatNumberToMoney from "@/lib/utils/formatNumberToMoney";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
 import { ArrowRightIcon } from "@heroicons/react/16/solid";

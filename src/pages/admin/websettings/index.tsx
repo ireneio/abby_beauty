@@ -5,7 +5,7 @@ import { Heading, Subheading } from '@/components/common/heading'
 import { Text } from '@/components/common/text'
 import LayoutAdmin from '@/components/layout/LayoutAdmin'
 import useApi from '@/lib/hooks/useApi'
-import formatTextareaContent from '@/lib/store/formatTextareaContent'
+import formatTextareaContent from '@/lib/utils/formatTextareaContent'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
