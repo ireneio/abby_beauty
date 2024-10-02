@@ -18,7 +18,7 @@ export default function AdminReservation({ message }: any) {
     return (
       <Html>
         <Head />
-        <Preview>艾比美容工作室 | 體驗課程預約通知</Preview>
+        <Preview>艾比美容中心 | 體驗課程預約通知</Preview>
         <Tailwind>
           <Body className="text-black">
             <Header />

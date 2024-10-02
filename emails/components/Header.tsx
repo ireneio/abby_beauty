@@ -41,7 +41,7 @@ export default function Header() {
             >
               克麗緹娜
               <br />
-              艾比美容工作室
+              艾比美容中心
             </Text>
           </MjmlColumn>
         </MjmlGroup>

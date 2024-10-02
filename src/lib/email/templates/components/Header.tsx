@@ -11,14 +11,14 @@ export default function Header() {
                 {/* Logo */}
                 <Img
                     src={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} // Replace with your logo URL
-                    alt="艾比美容工作室"
+                    alt="艾比美容中心"
                     width={64}
                     height={64}
                     className="mr-3"
                 />
                 {/* Brand Text */}
                 <Text className="text-[#484a49] text-lg font-semibold`">
-                    艾比美容工作室
+                    艾比美容中心
                 </Text>
             </div>
         </Container>

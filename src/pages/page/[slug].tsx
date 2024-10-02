@@ -55,18 +55,18 @@ export default function Page({ serverData }: any) {
         <>
             <Head>
                 <title>{serverData.title}</title>
-                <meta name="description" content={`${serverData.title} | 艾比美容工作室`} />
+                <meta name="description" content={`${serverData.title} | 艾比美容中心`} />
                 <meta property="og:title" content={serverData.title} />
-                <meta property="og:description" content={`${serverData.title} | 艾比美容工作室`} />
+                <meta property="og:description" content={`${serverData.title} | 艾比美容中心`} />
                 {/* <meta property="og:image" content={serverData.image_cover} /> */}
                 <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/page/${router.query.slug}`} />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="艾比美容工作室"/>
+                <meta property="og:site_name" content="艾比美容中心"/>
                 {/* <meta name="twitter:card" content={serverData.image_cover} /> */}
                 <meta property="twitter:card" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 <meta name="twitter:title" content={serverData.title} />
-                <meta name="twitter:description" content={`${serverData.title} | 艾比美容工作室`} />
+                <meta name="twitter:description" content={`${serverData.title} | 艾比美容中心`} />
                 <meta property="twitter:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`} />
                 {/* <meta name="twitter:image" content={serverData.image_cover} /> */}
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />

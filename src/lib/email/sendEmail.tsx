@@ -18,9 +18,9 @@ export const sendAdminTrialsReservationEmail = async (
 ) => {
     const emailHtml = ReactDOMServer.renderToStaticMarkup(<AdminReservation message={message} />);
     const response = await mg.messages.create('sandboxb57f1649f24541ac87f6f283b1998cb0.mailgun.org', {
-      from: "艾比美容工作室 <mailgun@sandboxb57f1649f24541ac87f6f283b1998cb0.mailgun.org>",
+      from: "艾比美容中心 <mailgun@sandboxb57f1649f24541ac87f6f283b1998cb0.mailgun.org>",
       to: [to],
-      subject: "艾比美容工作室 | 體驗課程預約通知",
+      subject: "艾比美容中心 | 體驗課程預約通知",
       html: emailHtml,
     })
     return response;

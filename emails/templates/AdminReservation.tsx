@@ -17,7 +17,7 @@ export default function AdminReservation({ message }: any) {
     return (
       <Html>
         <Head />
-        <Preview>艾比美容工作室 | 體驗課程預約通知</Preview>
+        <Preview>艾比美容中心 | 體驗課程預約通知</Preview>
         <Tailwind>
           <Body className="bg-gray-100 text-black">
           <Container className="p-4 bg-primary">
@@ -32,7 +32,7 @@ export default function AdminReservation({ message }: any) {
               />
               {/* Brand Text */}
               <Text className="text-white text-xl font-semibold`">
-                艾比美容工作室
+                艾比美容中心
               </Text>
             </div>
             </Container>
