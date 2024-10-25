@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 export function Footer() {
   const router = useRouter()
   return (
-    <footer className="mt-0 w-full sm:mt-32 lg:mt-40 bg-primary">
+    <footer className="mt-24 w-full sm:mt-32 lg:mt-40 bg-primary">
       {/* <FadeIn> */}
         {/* <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-2">
           <Navigation />

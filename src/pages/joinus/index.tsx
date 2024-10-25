@@ -26,7 +26,10 @@ export const getStaticProps: GetStaticProps = async () => {
         if (res.code === 0) {
             return res.data
         } else {
-            return {}
+            return {
+                image: '',
+                content: '',
+            }
         }
     }
 
