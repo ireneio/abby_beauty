@@ -16,7 +16,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { motion } from 'framer-motion'
+import CarouselService from "@/components/client/home/CarouselService";
+import CarouselBrand from "@/components/client/home/CarouselBrand";
 
 export const getStaticProps: GetStaticProps = async () => {
   let props = {
@@ -182,13 +183,13 @@ export default function Home(props: Props) {
             服務項目
             <div className="cormorant-normal tracking-[3px] mt-2 text-xl font-normal uppercase">our services</div>
           </div>
-          <div>
-            <div className="px-4 xl:px-0 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
+          <div className="px-8">
+            <CarouselService>
               {services.map((service: any, index: number) => {
                 return (
                   <div
                     key={service.id}
-                    className={clsx("flip-card-container", flippedServices.includes(index) ? 'flipped' : '')}
+                    className={clsx("md:mx-4 flip-card-container", flippedServices.includes(index) ? 'flipped' : '')}
                   >
                     <div className="card w-full aspect-[1/1]">
                       <div
@@ -238,12 +239,7 @@ export default function Home(props: Props) {
                   </div>
                 )
               })}
-            </div>
-            {/* <div className="mt-8 flex justify-center">
-              <Button onClick={() => openLineAtAccount()}>
-                預約諮詢
-              </Button>
-            </div> */}
+            </CarouselService>
           </div>
         </div>
         <div className="pt-8 pb-8 bg-primary-dark">
@@ -251,12 +247,12 @@ export default function Home(props: Props) {
             體驗課程
             <div className="cormorant-normal tracking-[3px] text-xl mt-2 font-light uppercase">featured sessions</div>
           </div>
-          <div className="mt-8 max-w-7xl mx-auto">
-            <div className="px-4 hidden md:block bg-primary-dark">
+          <div className="mt-8 mx-8">
+            {/* <div className="px-4 hidden md:block bg-primary-dark">
               <CarouselTrials>
                 {trials.map((trial: any) => {
                     return (
-                      <div key={trial.id} className="h-full bg-white rounded-xl px-4 py-4 mr-8 shadow-md">
+                      <div key={trial.id} className="h-full bg-white rounded-xl px-4 py-4 mx-4 shadow-md">
                         <div className="w-full shadow-md" onClick={() => router.push(`/trial/${trial.slug}`)}>
                           <Image
                             src={trial.image}
@@ -275,11 +271,11 @@ export default function Home(props: Props) {
                     )
                   })}
               </CarouselTrials>
-            </div>
-            <div className="px-4 md:hidden grid grid-cols-1 gap-8">
+            </div> */}
+            <CarouselTrials>
               {trials.map((trial: any) => {
                 return (
-                  <div key={trial.id} className="relative py-4 shadow-md bg-primary" onClick={() => router.push(`/trial/${trial.slug}`)}>
+                  <div key={trial.id} className="md:mx-4 relative py-4 shadow-md bg-primary" onClick={() => router.push(`/trial/${trial.slug}`)}>
                     <div className="w-full">
                       <Image
                         src={trial.image}
@@ -289,7 +285,7 @@ export default function Home(props: Props) {
                         className="object-contain w-full aspect-[1/1]"
                       />
                     </div>
-                    <div className="w-[240px] pt-4 pb-8 absolute left-[50%] translate-x-[-50%] bottom-[48px] bg-primary-darker bg-opacity-[0.9] px-4">
+                    <div className="w-[280px] pt-4 pb-8 absolute left-[50%] translate-x-[-50%] bottom-[48px] bg-primary-darker bg-opacity-[0.9] px-4">
                       <h4 className="text-lg font-normal text-white tracking-[1.5px]">{trial.title_short}</h4>
                       <div className="flex items-end justify-end gap-1 mt-1">
                         <div className="text-primary text-md font-normal">體驗價 NT${formatNumberToMoney(trial.price_discount)}</div>
@@ -309,7 +305,7 @@ export default function Home(props: Props) {
                   </div>
                 )
               })}
-            </div>
+            </CarouselTrials>
           </div>
           {/* <div className="mt-8 flex justify-center">
             <Button onClick={() => openLineAtAccount()}>
@@ -322,11 +318,11 @@ export default function Home(props: Props) {
             客戶好評
             <div className="cormorant-normal text-xl mt-2 tracking-[3px] font-light uppercase">customer comments</div>
           </div>
-          <div className="max-w-7xl mx-auto mt-8 px-4">
+          <div className="max-w-7xl mx-auto mt-8 px-6">
             <CarouselComments>
               {customer_comments.map((comment: any) => {
                 return (
-                  <div key={comment.id} className="px-4 py-4 shadow-md rounded-md h-full mr-4 bg-white">
+                  <div key={comment.id} className="px-4 py-4 shadow-md rounded-md h-full mx-2 bg-white">
                     <div className="flex gap-4 items-center">
                       <Image
                         className="rounded-full w-[48px] h-[48px] object-cover"
@@ -368,30 +364,47 @@ export default function Home(props: Props) {
             </CarouselComments>
           </div>
         </div>
-        <div className="py-8">
+        <div className="pt-8">
           <div className="text-center text-2xl text-primary-darker font-semibold tracking-[1.5px]">
             品牌價值
             <div className="cormorant-normal mt-2 text-xl tracking-[3px] font-light uppercase">branding</div>
           </div>
-          <div className="max-w-7xl mx-auto mt-8">
+          <div className="md:hidden mt-8 px-8 bg-primary-dark py-4">
+            <CarouselBrand>
+              {brands.map((brand: any) => {
+                return (
+                  <div key={brand.id} className="h-full flex items-center break-inside-avoid">
+                    <Image
+                      src={brand.image}
+                      alt={brand.title}
+                      width={1200}
+                      height={900}
+                      className="w-full rounded-lg"
+                    />
+                  </div>
+                )
+              })}
+            </CarouselBrand>
+          </div>
+          <div className="hidden md:block max-w-7xl mx-auto mt-8">
             <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-3 gap-4 px-4">
-                {brands.map((brand: any) => {
-                  return (
-                    <div key={brand.id} className="mb-4 break-inside-avoid">
-                      <Image
-                        src={brand.image}
-                        alt={brand.title}
-                        width={1200}
-                        height={900}
-                        className="w-full rounded-lg"
-                      />
-                    </div>
-                  )
-                })}
-              </div>
+              {brands.map((brand: any) => {
+                return (
+                  <div key={brand.id} className="mb-4 break-inside-avoid">
+                    <Image
+                      src={brand.image}
+                      alt={brand.title}
+                      width={1200}
+                      height={900}
+                      className="w-full rounded-lg"
+                    />
+                  </div>
+                )
+              })}
             </div>
+          </div>
         </div>
-        <div className="hidden lg:block pt-8 pb-8 bg-primary/30">
+        {/* <div className="hidden lg:block pt-8 pb-8 bg-primary/30">
           <div className="text-center text-2xl text-primary-darker font-semibold tracking-[1.5px]">
             加入我們
             <div className="cormorant-normal mt-2 text-xl tracking-[3px] font-light uppercase">join us</div>
@@ -438,7 +451,6 @@ export default function Home(props: Props) {
               加入我們
               <div className="cormorant-normal mt-2 text-xl tracking-[3px] font-light uppercase">join us</div>
           </div>
-          {/* <div className="mt-12 md:hidden w-full h-[1px] bg-[#ccc]"></div> */}
           <div className="lg:flex lg:gap-12">
             <div className="mt-8">
               <div className="px-8 pb-8">
@@ -466,7 +478,7 @@ export default function Home(props: Props) {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </RootLayout>
     </>
   );

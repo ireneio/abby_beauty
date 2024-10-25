@@ -131,6 +131,9 @@ function Header({
                 })}
             </div>
           </div>
+          <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/joinus')}>
+            <div className='text-sm text-secondary'>加入我們</div>
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-x-8">
@@ -265,6 +268,9 @@ function Navigation({ productTypes, trials }: { productTypes: any[], trials: any
           )
         })}
       </div>
+      <NavigationRow>
+        <NavigationItem href="/joinus">加入我們</NavigationItem>
+      </NavigationRow>
       <div className='h-8 w-full bg-primary'></div>
     </nav>
   )

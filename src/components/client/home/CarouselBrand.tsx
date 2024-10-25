@@ -2,31 +2,16 @@ import Carousel from "react-multi-carousel";
 
 
 const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 5,
-    slidesToSlide: 5,
-    // partialVisibilityGutter: 24,
-    // slidesToSlide: 3 // optional, default to 1.
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 640 },
-    items: 2,
-    slidesToSlide: 2,
-    // partialVisibilityGutter: 24,
-    // slidesToSlide: 2 // optional, default to 1.
-  },
   mobile: {
     breakpoint: { max: 640, min: 0 },
     items: 1,
     slidesToSlide: 1, // optional, default to 1.
-    // partialVisibilityGutter: 24,
   }
 };
 
 type Props = any
 
-export default function CarouselTrials({ children }: Props) {
+export default function CarouselBrand({ children }: Props) {
     return (
         <Carousel
           swipeable={true}
@@ -40,11 +25,11 @@ export default function CarouselTrials({ children }: Props) {
           keyBoardControl={true}
           customTransition="transform 300ms ease-in-out"
           transitionDuration={500}
-          containerClass="py-4"
+          // containerClass="px-4"
           // removeArrowOnDeviceType={["mobile"]}
           // deviceType={"mobile"}
           dotListClass="custom-dot-list-style"
-          // itemClass="mr-8"
+          // itemClass="md:mr-8"
           renderButtonGroupOutside
           // renderDotsOutside
           // partialVisible={true}
