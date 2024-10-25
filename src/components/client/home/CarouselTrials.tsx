@@ -4,8 +4,8 @@ import Carousel from "react-multi-carousel";
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 5,
-    slidesToSlide: 5,
+    items: 4,
+    slidesToSlide: 4,
     // partialVisibilityGutter: 24,
     // slidesToSlide: 3 // optional, default to 1.
   },
