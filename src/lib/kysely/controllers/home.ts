@@ -70,7 +70,15 @@ class HomeController {
             ])
             .execute()
 
-        const joinus = await db.selectFrom('joinus')
+        // const joinus = await db.selectFrom('joinus')
+        //     .where('id', '=', 1)
+        //     .select([
+        //         'image',
+        //         'content'
+        //     ])
+        //     .executeTakeFirst()
+
+        const aboutus = await db.selectFrom('aboutus')
             .where('id', '=', 1)
             .select([
                 'image',
@@ -89,7 +97,8 @@ class HomeController {
             }),
             customer_comments,
             brands,
-            joinus,
+            // joinus,
+            aboutus,
         }
     }
 }

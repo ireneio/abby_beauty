@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 export function Footer() {
   const router = useRouter()
   return (
-    <footer className="mt-4 w-full sm:mt-32 lg:mt-40 bg-primary">
+    <footer className="mt-4 md:mt-8 w-full bg-primary">
       {/* <FadeIn> */}
         {/* <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-2">
           <Navigation />
@@ -40,7 +40,7 @@ export function Footer() {
                 </div>
               </div>
               <div>
-                <div className='text-primary-darkest' onClick={() => router.push('/joinus')}>加入我們</div>
+                <div className='text-primary-darkest cursor-pointer hover:underline' onClick={() => router.push('/joinus')}>加入我們</div>
               </div>
             </div>
           </div>

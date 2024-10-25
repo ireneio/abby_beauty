@@ -26,11 +26,16 @@ export const getStaticProps: GetStaticProps = async () => {
       trials: [],
       brands: [],
       customer_comments: [],
-      joinus: {
+      // joinus: {
+      //   id: '',
+      //   image: '',
+      //   content: '',
+      // },
+      aboutus: {
         id: '',
         image: '',
         content: '',
-      },
+      }
   }
   const res = await api(defaultInstance, {
     method: 'GET',
@@ -43,7 +48,8 @@ export const getStaticProps: GetStaticProps = async () => {
       trials: res.data.trials,
       brands: res.data.brands,
       customer_comments: res.data.customer_comments,
-      joinus: res.data.joinus,
+      // joinus: res.data.joinus,
+      aboutus: res.data.aboutus,
     }
   }
   
@@ -56,7 +62,7 @@ export const getStaticProps: GetStaticProps = async () => {
 type Props = any
 
 export default function Home(props: Props) {
-  const { banners, services, trials, customer_comments, brands, joinus } = props
+  const { banners, services, trials, customer_comments, brands, aboutus } = props
   const router = useRouter()
 
   const [flippedServices, setFlippedServices] = useState<number[]>([])
@@ -293,7 +299,7 @@ export default function Home(props: Props) {
                       </div>
                     </div>
                     <div
-                      className="w-[120px] h-[40px] border-aniamated-button shadow-md flex items-center justify-center gap-[2px] absolute left-[50%] bottom-[32px] translate-x-[-50%] bg-primary-darkest text-primary"
+                      className="cursor-pointer w-[120px] h-[40px] border-aniamated-button shadow-md flex items-center justify-center gap-[2px] absolute left-[50%] bottom-[32px] translate-x-[-50%] bg-primary-darkest text-primary"
                     >
                       <svg width="120px" height="40px" viewBox="0 0 180 60" className="border absolute">
                         <polyline points="179,1 179,59 1,59 1,1 179,1" className="bg-line" />
@@ -307,11 +313,6 @@ export default function Home(props: Props) {
               })}
             </CarouselTrials>
           </div>
-          {/* <div className="mt-8 flex justify-center">
-            <Button onClick={() => openLineAtAccount()}>
-              馬上預約體驗
-            </Button>
-          </div> */}
         </div>
         <div className="py-8 bg-primary bg-[url(/images/customer_comments_bg.jpg)] bg-cover bg-no-repeat bg-center">
           <div className="text-2xl text-center text-secondary font-semibold tracking-[1.5px] bg-primary shadow-md py-4">

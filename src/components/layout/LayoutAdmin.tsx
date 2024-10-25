@@ -23,7 +23,7 @@ import { SidebarLayout } from '@/components/common/sidebar-layout'
 import { PropsWithChildren, useEffect } from 'react'
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from 'next/router'
-import { ArrowRightStartOnRectangleIcon, BookOpenIcon, ChevronUpIcon, CubeIcon, GlobeAltIcon, KeyIcon, ListBulletIcon, MegaphoneIcon, PhotoIcon, RectangleGroupIcon, Square2StackIcon, StarIcon, TagIcon, TrophyIcon, UserIcon, UserPlusIcon } from '@heroicons/react/16/solid'
+import { ArrowRightStartOnRectangleIcon, BookOpenIcon, BuildingStorefrontIcon, ChevronUpIcon, CubeIcon, GlobeAltIcon, KeyIcon, ListBulletIcon, MegaphoneIcon, PhotoIcon, RectangleGroupIcon, Square2StackIcon, StarIcon, TagIcon, TrophyIcon, UserIcon, UserPlusIcon } from '@heroicons/react/16/solid'
 import Swal from 'sweetalert2'
 import { createRoot } from 'react-dom/client';
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -163,6 +163,10 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
                 <PhotoIcon />
                 <SidebarLabel>輪播圖片管理</SidebarLabel>
               </SidebarItem>
+              <SidebarItem href="/admin/home/aboutus">
+                <BuildingStorefrontIcon />
+                <SidebarLabel>關於我們管理</SidebarLabel>
+              </SidebarItem>
               <SidebarItem href="/admin/home/services">
                 <ListBulletIcon />
                 <SidebarLabel>服務項目管理</SidebarLabel>
@@ -178,10 +182,6 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
               <SidebarItem href="/admin/home/brands">
                 <TrophyIcon />
                 <SidebarLabel>品牌價值管理</SidebarLabel>
-              </SidebarItem>
-              <SidebarItem href="/admin/home/joinus">
-                <UserPlusIcon />
-                <SidebarLabel>加入我們管理</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
             <SidebarSection>
@@ -204,6 +204,13 @@ export default function LayoutAdmin({ children }: PropsWithChildren) {
               <SidebarItem href="/admin/product_types">
                 <TagIcon />
                 <SidebarLabel>產品系列管理</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+            <SidebarSection>
+              <SidebarHeading>加入我們管理</SidebarHeading>
+              <SidebarItem href="/admin/home/joinus">
+                <UserPlusIcon />
+                <SidebarLabel>加入我們管理</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
             {/* <SidebarSection>
