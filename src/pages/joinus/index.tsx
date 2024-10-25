@@ -53,7 +53,7 @@ export default function Page(props: Props) {
                 <meta property="og:title" content={"加入我們"} />
                 <meta property="og:description" content={`加入我們 | ${seoDefault.title}`} />
                 <meta property="og:image" content={seoDefault.image} />
-                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/classes`} />
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}/joinus`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content={seoDefault.site_name} />
                 <meta name="twitter:card" content={seoDefault.image} />
@@ -143,7 +143,7 @@ export default function Page(props: Props) {
                                     </div>
                                     </div>
                                     <div className="mt-8 flex justify-center">
-                                    <Button onClick={() => openLineAtAccount()}>暸解更多</Button>
+                                        <Button onClick={() => openLineAtAccount()}>暸解更多</Button>
                                     </div>
                                 </div>
                                 </div>

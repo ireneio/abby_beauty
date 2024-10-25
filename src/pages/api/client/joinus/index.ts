@@ -11,7 +11,7 @@ const controller = new JoinusController()
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
 router.get(async (req, res) => {
-  const data = await controller.getById({ id: 1 })
+  const data = await controller.getById({ id: 1})
   return res.status(200).json({
     code: ErrorCode.SUCCESS,
     data,

@@ -37,7 +37,7 @@ export default function Page() {
   return (
     <LayoutAdmin>
       <form className="mx-auto max-w-4xl">
-        <Heading>首頁管理/加入我們管理</Heading>
+        <Heading>加入我們管理</Heading>
         <Divider className="my-10 mt-6" />
 
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
