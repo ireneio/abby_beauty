@@ -40,13 +40,13 @@ class HomeController {
             ])
             .execute()
 
-            const trialImages = await db.selectFrom('trial_images')
-                .where('order', '=', 0)
-                .select([
-                    'trial_id',
-                    'url'
-                ])
-                .execute()
+        const trialImages = await db.selectFrom('trial_images')
+            .where('order', '=', 0)
+            .select([
+                'trial_id',
+                'url'
+            ])
+            .execute()
 
         const customer_comments = await db.selectFrom('customer_comments')
             .orderBy('order', 'asc')

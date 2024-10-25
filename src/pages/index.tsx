@@ -170,12 +170,12 @@ export default function Home(props: Props) {
                 </div>
               </div>
               <div className="mt-8 max-w-7xl mx-auto px-8 text-primary-darker leading-[36px]">
-                我們使用克麗緹娜產品提供專業級的臉部護理、身體護理、臉部撥筋等服務。在課程中，我們會根據您的膚況調配最適合、有效的配方，且絕對不進行產品與課程的推銷。
+                {aboutus.content}
               </div>
             </div>
             <div className="mt-8 px-8 md:mt-0 md:col-span-2">
               <Image
-                src={"/images/about_us_1.jpg"}
+                src={aboutus.image}
                 alt="關於我們"
                 width={1000}
                 height={1000}
