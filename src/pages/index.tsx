@@ -32,7 +32,6 @@ export const getStaticProps: GetStaticProps = async () => {
     //   content: '',
     // },
     aboutus: {
-      id: '',
       image: '',
       content: '',
     }
