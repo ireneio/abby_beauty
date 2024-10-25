@@ -22,20 +22,20 @@ import CarouselBrand from "@/components/client/home/CarouselBrand";
 export const getStaticProps: GetStaticProps = async () => {
   let props = {
     banners: [],
-      services: [],
-      trials: [],
-      brands: [],
-      customer_comments: [],
-      // joinus: {
-      //   id: '',
-      //   image: '',
-      //   content: '',
-      // },
-      aboutus: {
-        id: '',
-        image: '',
-        content: '',
-      }
+    services: [],
+    trials: [],
+    brands: [],
+    customer_comments: [],
+    // joinus: {
+    //   id: '',
+    //   image: '',
+    //   content: '',
+    // },
+    aboutus: {
+      id: '',
+      image: '',
+      content: '',
+    }
   }
   const res = await api(defaultInstance, {
     method: 'GET',
