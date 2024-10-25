@@ -42,6 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
   })
   if (res.code === 0) {
     props = {
+      ...props,
       banners: res.data.banners,
       services: res.data.services,
       trials: res.data.trials,
