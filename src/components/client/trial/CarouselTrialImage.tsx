@@ -66,7 +66,7 @@ export default function CarouselTrialImage({ images }: Props) {
                 // customTransition="transform 300ms ease-in-out"
                 customTransition="transform 300ms ease-in-out"
                 transitionDuration={500}
-                containerClass="h-full relative"
+                containerClass="relative"
                 // removeArrowOnDeviceType={["mobile"]}
                 // deviceType={"mobile"}
                 dotListClass=""
