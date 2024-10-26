@@ -157,10 +157,10 @@ export default function Page() {
               setSelectedTags(data.tags.map((tag: any) => {
                 return { label: tag.name, value: tag.id }
               }))
-              // if (imageUploaderRef.current) {
-              //   imageUploaderRef.current.setList([{ url: data.cover }])
-              // }
-              // setValue('cover', [data.cover])
+              if (imageUploaderRef.current) {
+                imageUploaderRef.current.setList([{ url: data.cover }])
+              }
+              setValue('cover', [data.cover])
             }
           }),
           getTags()
@@ -186,7 +186,7 @@ export default function Page() {
                         ref={imageUploaderRef}
                         getFormValues={getValues}
                         setFormValue={setValue}
-                        formKey='image'
+                        formKey='cover'
                         imageSizeRecommended='直幅, 橫福, 或方形皆可 (如: 500x500, 1920x1080, 900x1600)'
                         maxCount={1}
                     />

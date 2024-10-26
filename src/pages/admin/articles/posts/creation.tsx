@@ -157,7 +157,7 @@ export default function Page() {
                         ref={imageUploaderRef}
                         getFormValues={getValues}
                         setFormValue={setValue}
-                        formKey='image'
+                        formKey='cover'
                         imageSizeRecommended='直幅, 橫福, 或方形皆可 (如: 500x500, 1920x1080, 900x1600)'
                         maxCount={1}
                     />
