@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps = async () => {
             url: '/client/articles',
             params: {
                 page: 1,
-                perPage: 3,
+                perPage: 10,
                 sortBy: 'publish_date',
                 sortDirection: 'desc',
             }
