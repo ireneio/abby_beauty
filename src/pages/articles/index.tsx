@@ -5,6 +5,7 @@ import { api } from "@/lib/api/connector";
 import seoDefault from "@/lib/data/seoDefault";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import { ChevronDoubleRightIcon } from "@heroicons/react/16/solid";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import { GetStaticProps } from "next";
 import Head from "next/head";
@@ -160,8 +161,17 @@ export default function Page(props: Props) {
                             {[...initialArticles, ...articles].map((article) => {
                                 return (
                                     <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none">
+                                        <div className="flex flex-wrap gap-4">
+                                            {article.tags.map((tag: any, i: number, arr: any[]) => {
+                                                return (
+                                                    <div key={tag.id} className={clsx("text-sm text-secondary px-4 py-2 bg-primary rounded-md", i !== arr.length - 1 ? "mr-[4px]" : '')}>
+                                                        <span>{tag.name}</span>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
                                         {article.cover ?
-                                            <div>
+                                            <div className="mt-2">
                                                 <Image
                                                     src={article.cover}
                                                     alt={article.title}
@@ -170,11 +180,11 @@ export default function Page(props: Props) {
                                                     className="object-contain"
                                                 />
                                             </div> : <></>}
-                                        <h2 className="text-lg lg:text-xl text-primary-darkest font-semibold">{article.title}</h2>
+                                        <h2 className="mt-2 text-lg lg:text-xl text-primary-darkest font-semibold">{article.title}</h2>
                                         <h3 className="text-md mt-2 text-black">{article.subtitle}</h3>
                                         <div className="mt-4 flex justify-between">
                                             <div className="text-sm text-secondary font-light tracking-[1.5px]">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
-                                            <div className="hover:opacity-[0.8] flex gap-[0px] cursor-pointer" onClick={() => router.push(`/articles/${article.id}`)}>
+                                            <div className="hover:opacity-[0.8] flex gap-[0px] cursor-pointer" onClick={() => router.push(`/articles/${article.tags[0].id}/${article.id}`)}>
                                                 <span className="text-primary-darker text-sm font-medium">閱讀更多</span>
                                                 <ChevronDoubleRightIcon className="w-[20px] text-primary-darker" />
                                             </div>

@@ -29,7 +29,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const list = await getAllPaths()
 
     const paths = list.map((tag: { id: number }) => ({
-        params: { id: tag.id.toString() },
+        params: { tag_id: tag.id.toString() },
     }));
 
     return {
@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         }
     }
 
-    const tagId = params ? params.id as string : ''
+    const tagId = params ? params.tag_id as string : ''
 
     const getArticles = async () => {
         const res = await api(defaultInstance, {
@@ -106,10 +106,7 @@ export default function Page(props: Props) {
     const { api } = useApi()
     const { ref, inView } = useInView()
     const [articles, setArticles] = useState<any[]>([])
-    const [currentPage, setCurrentPage] = useState<number>(1)
-
-    console.log('tag', tag);
-    
+    const [currentPage, setCurrentPage] = useState<number>(1)    
 
     const getArticles = async () => {
         const res = await api({
@@ -186,11 +183,11 @@ export default function Page(props: Props) {
                                                     className="object-contain"
                                                 />
                                             </div> : <></>}
-                                        <div className="text-lg lg:text-xl text-primary-darkest font-semibold">{article.title}</div>
+                                        <div className="mt-2 text-lg lg:text-xl text-primary-darkest font-semibold">{article.title}</div>
                                         <div className="text-md mt-2 text-black">{article.subtitle}</div>
                                         <div className="mt-4 flex justify-between">
                                             <div className="text-sm text-secondary font-light tracking-[1.5px]">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
-                                            <div className="hover:opacity-[0.8] flex gap-[0px] cursor-pointer" onClick={() => router.push(`/articles/${article.id}`)}>
+                                            <div className="hover:opacity-[0.8] flex gap-[0px] cursor-pointer" onClick={() => router.push(`/articles/${router.query.tag_id}/${article.id}`)}>
                                                 <span className="text-primary-darker text-sm font-medium">閱讀更多</span>
                                                 <ChevronDoubleRightIcon className="w-[20px] text-primary-darker" />
                                             </div>

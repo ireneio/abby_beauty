@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         }
     }
 
-    const id = params ? params.id as string : ''
+    const id = params ? params.article_id as string : ''
 
     const getArticle = async () => {
         const res = await api(defaultInstance, {
@@ -99,11 +99,12 @@ export default function Page(props: Props) {
                             list={[
                                 { text: '首頁', url: '/' },
                                 { text: '最新消息', url: '/articles' },
+                                { text: article.tags[0].name, url: `/articles/${article.tags[0].id}` },
                                 { text: article.title },
                             ]}
                         />
                     </div>
-                    <div className="mt-4 px-4 flex items-center gap-[4px] cursor-pointer" onClick={() => router.back()}>
+                    <div className="mt-4 px-4 flex items-center gap-[4px] cursor-pointer" onClick={() => router.push(`/articles/${article.tags[0].id}`)}>
                         <ArrowLeftCircleIcon className="h-[16px] text-primary-darker" />
                         <span className="text-sm text-primary-darker">返回列表</span>
                     </div>
