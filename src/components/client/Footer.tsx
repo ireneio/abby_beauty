@@ -6,6 +6,7 @@ import { Logo } from '@/components/client/Logo'
 import { MapPinIcon } from '@heroicons/react/16/solid'
 import openLineAtAccount from '@/lib/utils/openLineAtAccount'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export function Footer() {
   const router = useRouter()
@@ -19,7 +20,7 @@ export function Footer() {
           </div>
         </div> */}
         <div>
-          <div className="max-w-7xl mx-auto mb-8 px-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 pt-8">
+          <div className="max-w-7xl mx-auto mb-8 px-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 pt-8">
             <div className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-8'>
               {/* <Link href="/" aria-label="Home"> */}
               <div>
@@ -36,7 +37,7 @@ export function Footer() {
               <div>
                 <div className='mb-4 text-primary-darkest'>追蹤我們</div>
                 <div className='flex items-center gap-2' onClick={() => openLineAtAccount()}>
-                  <img src="/images/logo_line.png" className='ml-[2px] w-[32px] h-[32px]' />
+                  <Image width={32} height={32} alt="Line" src="/images/logo_line.png" className='ml-[2px] w-[32px] h-[32px]' />
                 </div>
               </div>
               <div>
