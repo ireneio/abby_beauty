@@ -105,15 +105,17 @@ export default function Page(props: Props) {
                         <ArrowLeftCircleIcon className="h-[16px] text-primary-darker" />
                         <span className="text-sm text-primary-darker">返回列表</span>
                     </div>
-                    <div className="mt-4">
-                        <Image
-                            src={article.cover}
-                            alt={article.title}
-                            width={500}
-                            height={500}
-                            className="object-contain"
-                        />
-                    </div>
+                    {article.cover ?
+                        <div className="mt-4">
+                            <Image
+                                src={article.cover}
+                                alt={article.title}
+                                width={500}
+                                height={500}
+                                className="object-contain"
+                            />
+                        </div> : <></>
+                    }
                     <div className="mt-4 px-4">
                         <div className="text-2xl lg:text-3xl text-primary-darkest font-semibold">{article.title}</div>
                         <div className="mt-2 text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
