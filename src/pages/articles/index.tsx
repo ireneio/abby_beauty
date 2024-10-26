@@ -191,7 +191,7 @@ export default function Page(props: Props) {
                                     />
                                 </InputGroup>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                            <div className={clsx("grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4", !searching ? 'grid' : 'hidden')}>
                                 {articles.map((article) => {
                                     return (
                                         <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none">
@@ -242,6 +242,10 @@ export default function Page(props: Props) {
                             <div className={clsx("lg:min-h-[50vh] w-full flex-col gap-4 justify-center items-center", articles.length === 0 && !searching ? 'flex': 'hidden')}>
                                 <ArchiveBoxXMarkIcon className="w-[48px] text-primary-darkest" />
                                 <div className="text-primary-darkest">查無結果</div>
+                            </div>
+                            <div className={clsx("lg:min-h-[50vh] w-full flex-col gap-4 justify-center items-center", searching ? 'flex': 'hidden')}>
+                                <MagnifyingGlassIcon className="w-[48px] text-primary-darkest" />
+                                <div className="text-primary-darkest">搜尋中...</div>
                             </div>
                         </div>
                     </div>
