@@ -49,7 +49,7 @@ export const getStaticProps: GetStaticProps = async () => {
       brands: res.data.brands,
       customer_comments: res.data.customer_comments,
       // joinus: res.data.joinus,
-      aboutus: res.data.aboutus,
+      aboutus: res.data.aboutus ?? { image: '', content: '' },
     }
   }
   
