@@ -122,7 +122,7 @@ export default function Page(props: Props) {
                     <div className="mt-4 px-4">
                         <h2 className="text-2xl lg:text-3xl text-primary-darkest font-semibold">{article.title}</h2>
                         <div className="mt-2 text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
-                        <article className="mt-8 reset-all">
+                        <article className="mt-8 reset-all article-content">
                             <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
                             {/* <QuillContentWrapper content={article.content} /> */}
                         </article>

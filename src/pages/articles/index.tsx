@@ -127,6 +127,12 @@ export default function Page(props: Props) {
         debouncedSearch(value)
     }
 
+    useEffect(() => {
+        return () => {
+            debouncedSearch.cancel()
+        }
+    }, [])
+
     return (
         <>
             <Head>

@@ -42,10 +42,17 @@
   } */
   .reset-all * {
     all: revert;
-    img {
-      max-width: 100%;
-      height: auto;
-    }
+  }
+  .article-content {
+      img {
+        max-width: 400px;
+        height: auto;
+      }
+      p:has(img) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
   }
   .ql-editor {
     .ql-video {
