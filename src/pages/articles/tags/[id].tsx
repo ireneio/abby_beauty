@@ -160,7 +160,7 @@ export default function Page(props: Props) {
                         <Breadcrumb
                             list={[
                                 { text: '首頁', url: '/' },
-                                { text: '文章列表', url: '/articles' },
+                                { text: '最新消息', url: '/articles' },
                                 { text: tag.name },
                             ]}
                         />
