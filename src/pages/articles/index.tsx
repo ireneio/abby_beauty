@@ -146,6 +146,7 @@ export default function Page(props: Props) {
                             {tags.map((tag) => {
                                 return (
                                     <div
+                                        key={tag.id}
                                         className="hover:text-primary-darker cursor-pointer text-sm text-primary-darkest px-4 py-2 border-b border-b-[#ccc]"
                                         onClick={() => router.push(`/articles/tags/${tag.id}`)}
                                     >
