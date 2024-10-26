@@ -117,7 +117,7 @@ function Header({
                   return (
                     <div
                       key={tag.id}
-                      onClick={() => router.push(`/articles/tags/${tag.id}`)}
+                      onClick={() => router.push(`/articles/${tag.id}`)}
                       className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
                     >
                       {tag.name}
@@ -251,7 +251,7 @@ function Navigation({ productTypes, trials, articleTags }: { productTypes: any[]
             <div
               key={tag.id}
               className='border-b border-b-[#ccc] cursor-pointer px-10 py-2 hover:opacity-[0.75]'
-              onClick={() => router.push(`/articles/tags/${tag.id}`)}
+              onClick={() => router.push(`/articles/${tag.id}`)}
             >{tag.name}</div>
           )
         })}
@@ -401,12 +401,12 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
         </motion.div>
       </header>
 
-      <motion.div
-        layout
+      <div
+        // layout
         className="relative flex flex-auto overflow-hidden bg-white pt-[72px] lg:pt-[72px]"
       >
-        <motion.div
-          layout
+        <div
+          // layout
           className="relative isolate flex w-full flex-col pt-0"
         >
           <main className="w-full flex-auto mt-4">
@@ -414,8 +414,8 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
           </main>
           <Footer />
           <LineFloatButton />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </MotionConfig>
   )
 }

@@ -107,13 +107,13 @@ export default function Page(props: Props) {
     const { ref, inView } = useInView()
     const [articles, setArticles] = useState<any[]>([])
     const [currentPage, setCurrentPage] = useState<number>(1)    
+    const [total, setTotal] = useState(0)
 
     const getArticles = async () => {
         const res = await api({
             method: 'GET',
             url: '/client/articles',
             params: {
-                tagIds: router.query.id,
                 page: currentPage,
                 perPage: 10,
                 sortBy: 'publish_date',
@@ -122,14 +122,15 @@ export default function Page(props: Props) {
         })
         if (res.code === 0) {
             setArticles((prev) => {
-                return [...prev, articles]
+                return [...prev, ...res.data.rows]
             })
+            setTotal(res.data.total)
             setCurrentPage((prev) => prev + 1)
         }
     }
 
     useEffect(() => {
-        if (inView) {
+        if (inView && (total === 0 || total > articles.length)) {
             getArticles()
         }
     }, [inView])
