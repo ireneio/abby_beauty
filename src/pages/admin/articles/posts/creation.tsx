@@ -58,8 +58,10 @@ export default function Page() {
 
     const watchPublishDate = watch('publish_date')
 
+    const watchTagIds = watch('tag_ids')
+
     const submitDisabled = watchTitle.length <= 0 ||
-        watchPublishDate.length <= 0
+        watchPublishDate.length <= 0 || watchTagIds.length <= 0
 
     const create = async (data: any) => {
         let cover = ''
@@ -149,7 +151,6 @@ export default function Page() {
                 <div className="space-y-1">
                     <Subheading>
                         封面圖
-                        <RequiredMark />
                     </Subheading>
                 </div>
                 <div>
@@ -266,6 +267,7 @@ export default function Page() {
                 <div className="space-y-1">
                     <Subheading>
                         分類
+                        <RequiredMark />
                     </Subheading>
                 </div>
                 <div>

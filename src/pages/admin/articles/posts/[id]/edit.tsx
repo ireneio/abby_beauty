@@ -57,8 +57,10 @@ export default function Page() {
 
     const watchPublishDate = watch('publish_date')
 
+    const watchTagIds = watch('tag_ids')
+
     const submitDisabled = watchTitle.length <= 0 ||
-        watchPublishDate.length <= 0
+        watchPublishDate.length <= 0 || watchTagIds.length <= 0
 
     const update = async (data: any) => {
         let cover = ''
@@ -153,14 +155,16 @@ export default function Page() {
               setValue('publish_date', dayjs(data.publish_date).format('YYYY-MM-DD'))
               setValue('start_date', dayjs(data.start_date).format('YYYY-MM-DD'))
               setValue('end_date', dayjs(data.end_date).format('YYYY-MM-DD'))
-              setValue('tag_ids', data.tags.map((tag: any) => tag.id))
-              setSelectedTags(data.tags.map((tag: any) => {
+              setValue('tag_ids', data.tags ? data.tags.map((tag: any) => tag.id) : [])
+              setSelectedTags(data.tags ?  data.tags.map((tag: any) => {
                 return { label: tag.name, value: tag.id }
-              }))
-              if (imageUploaderRef.current) {
+              }) : [])
+              if (imageUploaderRef.current && data.cover) {
                 imageUploaderRef.current.setList([{ url: data.cover }])
               }
-              setValue('cover', [data.cover])
+              if (data.cover) {
+                  setValue('cover', [data.cover])
+              }
             }
           }),
           getTags()
@@ -295,6 +299,7 @@ export default function Page() {
                 <div className="space-y-1">
                     <Subheading>
                         分類
+                        <RequiredMark />
                     </Subheading>
                 </div>
                 <div>
