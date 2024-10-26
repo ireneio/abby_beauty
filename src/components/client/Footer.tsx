@@ -41,9 +41,7 @@ export function Footer() {
               </div>
               <div>
                 <div className='text-primary-darkest cursor-pointer hover:underline' onClick={() => router.push('/articles')}>最新消息</div>
-              </div>
-              <div>
-                <div className='text-primary-darkest cursor-pointer hover:underline' onClick={() => router.push('/joinus')}>加入我們</div>
+                <div className='mt-2 text-primary-darkest cursor-pointer hover:underline' onClick={() => router.push('/joinus')}>加入我們</div>
               </div>
             </div>
           </div>
