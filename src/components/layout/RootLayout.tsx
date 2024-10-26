@@ -52,6 +52,7 @@ function Header({
   invert = false,
   productTypes,
   trials,
+  articleTags,
 }: {
   panelId: string
   icon: React.ComponentType<{ className?: string }>
@@ -61,6 +62,7 @@ function Header({
   invert?: boolean
   productTypes: any[]
   trials: any[]
+  articleTags: any[]
 }) {
   const router = useRouter()
   let { logoHovered, setLogoHovered } = useContext(RootLayoutContext)!
@@ -103,11 +105,26 @@ function Header({
                 })}
             </div>
           </div>
-          {/* <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/articles')}>
-            <div className='text-sm text-secondary'>最新消息</div>
-          </div> */}
-          <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/articles')}>
-            <div className='text-sm text-secondary'>最新消息</div>
+          <div className='relative group'>
+            <div className='cursor-pointer flex items-center hover:opacity-[0.75] py-4'>
+              <div className='text-sm text-secondary'>最新消息</div>
+              <div>
+                <ChevronDownIcon className='text-secondary w-[20px] h-[20px]' />
+              </div>
+            </div>
+            <div className='text-secondary text-xs opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-12 left-0 min-w-[200px] bg-white shadow-lg border border-gray-200 transition-opacity duration-200'>
+                {articleTags.map((tag: any) => {
+                  return (
+                    <div
+                      key={tag.id}
+                      onClick={() => router.push(`/articles/tags/${tag.id}`)}
+                      className='py-2 px-2 cursor-pointer hover:opacity-[0.75]'
+                    >
+                      {tag.name}
+                    </div>
+                  )
+                })}
+            </div>
           </div>
           <div className='cursor-pointer hover:opacity-[0.75] py-4' onClick={() => router.push('/classes')}>
             <div className='text-sm text-secondary'>課程介紹</div>
@@ -200,7 +217,7 @@ function NavigationItem({
   )
 }
 
-function Navigation({ productTypes, trials }: { productTypes: any[], trials: any[] }) {
+function Navigation({ productTypes, trials, articleTags }: { productTypes: any[], trials: any[], articleTags: any[] }) {
   const router = useRouter()
   const [expandedIndexList, setExpandedIndexList] = useState<number[]>([])
 
@@ -220,8 +237,25 @@ function Navigation({ productTypes, trials }: { productTypes: any[], trials: any
         <NavigationItem href="/">首頁</NavigationItem>
       </NavigationRow>
       <NavigationRow>
-        <NavigationItem href="/articles">最新消息</NavigationItem>
+        <NavigationItem onClick={() => handleSetExpand(2)}>
+          <div className='flex justify-between'>
+            最新消息
+            <ChevronDownIcon className={clsx('w-[24px]', !expandedIndexList.includes(1) ? 'block' : 'hidden')} />
+            <ChevronUpIcon className={clsx('w-[24px]', expandedIndexList.includes(1) ? 'block' : 'hidden')} />
+          </div>
+        </NavigationItem>
       </NavigationRow>
+      <div className={clsx('bg-primary text-secondary', expandedIndexList.includes(2) ? 'block' : 'hidden')}>
+        {articleTags.map((tag: any) => {
+          return (
+            <div
+              key={tag.id}
+              className='border-b border-b-[#ccc] cursor-pointer px-10 py-2 hover:opacity-[0.75]'
+              onClick={() => router.push(`/articles/tags/${tag.id}`)}
+            >{tag.name}</div>
+          )
+        })}
+      </div>
       <NavigationRow>
         <NavigationItem onClick={() => handleSetExpand(1)}>
           <div className='flex justify-between'>
@@ -326,6 +360,7 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
             }}
             productTypes={data.productTypes}
             trials={data.trials}
+            articleTags={data.articleTags}
           />
         </div>
 
@@ -354,11 +389,13 @@ function RootLayoutInner({ children, data }: { children: React.ReactNode, data: 
                 }}
                 productTypes={data.productTypes}
                 trials={data.trials}
+                articleTags={data.articleTags}
               />
             </div>
             <Navigation
               trials={data.trials}
               productTypes={data.productTypes}
+              articleTags={data.articleTags}
             />
           </motion.div>
         </motion.div>
@@ -392,6 +429,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
   const { api } = useApi()
   const [productTypes, setProductTypes] = useState<any[]>([])
   const [trials, setTrials] = useState<any[]>([])
+  const [articleTags, setArticleTags] = useState<any[]>([])
 
   const getProductTypes = async () => {
     const res = await api({
@@ -417,19 +455,32 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const getArticleTags = async () => {
+    const res = await api({
+      method: 'GET',
+      url: '/client/article_tags'
+    })
+    if (res.code === 0) {
+      setArticleTags(res.data.rows)
+    } else {
+      setArticleTags([])
+    }
+  }
+
   useEffect(() => {
     // if (!hasInitialized) {
       // hasInitialized = true
       Promise.all([
         getProductTypes(),
-        getTrials()
+        getTrials(),
+        getArticleTags()
       ])
     // }
   }, [])
 
   return (
     <RootLayoutContext.Provider value={{ logoHovered, setLogoHovered }}>
-      <RootLayoutInner key={pathname} data={{ trials, productTypes }}>{children}</RootLayoutInner>
+      <RootLayoutInner key={pathname} data={{ trials, productTypes, articleTags }}>{children}</RootLayoutInner>
     </RootLayoutContext.Provider>
   )
 }

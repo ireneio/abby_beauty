@@ -5,7 +5,7 @@ import { api } from "@/lib/api/connector";
 import seoDefault from "@/lib/data/seoDefault";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import formatTextareaContent from "@/lib/utils/formatTextareaContent";
-import { ChevronDoubleRightIcon, TagIcon } from "@heroicons/react/16/solid";
+import { ArrowLeftCircleIcon, ChevronDoubleRightIcon, TagIcon } from "@heroicons/react/16/solid";
 import dayjs from "dayjs";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
@@ -164,6 +164,10 @@ export default function Page(props: Props) {
                                 { text: tag.name },
                             ]}
                         />
+                    </div>
+                    <div className="mt-4 px-4 flex items-center gap-[4px] cursor-pointer" onClick={() => router.push(`/articles`)}>
+                        <ArrowLeftCircleIcon className="h-[16px] text-primary-darker" />
+                        <span className="text-sm text-primary-darker">全部分類</span>
                     </div>
                     <div className="mt-4">
                         <div className="text-primary bg-primary-darkest px-4 py-4 mb-4">{tag.name}</div>
