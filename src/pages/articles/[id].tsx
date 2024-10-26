@@ -117,9 +117,9 @@ export default function Page(props: Props) {
                         </div> : <></>
                     }
                     <div className="mt-4 px-4">
-                        <div className="text-2xl lg:text-3xl text-primary-darkest font-semibold">{article.title}</div>
+                        <h2 className="text-2xl lg:text-3xl text-primary-darkest font-semibold">{article.title}</h2>
                         <div className="mt-2 text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
-                        <div className="mt-8" dangerouslySetInnerHTML={{ __html: article.content }}></div>
+                        <article className="mt-8" dangerouslySetInnerHTML={{ __html: article.content }}></article>
                         {/* <div className="flex mt-2 text-secondary">
                             <TagIcon className="w-[14px] mr-1" />
                             {article.tags && Array.isArray(article.tags) ?

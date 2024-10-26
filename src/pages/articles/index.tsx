@@ -169,8 +169,8 @@ export default function Page(props: Props) {
                                                     className="object-contain"
                                                 />
                                             </div> : <></>}
-                                        <div className="text-lg text-primary-darkest font-semibold">{article.title}</div>
-                                        <div className="text-md mt-2 text-black">{article.subtitle}</div>
+                                        <h2 className="text-lg text-primary-darkest font-semibold">{article.title}</h2>
+                                        <h3 className="text-md mt-2 text-black">{article.subtitle}</h3>
                                         <div className="mt-4 flex justify-between">
                                             <div className="text-sm text-secondary font-light tracking-[1.5px]">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
                                             <div className="hover:opacity-[0.8] flex gap-[0px] cursor-pointer" onClick={() => router.push(`/articles/${article.id}`)}>
