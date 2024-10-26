@@ -1,4 +1,5 @@
 import Breadcrumb from "@/components/client/Breadcrumb";
+import QuillContentWrapper from "@/components/client/QuillContentWrapper";
 import { Select } from "@/components/common/select";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
@@ -119,7 +120,10 @@ export default function Page(props: Props) {
                     <div className="mt-4 px-4">
                         <h2 className="text-2xl lg:text-3xl text-primary-darkest font-semibold">{article.title}</h2>
                         <div className="mt-2 text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
-                        <article className="mt-8" dangerouslySetInnerHTML={{ __html: article.content }}></article>
+                        <article className="mt-8">
+                            <QuillContentWrapper content={article.content} />
+                        </article>
+
                         {/* <div className="flex mt-2 text-secondary">
                             <TagIcon className="w-[14px] mr-1" />
                             {article.tags && Array.isArray(article.tags) ?
