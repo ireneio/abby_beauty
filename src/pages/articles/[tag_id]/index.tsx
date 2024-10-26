@@ -172,7 +172,7 @@ export default function Page(props: Props) {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {[...initialArticles, ...articles].map((article) => {
                                 return (
-                                    <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none" onClick={() => router.push(`/articles/${article.id}`)}>
+                                    <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none" onClick={() => router.push(`/articles/${tag.id}/${article.id}`)}>
                                         {article.cover ?
                                             <div>
                                                 <Image
