@@ -169,9 +169,9 @@ export default function Page(props: Props) {
                         <ArrowLeftCircleIcon className="h-[16px] text-primary-darker" />
                         <span className="text-sm text-primary-darker">全部分類</span>
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-4 lg:px-4">
                         <div className="text-primary bg-primary-darkest px-4 py-4 mb-4">{tag.name}</div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {[...initialArticles, ...articles].map((article) => {
                                 return (
                                     <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none" onClick={() => router.push(`/articles/${article.id}`)}>
