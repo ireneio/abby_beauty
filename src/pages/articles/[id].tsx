@@ -47,7 +47,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props.article = await getArticle()
 
     return {
-        props
+        props,
+        revalidate: 30,
     }
 }
 
