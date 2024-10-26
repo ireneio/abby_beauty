@@ -23,7 +23,7 @@ export default function Breadcrumb({ list }: Props) {
                             {item.text}
                         </div>
                         {i !== arr.length - 1 ?
-                            <div className="text-secondary">/</div> :
+                            <div className="text-secondary">&gt;</div> :
                             null
                         }
                     </div>

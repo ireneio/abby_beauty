@@ -7,7 +7,7 @@ import "@/styles/globals.css";
 
 import 'react-quill/dist/quill.snow.css';
 
-const inter = Inter({ subsets: ["latin"], weight: "700" });
+const inter = Inter({ subsets: ["latin"] });
 
 export default function App({
   Component,

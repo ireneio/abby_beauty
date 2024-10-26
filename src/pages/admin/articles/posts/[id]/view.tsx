@@ -52,20 +52,20 @@ export default function Page() {
         <Heading>查看文章</Heading>
         <Divider className="my-10 mt-6" />
 
-        {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
-              <Subheading>圖片</Subheading>
+              <Subheading>封面圖</Subheading>
             </div>
             <div>
               <img
                 className="w-[148px] aspect-[1/1] rounded-lg shadow w-full object-contain"
-                src={data.image}
+                src={data.cover}
                 alt=""
               />
             </div>
         </section>
 
-        <Divider className="my-10" soft /> */}
+        <Divider className="my-10" soft />
 
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           <div className="space-y-1">
@@ -100,7 +100,7 @@ export default function Page() {
         <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-1">
                 <Subheading>
-                    副標題
+                  預覽內容
                 </Subheading>
             </div>
             <div>

@@ -4,9 +4,9 @@ import ErrorCode from "@/lib/api/errorCodes";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { createRouter } from "next-connect";
-import ProductsController from "@/lib/kysely/controllers/products";
+import ArticlesController from "@/lib/kysely/controllers/articles";
 
-const controller = new ProductsController()
+const controller = new ArticlesController()
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 

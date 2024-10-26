@@ -10,6 +10,7 @@ class ArticlesController {
         sortDirection,
         startDate,
         endDate,
+        tagIds,
     }: {
         search?: string,
         page?: number,
@@ -18,6 +19,7 @@ class ArticlesController {
         sortDirection?: 'asc' | 'desc',
         startDate?: string,
         endDate?: string,
+        tagIds?: string,
     }) {
         let countQuery = db
             .selectFrom('articles')
@@ -52,6 +54,12 @@ class ArticlesController {
 
         if (endDate) {
             query = query.where((eb) => eb('articles.publish_date', '<=', dayjs(endDate).startOf('day').toDate()))
+        }
+        
+        if (tagIds) {
+            query = query.where((eb) =>
+                sql`articles.tag_ids @> ARRAY[${tagIds}]::integer[]`
+            )
         }
 
         if (page !== undefined && perPage !== undefined) {

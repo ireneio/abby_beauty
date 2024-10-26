@@ -4,26 +4,57 @@ import { RootLayout } from "@/components/layout/RootLayout";
 import { api } from "@/lib/api/connector";
 import seoDefault from "@/lib/data/seoDefault";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
-import { ChevronDoubleRightIcon } from "@heroicons/react/16/solid";
+import formatTextareaContent from "@/lib/utils/formatTextareaContent";
+import { ChevronDoubleRightIcon, TagIcon } from "@heroicons/react/16/solid";
 import dayjs from "dayjs";
-import { GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
+    const getAllPaths = async () => {
+        const res = await api(defaultInstance, {
+            method: 'GET',
+            url: '/client/article_tags',
+        })
+        if (res.code === 0) {
+            return res.data.rows
+        }
+        return []
+    }    
+
+    const list = await getAllPaths()
+
+    const paths = list.map((tag: { id: number }) => ({
+        params: { id: tag.id.toString() },
+    }));
+
+    return {
+        paths,
+        fallback: 'blocking',
+    }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
     const props = {
         articles: [],
-        tags: [],
+        tag: {
+            id: '',
+            name: '',
+        }
     }
+
+    const tagId = params ? params.id as string : ''
 
     const getArticles = async () => {
         const res = await api(defaultInstance, {
             method: 'GET',
             url: '/client/articles',
             params: {
+                tagIds: tagId,
                 page: 1,
                 perPage: 10,
                 sortBy: 'publish_date',
@@ -36,24 +67,24 @@ export const getStaticProps: GetStaticProps = async () => {
         return []
     }
 
-    const getTags = async () => {
+    const getTag = async () => {
         const res = await api(defaultInstance, {
             method: 'GET',
-            url: '/client/article_tags',
+            url: `/client/article_tags/${tagId}`,
         })
         if (res.code === 0) {
-            return res.data.rows
+            return res.data
         }
         return []
     }
 
-    const [articles, tags] = await Promise.all([
+    const [articles, tag] = await Promise.all([
         getArticles(),
-        getTags()
+        getTag()
     ])
 
     props.articles = articles
-    props.tags = tags
+    props.tag = tag ? tag : { id: '', name: '' }
 
     return {
         props
@@ -62,22 +93,29 @@ export const getStaticProps: GetStaticProps = async () => {
 
 type Props = {
     articles: any[],
-    tags: any[]
+    tag: {
+        id: number,
+        name: string,
+    }
 }
 
 export default function Page(props: Props) {
-    const { articles: initialArticles, tags } = props
+    const { articles: initialArticles, tag } = props
     const router = useRouter()
     const { api } = useApi()
     const { ref, inView } = useInView()
     const [articles, setArticles] = useState<any[]>([])
     const [currentPage, setCurrentPage] = useState<number>(1)
 
+    console.log('tag', tag);
+    
+
     const getArticles = async () => {
         const res = await api({
             method: 'GET',
             url: '/client/articles',
             params: {
+                tagIds: router.query.id,
                 page: currentPage,
                 perPage: 10,
                 sortBy: 'publish_date',
@@ -98,24 +136,20 @@ export default function Page(props: Props) {
         }
     }, [inView])
 
-    const handleTagChange = (id: string) => {
-        router.push(`/articles/tags/${id}`)
-    }
-
     return (
         <>
             <Head>
-                <title>文章列表</title>
-                <meta name="description" content={`文章列表 | ${seoDefault.title}`} />
-                <meta property="og:title" content="文章列表" />
-                <meta property="og:description" content={`文章列表 | ${seoDefault.title}`} />
+                <title>{tag.name}</title>
+                <meta name="description" content={`${tag.name} | ${seoDefault.title}`} />
+                <meta property="og:title" content={tag.name} />
+                <meta property="og:description" content={`${tag.name} | ${seoDefault.title}`} />
                 <meta property="og:image" content={seoDefault.image} />
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content={seoDefault.site_name} />
                 <meta property="twitter:card" content={seoDefault.image} />
-                <meta name="twitter:title" content="文章列表" />
-                <meta name="twitter:description" content={`文章列表 | ${seoDefault.title}`} />
+                <meta name="twitter:title" content={tag.name} />
+                <meta name="twitter:description" content={`${tag.name} | ${seoDefault.title}`} />
                 <meta property="twitter:image" content={seoDefault.image} />
                 {/* <meta name="twitter:site" content="@yourtwitterhandle" />
                 <meta name="twitter:creator" content="@creatorhandle" /> */}
@@ -126,38 +160,17 @@ export default function Page(props: Props) {
                         <Breadcrumb
                             list={[
                                 { text: '首頁', url: '/' },
-                                { text: '文章列表' },
+                                { text: '文章列表', url: '/articles' },
+                                { text: tag.name },
                             ]}
                         />
                     </div>
-                    <div className="mt-4 lg:flex lg:gap-8 lg:px-4">
-                        <div className="lg:hidden px-4 mb-4">
-                            <Select onChange={(e) => handleTagChange(e.target.value)}>
-                                <option>選擇文章分類</option>
-                                {tags.map((tag) => {
-                                    return (
-                                        <option key={tag.id} value={tag.id}>{tag.name}</option>
-                                    )
-                                })}
-                            </Select>
-                        </div>
-                        <div className="hidden lg:block w-[240px] shrink-0 bg-primary">
-                            <div className="bg-primary-darkest text-primary px-4 py-4 text-md">文章分類</div>
-                            {tags.map((tag) => {
-                                return (
-                                    <div
-                                        className="hover:text-primary-darker cursor-pointer text-sm text-primary-darkest px-4 py-2 border-b border-b-[#ccc]"
-                                        onClick={() => router.push(`/articles/tags/${tag.id}`)}
-                                    >
-                                        {tag.name}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                    <div className="mt-4">
+                        <div className="text-primary bg-primary-darkest px-4 py-4 mb-4">{tag.name}</div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             {[...initialArticles, ...articles].map((article) => {
                                 return (
-                                    <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none">
+                                    <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none" onClick={() => router.push(`/articles/${article.id}`)}>
                                         {article.cover ?
                                             <div>
                                                 <Image

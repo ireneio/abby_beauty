@@ -15,6 +15,7 @@ export function Logo({
         src='/images/logo_rect.png'
         className="h-[72px] object-contain"
       />
+      <h1 className="hidden">艾比美容中心</h1>
     </div>
   )
 }

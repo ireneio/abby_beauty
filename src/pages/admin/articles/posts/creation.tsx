@@ -15,6 +15,7 @@ import dayjs from 'dayjs'
 import WysiwygEditor from '@/components/admin/WysiwygEditor'
 import { Text } from '@/components/common/text'
 import { ReactTags, Tag } from 'react-tag-autocomplete'
+import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
 
 type Inputs = {
     cover: any[];
@@ -144,10 +145,10 @@ export default function Page() {
             <Heading>新增文章</Heading>
             <Divider className="my-10 mt-6" />
 
-            {/* <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
                     <Subheading>
-                        圖片
+                        封面圖
                         <RequiredMark />
                     </Subheading>
                 </div>
@@ -163,7 +164,7 @@ export default function Page() {
                 </div>
             </section>
 
-            <Divider className="my-10" soft /> */}
+            <Divider className="my-10" soft />
 
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
@@ -201,13 +202,13 @@ export default function Page() {
             <section className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="space-y-1">
                     <Subheading>
-                        副標題
+                        預覽內容
                     </Subheading>
                 </div>
                 <div>
-                    <Input {...register('subtitle')} aria-label="副標題" />
+                    <Input {...register('subtitle')} aria-label="預覽內容" />
                     <div className='flex justify-between'>
-                        <Text>建議不超過 50 字</Text>
+                        <Text>建議不超過 150 字</Text>
                         <Text>字數: {watch('subtitle').length}</Text>
                     </div>
                 </div>
