@@ -16,6 +16,9 @@ import WysiwygEditor from '@/components/admin/WysiwygEditor'
 import { Text } from '@/components/common/text'
 import { ReactTags, Tag } from 'react-tag-autocomplete'
 import MultipleImageUploader from '@/components/admin/MultipleImageUploader'
+import { Checkbox, CheckboxField } from '@/components/common/checkbox'
+import { Label } from '@/components/common/fieldset'
+import { Textarea } from '@/components/common/textarea'
 
 type Inputs = {
     cover: any[];
@@ -140,6 +143,8 @@ export default function Page() {
         getTags()
     }, [])
 
+    const [isPastingCode, setIsPastingCode] = useState(false)
+
   return (
     <LayoutAdmin>
         <NotificationPopup />
@@ -224,10 +229,19 @@ export default function Page() {
                     </Subheading>
                 </div>
                 <div>
-                    <WysiwygEditor
-                        value={watch('content')}
-                        onChange={(value) => setValue('content', value)}
-                    />
+                    <CheckboxField>
+                        <Checkbox onChange={(checked) => setIsPastingCode(checked)}></Checkbox>
+                        <Label>貼入程式碼</Label>
+                    </CheckboxField>
+                    <div className='mt-2'>
+                        {isPastingCode ?
+                            <Textarea className="w-full" rows={10} {...register('content')} /> :
+                            <WysiwygEditor
+                                value={watch('content')}
+                                onChange={(value) => setValue('content', value)}
+                            />
+                        }
+                    </div>
                 </div>
             </section>
 
