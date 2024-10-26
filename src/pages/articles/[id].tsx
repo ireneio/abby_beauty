@@ -63,7 +63,7 @@ export default function Page(props: Props) {
         if (navigator.share) {
             navigator.share({
               title: article.title,
-              text: article.subtitle,
+              text: article.title,
               url: `${process.env.NEXT_PUBLIC_SITE_URL}/articles/${article.id}`,
             })
               .then(() => console.log('Successfully shared'))
