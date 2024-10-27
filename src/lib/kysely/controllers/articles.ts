@@ -375,6 +375,56 @@ class ArticlesController {
             .executeTakeFirst()
         return true
     }
+    async getNextAndPrevious({ id, tagIds }: { id: number, tagIds: string }) {
+        const nextItem = await db.selectFrom('articles')
+            .where('id', '>', id)
+            .where((eb) =>
+                sql`articles.tag_ids @> ARRAY[${tagIds}]::integer[]`
+            )
+            .orderBy('id', 'asc')
+            .limit(1)
+            .select([
+                'id',
+                'title',
+            ])
+            .executeTakeFirst()
+
+        const previousItem = await db.selectFrom('articles')
+            .where('id', '<', id)
+            .where((eb) =>
+                sql`articles.tag_ids @> ARRAY[${tagIds}]::integer[]`
+            )
+            .orderBy('id', 'desc')
+            .limit(1)
+            .select([
+                'id',
+                'title',
+            ])
+            .executeTakeFirst()
+
+        return {
+            nextItem: nextItem ? nextItem : { id: '', title: '' },
+            previousItem: previousItem ? previousItem : { id: '', title: '' },
+        }
+    }
+    async getSimilar({ id, tagIds }: { id: number, tagIds: string }) {
+        const rows = await db.selectFrom('articles')
+            .where('id', '!=', id)
+            .where((eb) =>
+                sql`articles.tag_ids @> ARRAY[${tagIds}]::integer[]`
+            )
+            .orderBy('publish_date', 'desc')
+            .limit(10)
+            .select([
+                'id',
+                'title',
+                'cover',
+                'subtitle',
+            ])
+            .execute()
+
+        return rows
+    }
 }
 
 export default ArticlesController

@@ -116,8 +116,9 @@ export default function Page() {
                     內容
                 </Subheading>
             </div>
-            <div>
-              <QuillContentWrapper content={data.content} />
+            <div className='reset-all article-content'>
+              {/* <QuillContentWrapper content={data.content} /> */}
+              <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
             </div>
         </section>
 

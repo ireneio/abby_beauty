@@ -7,12 +7,14 @@ import seoDefault from "@/lib/data/seoDefault";
 import useApi, { defaultInstance } from "@/lib/hooks/useApi";
 import formatTextareaContent from "@/lib/utils/formatTextareaContent";
 import openLineAtAccount from "@/lib/utils/openLineAtAccount";
-import { ArrowLeftCircleIcon, ArrowTopRightOnSquareIcon, ShareIcon, TagIcon } from "@heroicons/react/16/solid";
+import { ArrowLeftCircleIcon, ArrowRightCircleIcon, ArrowTopRightOnSquareIcon, ShareIcon, TagIcon } from "@heroicons/react/16/solid";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     return {
@@ -28,6 +30,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             title: '',
             subtitle: '',
             content: '',
+            tags: [],
         }
     }
 
@@ -59,6 +62,7 @@ type Props = {
 export default function Page(props: Props) {
     const { article } = props
     const router = useRouter()
+    const { api } = useApi()
 
     const handleShare = () => {
         if (navigator.share) {
@@ -73,6 +77,41 @@ export default function Page(props: Props) {
             console.log('Web Share API is not supported in this browser.');
           }
     }
+
+    const [content, setContent] = useState({
+        similarItems: [],
+        nextItem: {
+            id: '',
+            title: '',
+        },
+        previousItem: {
+            id: '',
+            title: '',
+        },
+    })
+
+    const getContent = async () => {
+        const res = await api({
+            method: 'GET',
+            url: `/client/articles/${article.id}/content`,
+            params: {
+                tagIds: article.tags.map((tag: any) => tag.id).join(',')
+            }
+        })
+        if (res.code === 0) {
+            setContent(res.data)
+        }
+    }
+
+    useEffect(() => {
+        setContent((prev) => {
+            return {
+                ...prev,
+                similarItems: []
+            }
+        })
+        getContent()
+    }, [article.id])
 
     return (
         <>
@@ -108,46 +147,102 @@ export default function Page(props: Props) {
                         <ArrowLeftCircleIcon className="h-[16px] text-primary-darker" />
                         <span className="text-sm text-primary-darker">返回列表</span>
                     </div>
-                    {article.cover ?
-                        <div className="mt-4">
-                            <Image
-                                src={article.cover}
-                                alt={article.title}
-                                width={500}
-                                height={500}
-                                className="object-contain"
-                            />
-                        </div> : <></>
-                    }
-                    <div className="mt-4 px-4">
-                        <h2 className="text-2xl lg:text-3xl text-primary-darkest font-semibold">{article.title}</h2>
-                        <div className="mt-2 text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
-                        <article className="mt-8 reset-all article-content">
-                            <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
-                            {/* <QuillContentWrapper content={article.content} /> */}
-                        </article>
+                    <div className="lg:flex lg:gap-12">
+                        <div className="lg:flex-1">
+                            <div className="mt-4 px-4">
+                                <h2 className="text-3xl lg:text-4xl text-primary-darkest font-semibold">{article.title}</h2>
+                                <div className="mt-2 text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
+                                {article.cover ?
+                                    <div className="mt-4 flex justify-center">
+                                        <Image
+                                            src={article.cover}
+                                            alt={article.title}
+                                            width={500}
+                                            height={500}
+                                            className="object-contain"
+                                        />
+                                    </div> : <></>
+                                }
+                                <article className="mt-8 reset-all article-content">
+                                    <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
+                                    {/* <QuillContentWrapper content={article.content} /> */}
+                                </article>
 
-                        {/* <div className="flex mt-2 text-secondary">
-                            <TagIcon className="w-[14px] mr-1" />
-                            {article.tags && Array.isArray(article.tags) ?
-                                article.tags.map((tag: any, i: number, arr: any[]) => {
-                                return (
-                                    <div key={tag.id} className="text-sm">
-                                        <span>#{tag.name}</span>
-                                        {i !== arr.length - 1 ? <span className="mr-[4px]"></span> : ''}
+                                {/* <div className="flex mt-2 text-secondary">
+                                    <TagIcon className="w-[14px] mr-1" />
+                                    {article.tags && Array.isArray(article.tags) ?
+                                        article.tags.map((tag: any, i: number, arr: any[]) => {
+                                        return (
+                                            <div key={tag.id} className="text-sm">
+                                                <span>#{tag.name}</span>
+                                                {i !== arr.length - 1 ? <span className="mr-[4px]"></span> : ''}
+                                            </div>
+                                        )
+                                        }) : []}
+                                </div> */}
+                                <div className="mt-8">
+                                    <div className="flex gap-8">
+                                        <div className="hover:opacity-[0.75] cursor-pointer justify-center flex gap-[4px] border border-secondary rounded-md px-4 py-2" onClick={() => handleShare()}>
+                                            <ShareIcon className="w-[24px] text-secondary" />
+                                            <span className="text-secondary">分享</span>
+                                        </div>
+                                        <div className="hover:opacity-[0.75] cursor-pointer justify-center flex gap-[4px] border border-primary-darker rounded-md px-4 py-2" onClick={() => openLineAtAccount()}>
+                                            <ArrowTopRightOnSquareIcon className="w-[24px] text-primary-darker" />
+                                            <span className="text-primary-darker">瞭解更多</span>
+                                        </div>
                                     </div>
-                                )
-                                }) : []}
-                        </div> */}
-                        <div className="mt-8 pb-4">
-                            <div className="flex gap-8">
-                                <div className="cursor-pointer justify-center flex gap-[4px] border border-secondary rounded-md px-4 py-2" onClick={() => handleShare()}>
-                                    <ShareIcon className="w-[24px] text-secondary" />
-                                    <span className="text-secondary">分享此頁面</span>
                                 </div>
-                                <div className="cursor-pointer justify-center flex gap-[4px] border border-primary-darker rounded-md px-4 py-2" onClick={() => openLineAtAccount()}>
-                                    <ArrowTopRightOnSquareIcon className="w-[24px] text-primary-darker" />
-                                    <span className="text-primary-darker">瞭解更多</span>
+                                <div className="mt-8 mt-4">
+                                    <div className="flex items-center w-full">
+                                        <div
+                                            className={clsx("mr-auto items-center text-primary-darkest cursor-pointer", content.previousItem.id ? 'flex': 'hidden')}
+                                            onClick={() => router.push(`/articles/${article.tags[0].id}/${content.previousItem.id}`)}
+                                        >
+                                            <ArrowLeftCircleIcon className="w-[24px]" />
+                                            <div>上一篇</div>
+                                        </div>
+                                        <div
+                                            className={clsx("ml-auto items-center text-primary-darkest cursor-pointer", content.nextItem.id ? 'flex': 'hidden')}
+                                            onClick={() => router.push(`/articles/${article.tags[0].id}/${content.nextItem.id}`)}
+                                        >
+                                            <div>下一篇</div>
+                                            <ArrowRightCircleIcon className="w-[24px]" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="lg:w-[320px]">
+                            <div className="lg:mt-0 lg:border-none lg:pt-0 mt-8 pt-8 border-t border-t-[#ccc]">
+                                <div className="flex items-center gap-[8px]">
+                                    <div className="w-[4px] h-[24px] bg-primary-dark"></div>
+                                    <div className="text-primary-darker text-2xl">延伸閱讀</div>
+                                </div>
+                                <div className="mt-8 flex flex-col gap-8">
+                                    {content.similarItems.map((item: any) => {
+                                        return (
+                                            <div key={item.id} className="cursor-pointer" onClick={() => router.push(`/articles/${article.tags[0].id}/${item.id}`)}>
+                                                <div className="flex justify-between gap-4 pb-4 border-b border-b-[#ccc]">
+                                                    <div className="flex-1 w-[70%]">
+                                                        <div className="text-primary-darkest text-lg hover:opacity-[0.8]">{item.title}</div>
+                                                        {/* <div className="truncate mt-2 text-sm">{item.subtitle}</div> */}
+                                                    </div>
+                                                    {item.cover ?
+                                                        <div className="shrink-0">
+                                                            <Image
+                                                                src={item.cover}
+                                                                alt={item.title}
+                                                                width={140}
+                                                                height={70}
+                                                                className="object-cover aspect-[16/9]"
+                                                            />
+                                                        </div> :
+                                                        <></>
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>
