@@ -149,9 +149,26 @@ export default function Page(props: Props) {
                     </div>
                     <div className="lg:flex lg:gap-12">
                         <div className="lg:flex-1">
-                            <div className="mt-4 px-4">
-                                <h2 className="text-3xl lg:text-4xl text-primary-darkest font-semibold">{article.title}</h2>
-                                <div className="mt-2 text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
+                            <article className="mt-4 px-4">
+                                <h2 className="text-3xl lg:text-4xl text-black font-semibold">{article.title}</h2>
+                                <section className="mt-2 flex gap-4 items-start">
+                                    <div>
+                                        <div className="text-sm text-secondary font-light italic">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
+                                        <div className="mt-2 flex flex-wrap gap-2">
+                                            {article.tags.map((tag: any, i: number, arr: any[]) => {
+                                                return (
+                                                    <div key={tag.id} className={clsx("text-xs text-secondary px-2 py-1 bg-primary rounded-md", i !== arr.length - 1 ? "mr-[4px]" : '')}>
+                                                        <span>{tag.name}</span>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                    <div className="ml-auto flex gap-[4px] items-center cursor-pointer rounded-md px-2 py-1 border border-primary-darkest" onClick={() => handleShare()}>
+                                        <ShareIcon className="h-[22px] text-primary-darkest" />
+                                        <div className="text-sm text-primary-darkest">分享</div>
+                                    </div>
+                                </section>
                                 {article.cover ?
                                     <div className="mt-4 flex justify-center">
                                         <Image
@@ -163,36 +180,23 @@ export default function Page(props: Props) {
                                         />
                                     </div> : <></>
                                 }
-                                <article className="mt-8 reset-all article-content">
+                                <section className="mt-8 reset-all article-content">
                                     <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
                                     {/* <QuillContentWrapper content={article.content} /> */}
-                                </article>
-
-                                {/* <div className="flex mt-2 text-secondary">
-                                    <TagIcon className="w-[14px] mr-1" />
-                                    {article.tags && Array.isArray(article.tags) ?
-                                        article.tags.map((tag: any, i: number, arr: any[]) => {
-                                        return (
-                                            <div key={tag.id} className="text-sm">
-                                                <span>#{tag.name}</span>
-                                                {i !== arr.length - 1 ? <span className="mr-[4px]"></span> : ''}
-                                            </div>
-                                        )
-                                        }) : []}
-                                </div> */}
-                                <div className="mt-8">
+                                </section>
+                                <section className="mt-8">
                                     <div className="flex gap-8">
                                         <div className="hover:opacity-[0.75] cursor-pointer justify-center flex gap-[4px] border border-secondary rounded-md px-4 py-2" onClick={() => handleShare()}>
-                                            <ShareIcon className="w-[24px] text-secondary" />
-                                            <span className="text-secondary">分享</span>
+                                            <ShareIcon className="w-[24px] text-primary-darkest" />
+                                            <span className="text-primary-darkest">分享</span>
                                         </div>
                                         <div className="hover:opacity-[0.75] cursor-pointer justify-center flex gap-[4px] border border-primary-darker rounded-md px-4 py-2" onClick={() => openLineAtAccount()}>
                                             <ArrowTopRightOnSquareIcon className="w-[24px] text-primary-darker" />
                                             <span className="text-primary-darker">瞭解更多</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="mt-8 mt-4">
+                                </section>
+                                <section className="mt-8 mt-4">
                                     <div className="flex flex-col lg:flex-row lg:flex-wrap gap-8 items-center w-full">
                                         <div
                                             className={clsx("hover:opacity-[0.75] mr-auto gap-[8px] items-center text-primary-darkest cursor-pointer", content.previousItem.id ? 'flex': 'hidden')}
@@ -209,10 +213,10 @@ export default function Page(props: Props) {
                                             <ArrowRightCircleIcon className="w-[24px] shrink-0" />
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </section>
+                            </article>
                         </div>
-                        <div className="lg:w-[320px] px-4 lg:px-0">
+                        <section className="lg:w-[320px] px-4 lg:px-0">
                             <div className="lg:mt-0 lg:border-none lg:pt-0 mt-8 pt-8 border-t border-t-[#ccc]">
                                 <div className="flex items-center gap-[8px]">
                                     <div className="w-[4px] h-[24px] bg-primary-dark"></div>
@@ -245,7 +249,7 @@ export default function Page(props: Props) {
                                     })}
                                 </div>
                             </div>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </RootLayout>
