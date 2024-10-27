@@ -92,37 +92,47 @@ export default function Page(props: Props) {
             }
         })
         if (res.code === 0) {
-            setArticles((prev) => {
-                return [...prev, ...res.data.rows]
-            })
-            setTotal(res.data.total)
-            setCurrentPage((prev) => prev + 1)
+            return {
+                rows: res.data.rows,
+                total: res.data.total
+            }
+        }
+        return {
+            rows: [],
+            total: 0,
         }
     }
 
     useEffect(() => {
         if (inView && (total === 0 || total > articles.length)) {
-            getArticles(currentPage, search)
+            getArticles(currentPage, search).then((data) => {
+                setArticles((prev) => {
+                    return [...prev, ...data.rows]
+                })
+                setTotal(data.total)
+                setCurrentPage((prev) => prev + 1)
+            })
         }
     }, [inView])
 
-    const handleTagChange = (id: string) => {
-        router.push(`/articles/${id}`)
-    }
+    // const handleTagChange = (id: string) => {
+    //     router.push(`/articles/${id}`)
+    // }
 
     const [search, setSearch] = useState('')
 
     const debouncedSearch = useCallback(debounce(async (value) => {
-        setTotal(0)
-        setCurrentPage(1)
-        setArticles([])
-
         setSearching(true)
-        await getArticles(1, value)
+        const data = await getArticles(1, value)
+        setArticles(data.rows)
+        setTotal(data.total)
         setSearching(false)
     }, 800), [])
 
     const handleSearch = (value: string) => {
+        setArticles([])
+        setTotal(0)
+        setCurrentPage(1)
         setSearch(value)
         debouncedSearch(value)
     }
@@ -162,7 +172,20 @@ export default function Page(props: Props) {
                         />
                     </div>
                     <div className="mt-4 lg:flex lg:gap-8 lg:px-4">
-                        <div className="lg:hidden px-4 mb-4 lg:min-w-[420px] max-w-[420px]">
+                        <div className="lg:hidden flex gap-4 px-4 mb-4">
+                            {tags.map((tag) => {
+                                return (
+                                    <div
+                                        key={tag.id}
+                                        className="text-sm text-primary-darkest px-4 py-2 rounded-md bg-primary"
+                                        onClick={() => router.push(`/articles/${tag.id}`)}
+                                    >
+                                        {tag.name}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        {/* <div className="lg:hidden px-4 mb-4 lg:min-w-[420px] max-w-[420px]">
                             <Select onChange={(e) => handleTagChange(e.target.value)}>
                                 <option>選擇文章分類</option>
                                 {tags.map((tag) => {
@@ -171,7 +194,7 @@ export default function Page(props: Props) {
                                     )
                                 })}
                             </Select>
-                        </div>
+                        </div> */}
                         <div className="hidden lg:block w-[240px] shrink-0 bg-primary min-h-[70vh]">
                             <div className="bg-primary-darkest text-primary px-4 py-4 text-md">文章分類</div>
                             {tags.map((tag) => {
@@ -197,6 +220,11 @@ export default function Page(props: Props) {
                                     />
                                 </InputGroup>
                             </div>
+                            <div className="flex px-4 border-b border-b-[#ccc]">
+                                <div className="hover:opacity-[0.75] cursor-pointer pb-1 px-4 border-b-[3px] border-b-primary-darkest">
+                                    <div className="text-primary-darkest">最新文章</div>
+                                </div>
+                            </div>
                             <div className={clsx("grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4", !searching ? 'grid' : 'hidden')}>
                                 {articles.map((article) => {
                                     return (
@@ -205,7 +233,7 @@ export default function Page(props: Props) {
                                             className="px-4 pb-4 border-b border-b-[#ccc] md:border-none"
                                             onClick={() => router.push(`/articles/${article.tags[0].id}/${article.id}`)}
                                         >
-                                            <div className="flex flex-wrap gap-4">
+                                            {/* <div className="flex flex-wrap gap-4">
                                                 {article.tags.map((tag: any, i: number, arr: any[]) => {
                                                     return (
                                                         <div key={tag.id} className={clsx("text-sm text-secondary px-4 py-2 bg-primary rounded-md", i !== arr.length - 1 ? "mr-[4px]" : '')}>
@@ -213,7 +241,7 @@ export default function Page(props: Props) {
                                                         </div>
                                                     )
                                                 })}
-                                            </div>
+                                            </div> */}
                                             <div className="flex gap-8 mt-2">
                                                 {article.cover ?
                                                     <div className="shrink-0">
@@ -242,11 +270,11 @@ export default function Page(props: Props) {
                                 })}
                             </div>
                             <div ref={ref}></div>
-                            <div className={clsx("lg:min-h-[50vh] w-full flex-col gap-4 justify-center items-center", articles.length === 0 && !searching ? 'flex': 'hidden')}>
+                            <div className={clsx("mt-4 lg:mt-0 lg:min-h-[50vh] w-full flex-col gap-4 justify-center items-center", articles.length === 0 && !searching ? 'flex': 'hidden')}>
                                 <ArchiveBoxXMarkIcon className="w-[48px] text-primary-darkest" />
                                 <div className="text-primary-darkest">查無結果</div>
                             </div>
-                            <div className={clsx("lg:min-h-[50vh] w-full flex-col gap-4 justify-center items-center", searching ? 'flex': 'hidden')}>
+                            <div className={clsx("mt-4 lg:mt-0 lg:min-h-[50vh] w-full flex-col gap-4 justify-center items-center", searching ? 'flex': 'hidden')}>
                                 <MagnifyingGlassIcon className="w-[48px] text-primary-darkest" />
                                 <div className="text-primary-darkest">搜尋中...</div>
                             </div>
