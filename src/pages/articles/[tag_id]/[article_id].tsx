@@ -174,9 +174,9 @@ export default function Page(props: Props) {
                                         <Image
                                             src={article.cover}
                                             alt={article.title}
-                                            width={500}
-                                            height={500}
-                                            className="object-contain"
+                                            width={1600}
+                                            height={900}
+                                            className="object-contain aspect-[16/9]"
                                         />
                                     </div> : <></>
                                 }
