@@ -222,11 +222,11 @@ export default function Page(props: Props) {
                                     <div className="w-[4px] h-[24px] bg-primary-dark"></div>
                                     <div className="text-primary-darker text-2xl">延伸閱讀</div>
                                 </div>
-                                <div className="mt-8 flex flex-col gap-8">
+                                <div className="mt-8 flex flex-col">
                                     {content.similarItems.map((item: any) => {
                                         return (
                                             <div key={item.id} className="cursor-pointer" onClick={() => router.push(`/articles/${article.tags[0].id}/${item.id}`)}>
-                                                <div className="flex justify-between gap-4 pb-4 border-b border-b-[#ccc]">
+                                                <div className="flex justify-between gap-4 pt-4 pb-4 border-b border-b-[#ccc]">
                                                     <div className="flex-1 w-[70%]">
                                                         <div className="text-primary-darkest text-lg hover:opacity-[0.8]">{item.title}</div>
                                                         {/* <div className="truncate mt-2 text-sm">{item.subtitle}</div> */}
