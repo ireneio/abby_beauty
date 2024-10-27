@@ -193,26 +193,26 @@ export default function Page(props: Props) {
                                     </div>
                                 </div>
                                 <div className="mt-8 mt-4">
-                                    <div className="flex items-center w-full">
+                                    <div className="flex flex-col lg:flex-row lg:flex-wrap gap-8 items-center w-full">
                                         <div
-                                            className={clsx("mr-auto items-center text-primary-darkest cursor-pointer", content.previousItem.id ? 'flex': 'hidden')}
+                                            className={clsx("hover:opacity-[0.75] mr-auto gap-[8px] items-center text-primary-darkest cursor-pointer", content.previousItem.id ? 'flex': 'hidden')}
                                             onClick={() => router.push(`/articles/${article.tags[0].id}/${content.previousItem.id}`)}
                                         >
-                                            <ArrowLeftCircleIcon className="w-[24px]" />
-                                            <div>上一篇</div>
+                                            <ArrowLeftCircleIcon className="w-[24px] shrink-0" />
+                                            <div>上一篇: {content.previousItem.title}</div>
                                         </div>
                                         <div
-                                            className={clsx("ml-auto items-center text-primary-darkest cursor-pointer", content.nextItem.id ? 'flex': 'hidden')}
+                                            className={clsx("hover:opacity-[0.75] ml-auto gap-[8px] items-center text-primary-darkest cursor-pointer", content.nextItem.id ? 'flex': 'hidden')}
                                             onClick={() => router.push(`/articles/${article.tags[0].id}/${content.nextItem.id}`)}
                                         >
-                                            <div>下一篇</div>
-                                            <ArrowRightCircleIcon className="w-[24px]" />
+                                            <div>下一篇: {content.nextItem.title}</div>
+                                            <ArrowRightCircleIcon className="w-[24px] shrink-0" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="lg:w-[320px]">
+                        <div className="lg:w-[320px] px-4 lg:px-0">
                             <div className="lg:mt-0 lg:border-none lg:pt-0 mt-8 pt-8 border-t border-t-[#ccc]">
                                 <div className="flex items-center gap-[8px]">
                                     <div className="w-[4px] h-[24px] bg-primary-dark"></div>

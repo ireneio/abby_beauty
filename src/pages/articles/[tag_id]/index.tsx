@@ -169,41 +169,46 @@ export default function Page(props: Props) {
                         <span className="text-sm text-primary-darker">全部分類</span>
                     </div>
                     <div className="mt-4 lg:px-4">
-                        <div className="text-primary bg-primary-darkest px-4 py-4 mb-4">{tag.name}</div>
+                        <div className="bg-primary-darkest px-4 py-4 mb-4 flex items-center gap-[8px]">
+                            <div className="bg-primary-dark w-[4px] h-[24px]"></div>
+                            <div className="text-2xl text-primary">{tag.name}</div>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {[...initialArticles, ...articles].map((article) => {
                                 return (
-                                    <div key={article.id} className="px-4 pb-4 border-b border-b-[#ccc] md:border-none" onClick={() => router.push(`/articles/${tag.id}/${article.id}`)}>
+                                    <div key={article.id} className="flex gap-8 px-4 pb-4 border-b border-b-[#ccc] md:border-none" onClick={() => router.push(`/articles/${tag.id}/${article.id}`)}>
                                         {article.cover ?
-                                            <div>
+                                            <div className="shrink-0">
                                                 <Image
                                                     src={article.cover}
                                                     alt={article.title}
-                                                    width={500}
-                                                    height={500}
-                                                    className="object-contain"
+                                                    width={140}
+                                                    height={70}
+                                                    className="object-cover aspect-[16/9]"
                                                 />
                                             </div> : <></>}
-                                        <div className="mt-2 text-lg lg:text-xl text-primary-darkest font-semibold">{article.title}</div>
-                                        <div className="text-md mt-2 text-black">{article.subtitle}</div>
-                                        <div className="mt-4 flex justify-between">
-                                            <div className="text-sm text-secondary font-light tracking-[1.5px]">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
-                                            <div className="hover:opacity-[0.8] flex gap-[0px] cursor-pointer" onClick={() => router.push(`/articles/${router.query.tag_id}/${article.id}`)}>
-                                                <span className="text-primary-darker text-sm font-medium">閱讀更多</span>
-                                                <ChevronDoubleRightIcon className="w-[20px] text-primary-darker" />
+                                        <div className="flex-1">
+                                            <div className="mt-2 text-lg lg:text-xl text-primary-darkest font-semibold">{article.title}</div>
+                                            {/* <div className="text-md mt-2 text-black">{article.subtitle}</div> */}
+                                            <div className="mt-4 flex justify-between">
+                                                <div className="text-sm text-secondary font-light tracking-[1.5px]">{dayjs(article.publish_date).format('YYYY/MM/DD')}</div>
+                                                <div className="hover:opacity-[0.8] flex gap-[0px] cursor-pointer" onClick={() => router.push(`/articles/${router.query.tag_id}/${article.id}`)}>
+                                                    <span className="text-primary-darker text-sm font-medium">閱讀更多</span>
+                                                    <ChevronDoubleRightIcon className="w-[20px] text-primary-darker" />
+                                                </div>
                                             </div>
+                                            {/* <div className="flex mt-2 text-secondary">
+                                                <TagIcon className="w-[14px] mr-1" />
+                                                {article.tags.map((tag: any, i: number, arr: any[]) => {
+                                                    return (
+                                                        <div key={tag.id} className="text-sm">
+                                                            <span>#{tag.name}</span>
+                                                            {i !== arr.length - 1 ? <span className="mr-[4px]"></span> : ''}
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div> */}
                                         </div>
-                                        {/* <div className="flex mt-2 text-secondary">
-                                            <TagIcon className="w-[14px] mr-1" />
-                                            {article.tags.map((tag: any, i: number, arr: any[]) => {
-                                                return (
-                                                    <div key={tag.id} className="text-sm">
-                                                        <span>#{tag.name}</span>
-                                                        {i !== arr.length - 1 ? <span className="mr-[4px]"></span> : ''}
-                                                    </div>
-                                                )
-                                            })}
-                                        </div> */}
                                     </div>
                                 )
                             })}
