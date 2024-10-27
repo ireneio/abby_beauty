@@ -122,19 +122,17 @@ export default function Page(props: Props) {
     const [search, setSearch] = useState('')
 
     const debouncedSearch = useCallback(debounce(async (value) => {
-        setSearching(true)
         const data = await getArticles(1, value)
         setArticles(data.rows)
         setTotal(data.total)
         setSearching(false)
     }, 800), [])
 
-    const handleSearch = (value: string) => {
-        setArticles([])
-        setTotal(0)
+    const handleSearch = async (value: string) => {
+        setSearching(true)
         setCurrentPage(1)
         setSearch(value)
-        debouncedSearch(value)
+        await debouncedSearch(value)
     }
 
     useEffect(() => {
