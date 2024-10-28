@@ -69,7 +69,7 @@ export default function Page(props: Props) {
             navigator.share({
               title: article.title,
               text: article.title,
-              url: `${process.env.NEXT_PUBLIC_SITE_URL}/articles/${article.id}`,
+              url: `${process.env.NEXT_PUBLIC_SITE_URL}/articles/${article.tag_id}/${article.id}`,
             })
               .then(() => console.log('Successfully shared'))
               .catch((error) => console.error('Error sharing:', error));
